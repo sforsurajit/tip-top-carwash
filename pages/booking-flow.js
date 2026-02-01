@@ -21,6 +21,94 @@ const CONFIG = {
 };
 
 // ============================================
+// MOCK DATA - Car Brands & Models
+// ============================================
+const MOCK_CAR_BRANDS = [
+    { id: 1, name: 'Maruti Suzuki', logo: '🚗' },
+    { id: 2, name: 'Hyundai', logo: '🚙' },
+    { id: 3, name: 'Tata', logo: '🚐' },
+    { id: 4, name: 'Mahindra', logo: '🚙' },
+    { id: 5, name: 'Honda', logo: '🚗' },
+    { id: 6, name: 'Toyota', logo: '🚙' },
+    { id: 7, name: 'Kia', logo: '🚐' },
+    { id: 8, name: 'Renault', logo: '🚗' },
+    { id: 9, name: 'Nissan', logo: '🚙' },
+    { id: 10, name: 'Volkswagen', logo: '🚗' },
+    { id: 11, name: 'Skoda', logo: '🚙' },
+    { id: 12, name: 'MG', logo: '🚐' }
+];
+
+const MOCK_CAR_MODELS = {
+    1: [ // Maruti Suzuki
+        { id: 101, name: 'Alto', type: 'Hatchback', categoryId: 1, multiplier: 1.0 },
+        { id: 102, name: 'Swift', type: 'Hatchback', categoryId: 1, multiplier: 1.0 },
+        { id: 103, name: 'Baleno', type: 'Hatchback', categoryId: 1, multiplier: 1.0 },
+        { id: 104, name: 'Dzire', type: 'Sedan', categoryId: 2, multiplier: 1.2 },
+        { id: 105, name: 'Ciaz', type: 'Sedan', categoryId: 2, multiplier: 1.2 },
+        { id: 106, name: 'Ertiga', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 107, name: 'Brezza', type: 'SUV', categoryId: 3, multiplier: 1.5 }
+    ],
+    2: [ // Hyundai
+        { id: 201, name: 'i10', type: 'Hatchback', categoryId: 1, multiplier: 1.0 },
+        { id: 202, name: 'i20', type: 'Hatchback', categoryId: 1, multiplier: 1.0 },
+        { id: 203, name: 'Verna', type: 'Sedan', categoryId: 2, multiplier: 1.2 },
+        { id: 204, name: 'Creta', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 205, name: 'Venue', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 206, name: 'Alcazar', type: 'SUV', categoryId: 3, multiplier: 1.5 }
+    ],
+    3: [ // Tata
+        { id: 301, name: 'Tiago', type: 'Hatchback', categoryId: 1, multiplier: 1.0 },
+        { id: 302, name: 'Altroz', type: 'Hatchback', categoryId: 1, multiplier: 1.0 },
+        { id: 303, name: 'Tigor', type: 'Sedan', categoryId: 2, multiplier: 1.2 },
+        { id: 304, name: 'Nexon', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 305, name: 'Harrier', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 306, name: 'Safari', type: 'SUV', categoryId: 3, multiplier: 1.5 }
+    ],
+    4: [ // Mahindra
+        { id: 401, name: 'XUV300', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 402, name: 'XUV500', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 403, name: 'XUV700', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 404, name: 'Scorpio', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 405, name: 'Thar', type: 'SUV', categoryId: 3, multiplier: 1.5 }
+    ],
+    5: [ // Honda
+        { id: 501, name: 'Amaze', type: 'Sedan', categoryId: 2, multiplier: 1.2 },
+        { id: 502, name: 'City', type: 'Sedan', categoryId: 2, multiplier: 1.2 },
+        { id: 503, name: 'Civic', type: 'Sedan', categoryId: 2, multiplier: 1.2 }
+    ],
+    6: [ // Toyota
+        { id: 601, name: 'Glanza', type: 'Hatchback', categoryId: 1, multiplier: 1.0 },
+        { id: 602, name: 'Fortuner', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 603, name: 'Innova Crysta', type: 'SUV', categoryId: 3, multiplier: 1.5 }
+    ],
+    7: [ // Kia
+        { id: 701, name: 'Seltos', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 702, name: 'Sonet', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 703, name: 'Carens', type: 'SUV', categoryId: 3, multiplier: 1.5 }
+    ],
+    8: [ // Renault
+        { id: 801, name: 'Kwid', type: 'Hatchback', categoryId: 1, multiplier: 1.0 },
+        { id: 802, name: 'Triber', type: 'Hatchback', categoryId: 1, multiplier: 1.0 }
+    ],
+    9: [ // Nissan
+        { id: 901, name: 'Magnite', type: 'SUV', categoryId: 3, multiplier: 1.5 }
+    ],
+    10: [ // Volkswagen
+        { id: 1001, name: 'Polo', type: 'Hatchback', categoryId: 1, multiplier: 1.0 },
+        { id: 1002, name: 'Vento', type: 'Sedan', categoryId: 2, multiplier: 1.2 },
+        { id: 1003, name: 'Taigun', type: 'SUV', categoryId: 3, multiplier: 1.5 }
+    ],
+    11: [ // Skoda
+        { id: 1101, name: 'Rapid', type: 'Sedan', categoryId: 2, multiplier: 1.2 },
+        { id: 1102, name: 'Kushaq', type: 'SUV', categoryId: 3, multiplier: 1.5 }
+    ],
+    12: [ // MG
+        { id: 1201, name: 'Hector', type: 'SUV', categoryId: 3, multiplier: 1.5 },
+        { id: 1202, name: 'Astor', type: 'SUV', categoryId: 3, multiplier: 1.5 }
+    ]
+};
+
+// ============================================
 // BOOKING STATE MANAGEMENT
 // ============================================
 const BookingState = {
@@ -39,11 +127,16 @@ const BookingState = {
 
     // Vehicle Selection
     vehicle: {
+        brandId: null,
+        brandName: null,
+        modelId: null,
+        modelName: null,
         categoryId: null,
         categoryName: null,
         vehicleId: null,
         vehicleName: null,
         multiplier: 1.0,
+        isCustom: false, // For manual entry
         savedVehicles: []
     },
 
@@ -83,7 +176,7 @@ const BookingState = {
 
     // Payment
     payment: {
-        method: 'cash',
+        method: 'online',
         totalPrice: 0,
         discount: 0,
         finalAmount: 0
@@ -111,6 +204,7 @@ const DOM = {
 
         // Navigation
         this.backBtn = document.getElementById('backBtn');
+        this.backBtnMobile = document.getElementById('backBtnMobile');
         this.nextBtn = document.getElementById('nextBtn');
         this.confirmBtn = document.getElementById('confirmBtn');
 
@@ -118,11 +212,31 @@ const DOM = {
         this.carSearchInput = document.getElementById('carSearchInput');
         this.searchClear = document.getElementById('searchClear');
         this.searchResults = document.getElementById('searchResults');
-        this.vehicleTypesGrid = document.getElementById('vehicleTypesGrid');
+
+        // Brand/Model Selection
+        this.brandSelectionView = document.getElementById('brandSelectionView');
+        this.modelSelectionView = document.getElementById('modelSelectionView');
+        this.manualEntryView = document.getElementById('manualEntryView');
+        this.brandGrid = document.getElementById('brandGrid');
+        this.modelGrid = document.getElementById('modelGrid');
+        this.selectedBrandHeader = document.getElementById('selectedBrandHeader');
+        this.selectedBrandLogo = document.getElementById('selectedBrandLogo');
+        this.selectedBrandName = document.getElementById('selectedBrandName');
+        this.backToBrandsBtn = document.getElementById('backToBrandsBtn');
+        this.backFromManualBtn = document.getElementById('backFromManualBtn');
+
+        // Manual Entry Form
+        this.manualBrandInput = document.getElementById('manualBrandInput');
+        this.manualModelInput = document.getElementById('manualModelInput');
+        this.manualCategorySelect = document.getElementById('manualCategorySelect');
+        this.confirmManualBtn = document.getElementById('confirmManualBtn');
+
+        // Legacy (keep for saved vehicles)
         this.savedVehiclesSection = document.getElementById('savedVehiclesSection');
         this.savedVehiclesGrid = document.getElementById('savedVehiclesGrid');
         this.newVehicleSection = document.getElementById('newVehicleSection');
         this.addNewVehicleBtn = document.getElementById('addNewVehicleBtn');
+
 
         // Step 2: Services
         this.servicesGrid = document.getElementById('servicesGrid');
@@ -376,6 +490,9 @@ const Utils = {
 const Navigation = {
     init() {
         DOM.backBtn.addEventListener('click', () => this.prevStep());
+        if (DOM.backBtnMobile) {
+            DOM.backBtnMobile.addEventListener('click', () => this.prevStep());
+        }
         DOM.nextBtn.addEventListener('click', () => this.nextStep());
         DOM.confirmBtn.addEventListener('click', () => BookingFlow.submitBooking());
 
@@ -477,8 +594,15 @@ const Navigation = {
         }
 
         // Update navigation buttons
-        DOM.backBtn.style.display = step > 1 ? 'flex' : 'none';
-        DOM.nextBtn.style.display = step < BookingState.totalSteps ? 'flex' : 'none';
+        const showBack = step > 1 ? 'flex' : 'none';
+        DOM.backBtn.style.display = showBack;
+        if (DOM.backBtnMobile) {
+            DOM.backBtnMobile.style.display = showBack;
+        }
+
+        // Hide Continue button permanently as we using auto-advance
+        DOM.nextBtn.style.display = 'none';
+
         DOM.confirmBtn.style.display = step === BookingState.totalSteps ? 'flex' : 'none';
 
         // Scroll to top
@@ -487,77 +611,240 @@ const Navigation = {
 };
 
 // ============================================
-// STEP 1: VEHICLE SELECTION
+// STEP 1: VEHICLE SELECTION (Brand -> Model)
 // ============================================
 const VehicleSelection = {
+    currentView: 'brand', // 'brand', 'model', or 'manual'
+    selectedBrand: null,
+
     async init() {
-        await CarDatabase.load();
-        await this.loadVehicleCategories();
+        this.renderBrands();
         this.setupSearch();
+        this.setupNavigation();
         this.checkSavedVehicles();
     },
 
-    async loadVehicleCategories() {
-        try {
-            // Try API first
-            const categories = await API.getVehicleCategories();
-            BookingState.cache.vehicleCategories = categories;
-            this.renderVehicleTypes(categories);
-        } catch (error) {
-            // Fallback to default categories
-            const defaultCategories = [
-                { id: 1, car_name: 'Hatchback', multiplier: 1.0, icon: '🚗' },
-                { id: 2, car_name: 'Sedan', multiplier: 1.2, icon: '🚙' },
-                { id: 3, car_name: 'SUV', multiplier: 1.5, icon: '🚐' },
-                { id: 4, car_name: 'Bike', multiplier: 0.5, icon: '🏍️' }
-            ];
-            BookingState.cache.vehicleCategories = defaultCategories;
-            this.renderVehicleTypes(defaultCategories);
-        }
-    },
-
-    renderVehicleTypes(categories) {
-        const icons = {
-            'Hatchback': '🚗',
-            'Sedan': '🚙',
-            'Sudan': '🚙', // API typo handling
-            'SUV': '🚐',
-            'Bike': '🏍️'
-        };
-
-        DOM.vehicleTypesGrid.innerHTML = categories.map(cat => `
-            <div class="vehicle-type-card" data-id="${cat.id}" data-name="${cat.car_name}" data-multiplier="${cat.multiplier}">
-                <div class="vehicle-type-icon">${icons[cat.car_name] || '🚗'}</div>
-                <div class="vehicle-type-name">${cat.car_name}</div>
-                <div class="vehicle-type-multiplier">From ₹${Math.round(200 * parseFloat(cat.multiplier))}</div>
+    renderBrands() {
+        const brandsHTML = MOCK_CAR_BRANDS.map(brand => `
+            <div class="brand-card" data-id="${brand.id}" data-name="${brand.name}">
+                <div class="brand-logo">${brand.logo}</div>
+                <div class="brand-name">${brand.name}</div>
             </div>
         `).join('');
 
+        // Add "Other" option
+        const otherHTML = `
+            <div class="brand-card other-brand" data-id="other">
+                <div class="brand-logo">✏️</div>
+                <div class="brand-name">Other Brand</div>
+            </div>
+        `;
+
+        DOM.brandGrid.innerHTML = brandsHTML + otherHTML;
+
         // Add click handlers
-        DOM.vehicleTypesGrid.querySelectorAll('.vehicle-type-card').forEach(card => {
-            card.addEventListener('click', () => this.selectVehicleType(card));
+        DOM.brandGrid.querySelectorAll('.brand-card').forEach(card => {
+            card.addEventListener('click', () => this.selectBrand(card));
         });
+
+        lucide.createIcons();
     },
 
-    selectVehicleType(card) {
+    selectBrand(card) {
+        const brandId = card.dataset.id;
+
+        if (brandId === 'other') {
+            this.showManualEntry();
+            return;
+        }
+
+        const brand = MOCK_CAR_BRANDS.find(b => b.id === parseInt(brandId));
+        if (!brand) return;
+
+        this.selectedBrand = brand;
+        BookingState.vehicle.brandId = brand.id;
+        BookingState.vehicle.brandName = brand.name;
+
+        // Show models for this brand
+        this.showModelSelection(brand);
+    },
+
+    showModelSelection(brand) {
+        this.currentView = 'model';
+
+        // Hide brand view, show model view
+        DOM.brandSelectionView.style.display = 'none';
+        DOM.modelSelectionView.style.display = 'block';
+        DOM.manualEntryView.style.display = 'none';
+
+        // Update header
+        DOM.selectedBrandLogo.textContent = brand.logo;
+        DOM.selectedBrandName.textContent = brand.name;
+
+        // Update search placeholder
+        DOM.carSearchInput.placeholder = `Search ${brand.name} models...`;
+        DOM.carSearchInput.value = '';
+
+        // Render models
+        this.renderModels(brand.id);
+    },
+
+    renderModels(brandId) {
+        const models = MOCK_CAR_MODELS[brandId] || [];
+
+        const modelsHTML = models.map(model => `
+            <div class="model-card" data-id="${model.id}" data-brand-id="${brandId}" 
+                 data-name="${model.name}" data-type="${model.type}" 
+                 data-category-id="${model.categoryId}" data-multiplier="${model.multiplier}">
+                <div class="model-name">${model.name}</div>
+                <span class="model-type ${model.type.toLowerCase()}">${model.type}</span>
+            </div>
+        `).join('');
+
+        // Add "Other Model" option
+        const otherHTML = `
+            <div class="model-card other-model" data-id="other">
+                <div class="model-name">Other Model</div>
+                <span class="model-type">Custom</span>
+            </div>
+        `;
+
+        DOM.modelGrid.innerHTML = modelsHTML + otherHTML;
+
+        // Add click handlers
+        DOM.modelGrid.querySelectorAll('.model-card').forEach(card => {
+            card.addEventListener('click', () => this.selectModel(card));
+        });
+
+        lucide.createIcons();
+    },
+
+    selectModel(card) {
+        if (card.dataset.id === 'other') {
+            this.showManualEntry(true); // true = already have brand
+            return;
+        }
+
         // Remove previous selection
-        DOM.vehicleTypesGrid.querySelectorAll('.vehicle-type-card').forEach(c => {
+        DOM.modelGrid.querySelectorAll('.model-card').forEach(c => {
             c.classList.remove('selected');
         });
 
         card.classList.add('selected');
 
-        // Update state
-        BookingState.vehicle.categoryId = parseInt(card.dataset.id);
-        BookingState.vehicle.categoryName = card.dataset.name;
+        // Update booking state
+        BookingState.vehicle.modelId = parseInt(card.dataset.id);
+        BookingState.vehicle.modelName = card.dataset.name;
+        BookingState.vehicle.categoryId = parseInt(card.dataset.categoryId);
+        BookingState.vehicle.categoryName = card.dataset.type;
         BookingState.vehicle.multiplier = parseFloat(card.dataset.multiplier);
-        BookingState.vehicle.vehicleName = card.dataset.name; // Default to category name
+        BookingState.vehicle.vehicleName = `${BookingState.vehicle.brandName} ${card.dataset.name}`;
+        BookingState.vehicle.isCustom = false;
 
-        // Clear search
-        DOM.carSearchInput.value = '';
-        DOM.searchResults.classList.remove('active');
+        Utils.showToast(`${BookingState.vehicle.vehicleName} selected!`, 'success');
 
-        Utils.showToast(`${card.dataset.name} selected!`, 'success');
+        // Auto-advance to next step
+        setTimeout(() => Navigation.nextStep(), 400);
+    },
+
+    showManualEntry(hasBrand = false) {
+        this.currentView = 'manual';
+
+        // Hide other views
+        DOM.brandSelectionView.style.display = 'none';
+        DOM.modelSelectionView.style.display = 'none';
+        DOM.manualEntryView.style.display = 'block';
+
+        // Pre-fill brand if coming from model selection
+        if (hasBrand && this.selectedBrand) {
+            DOM.manualBrandInput.value = this.selectedBrand.name;
+            DOM.manualBrandInput.readOnly = true;
+        } else {
+            DOM.manualBrandInput.value = '';
+            DOM.manualBrandInput.readOnly = false;
+        }
+
+        DOM.manualModelInput.value = '';
+        DOM.manualCategorySelect.value = '';
+
+        // Update search placeholder
+        DOM.carSearchInput.placeholder = 'Search car brand...';
+    },
+
+    setupNavigation() {
+        // Back to brands from models
+        DOM.backToBrandsBtn.addEventListener('click', () => {
+            this.currentView = 'brand';
+            DOM.brandSelectionView.style.display = 'block';
+            DOM.modelSelectionView.style.display = 'none';
+            DOM.manualEntryView.style.display = 'none';
+            DOM.carSearchInput.placeholder = 'Search car brand...';
+            DOM.carSearchInput.value = '';
+            this.selectedBrand = null;
+        });
+
+        // Back from manual entry
+        DOM.backFromManualBtn.addEventListener('click', () => {
+            if (this.selectedBrand) {
+                // Go back to model selection
+                this.showModelSelection(this.selectedBrand);
+            } else {
+                // Go back to brand selection
+                this.currentView = 'brand';
+                DOM.brandSelectionView.style.display = 'block';
+                DOM.modelSelectionView.style.display = 'none';
+                DOM.manualEntryView.style.display = 'none';
+                DOM.carSearchInput.placeholder = 'Search car brand...';
+            }
+        });
+
+        // Confirm manual entry
+        DOM.confirmManualBtn.addEventListener('click', () => {
+            this.confirmManualEntry();
+        });
+    },
+
+    confirmManualEntry() {
+        const brand = DOM.manualBrandInput.value.trim();
+        const model = DOM.manualModelInput.value.trim();
+        const categoryId = parseInt(DOM.manualCategorySelect.value);
+
+        // Validation
+        if (!brand || !model) {
+            Utils.showToast('Please enter both brand and model', 'error');
+            return;
+        }
+
+        if (!categoryId) {
+            Utils.showToast('Please select vehicle type for pricing', 'error');
+            return;
+        }
+
+        // Get category details
+        const categoryMap = {
+            1: { name: 'Hatchback', multiplier: 1.0 },
+            2: { name: 'Sedan', multiplier: 1.2 },
+            3: { name: 'SUV', multiplier: 1.5 },
+            4: { name: 'Bike', multiplier: 0.5 }
+        };
+
+        const category = categoryMap[categoryId];
+
+        // Update booking state
+        BookingState.vehicle.brandId = null;
+        BookingState.vehicle.brandName = brand;
+        BookingState.vehicle.modelId = null;
+        BookingState.vehicle.modelName = model;
+        BookingState.vehicle.categoryId = categoryId;
+        BookingState.vehicle.categoryName = category.name;
+        BookingState.vehicle.multiplier = category.multiplier;
+        BookingState.vehicle.vehicleName = `${brand} ${model}`;
+        BookingState.vehicle.isCustom = true;
+
+        Utils.showToast(`${BookingState.vehicle.vehicleName} added!`, 'success');
+
+        // Auto-advance
+        setTimeout(() => Navigation.nextStep(), 400);
     },
 
     setupSearch() {
@@ -591,32 +878,55 @@ const VehicleSelection = {
             return;
         }
 
-        const results = CarDatabase.search(query);
+        let results = [];
+
+        if (this.currentView === 'brand') {
+            // Search brands
+            results = MOCK_CAR_BRANDS.filter(brand =>
+                brand.name.toLowerCase().includes(query.toLowerCase())
+            ).map(brand => ({
+                type: 'brand',
+                id: brand.id,
+                name: brand.name,
+                logo: brand.logo
+            }));
+        } else if (this.currentView === 'model' && this.selectedBrand) {
+            // Search models for current brand
+            const models = MOCK_CAR_MODELS[this.selectedBrand.id] || [];
+            results = models.filter(model =>
+                model.name.toLowerCase().includes(query.toLowerCase())
+            ).map(model => ({
+                type: 'model',
+                id: model.id,
+                name: model.name,
+                category: model.type,
+                categoryId: model.categoryId,
+                multiplier: model.multiplier
+            }));
+        }
 
         if (results.length === 0) {
             DOM.searchResults.innerHTML = `
                 <div class="search-result-item">
                     <div class="result-info">
-                        <div class="result-name">No cars found</div>
-                        <div class="result-type">Try selecting a vehicle type below</div>
+                        <div class="result-name">No results found</div>
+                        <div class="result-type">Try a different search term</div>
                     </div>
                 </div>
             `;
         } else {
-            DOM.searchResults.innerHTML = results.map(car => `
-                <div class="search-result-item" data-name="${car.name}" data-type="${car.type}" data-category="${car.category_id}">
+            DOM.searchResults.innerHTML = results.map(item => `
+                <div class="search-result-item" data-type="${item.type}" data-id="${item.id}" 
+                     ${item.type === 'model' ? `data-category-id="${item.categoryId}" data-multiplier="${item.multiplier}" data-category="${item.category}"` : ''}>
                     <div class="result-icon">
-                        <i data-lucide="car"></i>
+                        ${item.type === 'brand' ? item.logo : '🚗'}
                     </div>
                     <div class="result-info">
-                        <div class="result-name">${car.name}</div>
-                        <div class="result-type">${car.type}</div>
+                        <div class="result-name">${item.name}</div>
+                        <div class="result-type">${item.type === 'brand' ? 'Brand' : item.category}</div>
                     </div>
                 </div>
             `).join('');
-
-            // Re-initialize icons
-            lucide.createIcons();
 
             // Add click handlers
             DOM.searchResults.querySelectorAll('.search-result-item').forEach(item => {
@@ -628,24 +938,26 @@ const VehicleSelection = {
     },
 
     selectFromSearch(item) {
-        const categoryId = parseInt(item.dataset.category);
-        const carName = item.dataset.name;
-        const carType = item.dataset.type;
+        const type = item.dataset.type;
+        const id = parseInt(item.dataset.id);
 
-        // Find and select the corresponding category card
-        const categoryCard = DOM.vehicleTypesGrid.querySelector(`[data-id="${categoryId}"]`);
-        if (categoryCard) {
-            this.selectVehicleType(categoryCard);
+        if (type === 'brand') {
+            const brand = MOCK_CAR_BRANDS.find(b => b.id === id);
+            if (brand) {
+                const brandCard = DOM.brandGrid.querySelector(`[data-id="${id}"]`);
+                if (brandCard) {
+                    this.selectBrand(brandCard);
+                }
+            }
+        } else if (type === 'model') {
+            const modelCard = DOM.modelGrid.querySelector(`[data-id="${id}"]`);
+            if (modelCard) {
+                this.selectModel(modelCard);
+            }
         }
 
-        // Update vehicle name
-        BookingState.vehicle.vehicleName = carName;
-
-        // Update search input
-        DOM.carSearchInput.value = carName;
         DOM.searchResults.classList.remove('active');
-
-        Utils.showToast(`${carName} selected!`, 'success');
+        DOM.carSearchInput.value = '';
     },
 
     async checkSavedVehicles() {
@@ -704,6 +1016,9 @@ const VehicleSelection = {
         BookingState.vehicle.vehicleName = card.dataset.name;
 
         Utils.showToast(`${card.dataset.name} selected!`, 'success');
+
+        // Auto-advance
+        setTimeout(() => Navigation.nextStep(), 400);
     }
 };
 
@@ -794,11 +1109,11 @@ const ServiceSelection = {
             card.addEventListener('click', () => this.selectService(card));
         });
 
-        // Auto-select popular service
-        const popularCard = DOM.servicesGrid.querySelector('.service-card.popular');
-        if (popularCard) {
-            this.selectService(popularCard);
-        }
+        // Auto-select popular service - REMOVED per user request
+        // const popularCard = DOM.servicesGrid.querySelector('.service-card.popular');
+        // if (popularCard) {
+        //    this.selectService(popularCard);
+        // }
     },
 
     selectService(card) {
@@ -810,10 +1125,16 @@ const ServiceSelection = {
 
         BookingState.service.id = parseInt(card.dataset.id);
         BookingState.service.name = card.dataset.name;
+        // dataset.price is already (base_price * multiplier), so it is the final price for this service
         BookingState.service.finalPrice = parseInt(card.dataset.price);
         BookingState.service.features = JSON.parse(card.dataset.features);
 
-        this.updatePayment();
+        this.updatePayment(); // Calculate totals immediately
+
+        Utils.showToast(`${card.dataset.name} selected!`, 'success');
+
+        // Auto-advance
+        setTimeout(() => Navigation.nextStep(), 400);
     },
 
     updatePayment() {
@@ -1096,10 +1417,11 @@ const ScheduleSelection = {
             const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
             const isToday = index === 0;
+            const isWeekend = date.getDay() === 0 || date.getDay() === 6; // Sun (0) or Sat (6)
             const dateStr = date.toISOString().split('T')[0];
 
             return `
-                <div class="quick-date-card ${isToday ? 'today selected' : ''}" data-date="${dateStr}">
+                <div class="quick-date-card ${isToday ? 'today selected' : ''} ${isWeekend ? 'weekend' : ''}" data-date="${dateStr}">
                     <div class="date-day">${dayNames[date.getDay()]}</div>
                     <div class="date-num">${date.getDate()}</div>
                     <div class="date-month">${monthNames[date.getMonth()]}</div>
@@ -1132,6 +1454,28 @@ const ScheduleSelection = {
         DOM.quickDates.querySelectorAll('.quick-date-card').forEach(c => {
             c.classList.remove('selected');
         });
+
+        card.classList.add('selected');
+        const dateStr = card.dataset.date;
+        BookingState.schedule.date = dateStr;
+        BookingState.schedule.displayDate = Utils.formatDate(new Date(dateStr));
+
+        Utils.showToast(`Date set to ${BookingState.schedule.displayDate}`);
+
+        // If calendar was open, hide it
+        if (DOM.calendarContainer.style.display === 'block') {
+            DOM.calendarContainer.style.display = 'none';
+            DOM.showCalendarBtn.innerHTML = '<i data-lucide="calendar-range"></i> Choose another date';
+            lucide.createIcons();
+        }
+
+        // Focus on Time Slots
+        DOM.timeSlotsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Refresh time slots if needed (e.g., filter based on date)
+        this.renderTimeSlots();
+    },
+    selectCalendarDate(card) {
         DOM.calendarDays.querySelectorAll('.calendar-day').forEach(d => {
             d.classList.remove('selected');
         });
@@ -1144,7 +1488,17 @@ const ScheduleSelection = {
         BookingState.schedule.date = dateStr;
         BookingState.schedule.displayDate = Utils.formatDate(date);
 
-        // Re-render time slots if today is selected
+        Utils.showToast(`Date set to ${BookingState.schedule.displayDate}`);
+
+        // Hide Calendar
+        DOM.calendarContainer.style.display = 'none';
+        DOM.showCalendarBtn.innerHTML = '<i data-lucide="calendar-range"></i> Choose another date';
+        lucide.createIcons();
+
+        // Focus on Time Slots
+        DOM.timeSlotsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Re-render time slots
         this.renderTimeSlots();
     },
 
@@ -1240,12 +1594,27 @@ const ScheduleSelection = {
             quickCard.classList.add('selected');
         }
 
+        // Show toast notification
+        Utils.showToast(`Date set to ${BookingState.schedule.displayDate}`, 'success');
+
+        // Hide Calendar
+        DOM.calendarContainer.style.display = 'none';
+        DOM.showCalendarBtn.innerHTML = '<i data-lucide="calendar-range"></i> Choose another date';
+        lucide.createIcons();
+
+        // Focus on Time Slots - scroll smoothly to bring time slots into view
+        DOM.timeSlotsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
         // Re-render time slots
         this.renderTimeSlots();
     },
 
     renderTimeSlots() {
-        const { start, end } = CONFIG.WORKING_HOURS;
+        const workingHours = CONFIG.WORKING_HOURS;
+        // Handle both uppercase (new-config) and lowercase (fallback) keys
+        const start = workingHours.START !== undefined ? workingHours.START : (workingHours.start || 7);
+        const end = workingHours.END !== undefined ? workingHours.END : (workingHours.end || 18);
+
         const slots = [];
 
         const isToday = BookingState.schedule.date === new Date().toISOString().split('T')[0];
@@ -1289,6 +1658,11 @@ const ScheduleSelection = {
         const hour = parseInt(slot.dataset.hour);
         BookingState.schedule.time = `${hour.toString().padStart(2, '0')}:00:00`;
         BookingState.schedule.displayTime = slot.dataset.time;
+
+        Utils.showToast(`Time set to ${slot.dataset.time}`, 'success');
+
+        // Auto-advance to next step (Confirmation)
+        setTimeout(() => Navigation.nextStep(), 400);
     }
 };
 
@@ -1350,6 +1724,15 @@ const Confirmation = {
 
     setupPaymentOptions() {
         const paymentOptions = document.querySelectorAll('input[name="paymentMethod"]');
+
+        // Set initial selection based on state
+        const currentMethod = BookingState.payment.method;
+        const defaultOption = document.querySelector(`input[name="paymentMethod"][value="${currentMethod}"]`);
+        if (defaultOption) {
+            defaultOption.checked = true;
+            // Trigger change event to update UI and totals
+            defaultOption.dispatchEvent(new Event('change'));
+        }
 
         paymentOptions.forEach(option => {
             option.addEventListener('change', (e) => {
