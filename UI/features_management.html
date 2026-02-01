@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Feature Management - ERP System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .tabs {
+            background: white;
+            padding: 0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            margin-bottom: -2px;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .user-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .user-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .user-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .user-card h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .user-type {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .user-type.superadmin {
+            background: #ef4444;
+        }
+
+        .user-type.admin {
+            background: #f59e0b;
+        }
+
+        .user-type.staff {
+            background: #10b981;
+        }
+
+        .user-type.teacher {
+            background: #3b82f6;
+        }
+
+        .user-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-left: 8px;
+        }
+
+        .user-status.active {
+            background: #10b981;
+            color: white;
+        }
+
+        .user-status.pending {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .user-status.inactive {
+            background: #ef4444;
+            color: white;
+        }
+
+        .feature-count {
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .feature-count strong {
+            color: #667eea;
+            font-size: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .feature-system {
+            margin-bottom: 20px;
+        }
+
+        .feature-system-header {
+            background: #667eea;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .feature-system-body {
+            border: 2px solid #667eea;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            padding: 15px;
+        }
+
+        .module-checkbox {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin: 4px 0;
+            border-radius: 4px;
+            transition: all 0.2s;
+            cursor: move;
+            user-select: none;
+            draggable: true;
+        }
+
+        .module-checkbox:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .module-checkbox.dragging {
+            opacity: 0.5;
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .module-checkbox.drag-over {
+            background: rgba(102, 126, 234, 0.3);
+            border-top: 2px solid #667eea;
+        }
+
+        .module-checkbox input {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .module-checkbox label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .select-all {
+            font-size: 12px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .feature-catalog-item {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .feature-catalog-item.inactive {
+            opacity: 0.6;
+            background: #f9f9f9;
+        }
+
+        .feature-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .feature-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .module-list {
+            margin-top: 10px;
+            padding-left: 0;
+        }
+
+        .module-item {
+            padding: 10px;
+            color: #666;
+            font-size: 14px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+
+        .module-item.inactive {
+            opacity: 0.5;
+            background: #fee;
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.active {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge.inactive {
+            background: #ef4444;
+            color: white;
+        }
+
+        .badge.core {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .badge.academic {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .badge.financial {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge.administrative {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .badge.communication {
+            background: #ec4899;
+            color: white;
+        }
+
+        .badge.support {
+            background: #6b7280;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👥 User Feature Management System</h1>
+            <p>Manage system features and assign them to users</p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <h3>Total Users</h3>
+                <div class="number" id="totalUsers">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Superadmins</h3>
+                <div class="number" id="superadmins">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Available Features</h3>
+                <div class="number" id="totalFeatures">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Modules</h3>
+                <div class="number" id="totalModules">-</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="switchTab('users')">
+                    👥 Users
+                </button>
+                <button class="tab-button" onclick="switchTab('features')">
+                    ⚙️ Manage Features & Modules
+                </button>
+                <button class="tab-button" onclick="switchTab('assign')">
+                    🎯 Assign Features
+                </button>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="users-tab" class="tab-content active">
+                <div class="search-bar">
+                    <input type="text" id="userSearch" placeholder="Search users..." onkeyup="filterUsers()">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="user-grid" id="userGrid">
+                    <div class="loading">Loading users</div>
+                </div>
+            </div>
+
+            <!-- Features Management Tab -->
+            <div id="features-tab" class="tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="color: #333;">System Features Catalog</h3>
+                    <button class="btn btn-primary" onclick="openAddFeatureModal()">
+                        ➕ Add New Feature
+                    </button>
+                </div>
+                <div id="featuresCatalog">
+                    <div class="loading">Loading features</div>
+                </div>
+            </div>
+
+            <!-- Assign Features Tab -->
+            <div id="assign-tab" class="tab-content">
+                <div class="search-bar">
+                    <input type="text" id="assignSearch" placeholder="Search users..." onkeyup="filterAssignUsers()">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="user-grid" id="assignGrid">
+                    <div class="loading">Loading users</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Managing User Features -->
+    <div id="featureModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Manage Features</h2>
+                <button class="close-btn" onclick="closeModal('featureModal')">&times;</button>
+            </div>
+            <div id="modalBody">
+                <div class="loading">Loading features</div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="closeModal('featureModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveFeatures()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Feature -->
+    <div id="addFeatureModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="addFeatureModalTitle">Add New Feature</h2>
+                <button class="close-btn" onclick="closeModal('addFeatureModal')">&times;</button>
+            </div>
+            <form id="featureForm">
+                <div class="form-group">
+                    <label>System Key *</label>
+                    <input type="text" id="systemKey" required placeholder="e.g., new_management">
+                </div>
+                <div class="form-group">
+                    <label>System Name *</label>
+                    <input type="text" id="systemName" required placeholder="e.g., New Management System">
+                </div>
+                <div class="form-group">
+                    <label>System Description *</label>
+                    <textarea id="systemDescription" required placeholder="Describe the feature system"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>System Icon</label>
+                    <input type="text" id="systemIcon" placeholder="e.g., star, settings, users">
+                </div>
+                <div class="form-group">
+                    <label>System Category *</label>
+                    <select id="systemCategory" required>
+                        <option value="core">Core</option>
+                        <option value="academic">Academic</option>
+                        <option value="administrative">Administrative</option>
+                        <option value="financial">Financial</option>
+                        <option value="communication">Communication</option>
+                        <option value="support">Support</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Display Order</label>
+                    <input type="number" id="displayOrder" value="100" min="1">
+                </div>
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addFeatureModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Feature</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Module -->
+    <div id="addModuleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="addModuleModalTitle">Add New Module</h2>
+                <button class="close-btn" onclick="closeModal('addModuleModal')">&times;</button>
+            </div>
+            <form id="moduleForm">
+                <input type="hidden" id="moduleSystemFeatureId">
+                <input type="hidden" id="moduleId">
+                <div class="form-group">
+                    <label>Module Key *</label>
+                    <input type="text" id="moduleKey" required placeholder="e.g., new_module">
+                </div>
+                <div class="form-group">
+                    <label>Module Name *</label>
+                    <input type="text" id="moduleName" required placeholder="e.g., New Module">
+                </div>
+                <div class="form-group">
+                    <label>Module Description *</label>
+                    <textarea id="moduleDescription" required placeholder="Describe the module"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Display Order</label>
+                    <input type="number" id="moduleDisplayOrder" value="100" min="1">
+                </div>
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addModuleModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Module</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://tip-topcarwash.in/main_erp/api_v1';
+        let allUsers = [];
+        let allFeatures = [];
+        let currentUserId = null;
+        let userFeatures = {};
+        let currentEditFeatureId = null;
+        let currentEditModuleId = null;
+        let draggedElement = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStatistics();
+            loadUsers();
+            loadAllFeatures();
+            setupFormListeners();
+        });
+
+        // Setup form listeners
+        function setupFormListeners() {
+            document.getElementById('featureForm').addEventListener('submit', handleFeatureSubmit);
+            document.getElementById('moduleForm').addEventListener('submit', handleModuleSubmit);
+        }
+
+        // Switch tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            if (tabName === 'assign') {
+                loadAssignUsers();
+            }
+        }
+
+        // Load statistics
+        async function loadStatistics() {
+            try {
+                const [usersResponse, featureResponse] = await Promise.all([
+                    fetch(`${API_URL}/system-features/users`),
+                    fetch(`${API_URL}/system-features/active`)
+                ]);
+
+                const usersData = await usersResponse.json();
+                const featureData = await featureResponse.json();
+
+                if (usersData.success) {
+                    const users = usersData.data.users;
+                    document.getElementById('totalUsers').textContent = users.length;
+                    document.getElementById('superadmins').textContent = users.filter(u => u.user_type === 'superadmin').length;
+                }
+
+                if (featureData.success) {
+                    const features = featureData.data.features;
+                    document.getElementById('totalFeatures').textContent = features.length;
+                    
+                    let totalModules = 0;
+                    features.forEach(f => {
+                        totalModules += f.modules ? f.modules.length : 0;
+                    });
+                    document.getElementById('totalModules').textContent = totalModules;
+                }
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
+        }
+
+        // Load users
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_URL}/system-features/users`);
+                const data = await response.json();
+
+                if (data.success) {
+                    allUsers = data.data.users;
+                    renderUsers(allUsers);
+                } else {
+                    showError('Failed to load users');
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+                document.getElementById('userGrid').innerHTML = '<div class="empty-state">Failed to load users</div>';
+            }
+        }
+
+        // Render users
+        function renderUsers(users) {
+            const grid = document.getElementById('userGrid');
+            
+            if (users.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><p>No users found</p></div>';
+                return;
+            }
+
+            grid.innerHTML = users.map(user => `
+                <div class="user-card" onclick="openFeatureModal(${user.id}, '${user.name.replace(/'/g, "\\'")}')">
+                    <h3>${user.name}</h3>
+                    <div>
+                        <span class="user-type ${user.user_type}">${user.user_type}</span>
+                        <span class="user-status ${user.status}">${user.status}</span>
+                    </div>
+                    <p style="margin-top: 10px; color: #999; font-size: 13px;">
+                        📧 ${user.email}
+                    </p>
+                    <div class="feature-count">
+                        <strong>${user.total_features}</strong> features | <strong>${user.total_modules}</strong> modules
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter users
+        function filterUsers() {
+            const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+            const filtered = allUsers.filter(user => 
+                user.name.toLowerCase().includes(searchTerm) ||
+                user.email.toLowerCase().includes(searchTerm) ||
+                user.user_type.toLowerCase().includes(searchTerm)
+            );
+            renderUsers(filtered);
+        }
+
+        // Load all features
+        async function loadAllFeatures() {
+            try {
+                const response = await fetch(`${API_URL}/system-features/active`);
+                const data = await response.json();
+
+                if (data.success) {
+                    allFeatures = data.data.features;
+                    renderFeaturesCatalog(allFeatures);
+                } else {
+                    showError('Failed to load features');
+                }
+            } catch (error) {
+                console.error('Error loading features:', error);
+                document.getElementById('featuresCatalog').innerHTML = '<div class="empty-state">Failed to load features</div>';
+            }
+        }
+
+        // Render features catalog
+        function renderFeaturesCatalog(features) {
+            const catalog = document.getElementById('featuresCatalog');
+            
+            if (features.length === 0) {
+                catalog.innerHTML = '<div class="empty-state"><p>No features available</p></div>';
+                return;
+            }
+
+            catalog.innerHTML = features.map(feature => `
+                <div class="feature-catalog-item ${feature.is_active ? '' : 'inactive'}">
+                    <div class="feature-header">
+                        <div>
+                            <h4>🎯 ${feature.system_name}</h4>
+                            <span class="badge ${feature.system_category}">${feature.system_category}</span>
+                            <span class="badge ${feature.is_active ? 'active' : 'inactive'}">${feature.is_active ? 'Active' : 'Inactive'}</span>
+                        </div>
+                        <div class="feature-actions">
+                            <button class="btn btn-warning btn-small" onclick="openEditFeatureModal(${feature.id}); event.stopPropagation();">
+                                ✏️ Edit
+                            </button>
+                            <button class="btn ${feature.is_active ? 'btn-secondary' : 'btn-success'} btn-small" 
+                                    onclick="toggleFeatureStatus(${feature.id}); event.stopPropagation();">
+                                ${feature.is_active ? '🔒 Deactivate' : '✅ Activate'}
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="deleteFeature(${feature.id}); event.stopPropagation();">
+                                🗑️ Delete
+                            </button>
+                        </div>
+                    </div>
+                    <p style="color: #666; font-size: 14px; margin: 10px 0;">${feature.system_description}</p>
+                    
+                    <div style="margin-top: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <strong style="color: #667eea;">Modules (${feature.modules.length})</strong>
+                            <button class="btn btn-primary btn-small" onclick="openAddModuleModal(${feature.id}); event.stopPropagation();">
+                                ➕ Add Module
+                            </button>
+                        </div>
+                        <div class="module-list">
+                            ${feature.modules.map(module => `
+                                <div class="module-item ${module.is_active ? '' : 'inactive'}">
+                                    <div>
+                                        <strong>${module.module_name}</strong><br>
+                                        <span style="font-size: 12px; color: #666;">${module.module_description}</span>
+                                    </div>
+                                    <div class="module-actions">
+                                        <button class="btn btn-warning btn-small" 
+                                                onclick="openEditModuleModal(${module.id}, ${feature.id}); event.stopPropagation();">
+                                            ✏️
+                                        </button>
+                                        <button class="btn ${module.is_active ? 'btn-secondary' : 'btn-success'} btn-small" 
+                                                onclick="toggleModuleStatus(${module.id}, ${feature.id}); event.stopPropagation();">
+                                            ${module.is_active ? '🔒' : '✅'}
+                                        </button>
+                                        <button class="btn btn-danger btn-small" 
+                                                onclick="deleteModule(${module.id}, ${feature.id}); event.stopPropagation();">
+                                            🗑️
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load assign users tab
+        function loadAssignUsers() {
+            renderAssignUsers(allUsers);
+        }
+
+        // Render assign users
+        function renderAssignUsers(users) {
+            const grid = document.getElementById('assignGrid');
+            
+            if (users.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><p>No users found</p></div>';
+                return;
+            }
+
+            grid.innerHTML = users.map(user => `
+                <div class="user-card">
+                    <h3>${user.name}</h3>
+                    <div>
+                        <span class="user-type ${user.user_type}">${user.user_type}</span>
+                        <span class="user-status ${user.status}">${user.status}</span>
+                    </div>
+                    <p style="margin-top: 10px; color: #999; font-size: 13px;">
+                        📧 ${user.email}
+                    </p>
+                    <div class="feature-count">
+                        <strong>${user.total_features}</strong> features assigned
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 10px; width: 100%;" 
+                            onclick="openFeatureModal(${user.id}, '${user.name.replace(/'/g, "\\'")}'); event.stopPropagation();">
+                        🎯 Manage Features
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Filter assign users
+        function filterAssignUsers() {
+            const searchTerm = document.getElementById('assignSearch').value.toLowerCase();
+            const filtered = allUsers.filter(user => 
+                user.name.toLowerCase().includes(searchTerm) ||
+                user.email.toLowerCase().includes(searchTerm) ||
+                user.user_type.toLowerCase().includes(searchTerm)
+            );
+            renderAssignUsers(filtered);
+        }
+
+        // Open feature modal for user
+        async function openFeatureModal(userId, userName) {
+            currentUserId = userId;
+            document.getElementById('modalTitle').textContent = `Manage Features - ${userName}`;
+            document.getElementById('featureModal').classList.add('active');
+            document.getElementById('modalBody').innerHTML = '<div class="loading">Loading features</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/system-features/users/${userId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    userFeatures = data.data.assigned_features || {};
+                    renderFeatureSelection(data.data.available_features, userFeatures);
+                } else {
+                    showError('Failed to load user features');
+                }
+            } catch (error) {
+                console.error('Error loading user features:', error);
+                document.getElementById('modalBody').innerHTML = '<div class="empty-state">Failed to load features</div>';
+            }
+        }
+
+        // Render feature selection
+        function renderFeatureSelection(availableFeatures, assignedFeatures) {
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = availableFeatures.map(feature => {
+                const isAssigned = assignedFeatures.hasOwnProperty(feature.system_key);
+                const assignedModules = isAssigned ? assignedFeatures[feature.system_key].selected_modules || [] : [];
+                
+                return `
+                    <div class="feature-system">
+                        <div class="feature-system-header">
+                            <div>
+                                <strong>${feature.system_name}</strong>
+                                <p style="font-size: 13px; opacity: 0.9; margin-top: 3px;">${feature.system_description}</p>
+                            </div>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <span class="select-all" onclick="toggleAllModules('${feature.system_key}')">
+                                    ${isAssigned ? 'Deselect All' : 'Select All'}
+                                </span>
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="checkbox" 
+                                           id="feature-${feature.system_key}" 
+                                           ${isAssigned ? 'checked' : ''}
+                                           onchange="toggleFeature('${feature.system_key}')"
+                                           style="width: 20px; height: 20px; margin-left: 10px;">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="feature-system-body" id="modules-${feature.system_key}" style="${isAssigned ? '' : 'display: none;'}">
+                            ${feature.modules.map(module => {
+                                const isModuleSelected = assignedModules.some(m => m.key === module.module_key);
+                                return `
+                                    <div class="module-checkbox" 
+                                         draggable="true"
+                                         ondragstart="handleCheckboxDragStart(event)"
+                                         ondragend="handleCheckboxDragEnd(event)"
+                                         ondrop="handleCheckboxDrop(event)"
+                                         ondragover="handleCheckboxDragOver(event)"
+                                         ondragleave="handleCheckboxDragLeave(event)">
+                                        <input type="checkbox" 
+                                               id="module-${feature.system_key}-${module.module_key}"
+                                               data-system="${feature.system_key}"
+                                               data-module="${module.module_key}"
+                                               ${isModuleSelected ? 'checked' : ''}
+                                               onchange="toggleModule('${feature.system_key}', '${module.module_key}')">
+                                        <label for="module-${feature.system_key}-${module.module_key}">
+                                            <strong>${module.module_name}</strong><br>
+                                            <span style="font-size: 12px; color: #666;">${module.module_description}</span>
+                                        </label>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Drag and drop for checkboxes
+        function handleCheckboxDragStart(event) {
+            draggedElement = event.currentTarget;
+            draggedElement.classList.add('dragging');
+            event.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleCheckboxDragEnd(event) {
+            draggedElement.classList.remove('dragging');
+            document.querySelectorAll('.module-checkbox').forEach(el => el.classList.remove('drag-over'));
+        }
+
+        function handleCheckboxDragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+            event.currentTarget.classList.add('drag-over');
+        }
+
+        function handleCheckboxDragLeave(event) {
+            event.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleCheckboxDrop(event) {
+            event.preventDefault();
+            event.currentTarget.classList.remove('drag-over');
+            
+            if (draggedElement && draggedElement !== event.currentTarget) {
+                const parent = event.currentTarget.parentNode;
+                const allCheckboxes = Array.from(parent.querySelectorAll('.module-checkbox'));
+                const draggedIndex = allCheckboxes.indexOf(draggedElement);
+                const targetIndex = allCheckboxes.indexOf(event.currentTarget);
+                
+                if (draggedIndex < targetIndex) {
+                    event.currentTarget.parentNode.insertBefore(draggedElement, event.currentTarget.nextSibling);
+                } else {
+                    event.currentTarget.parentNode.insertBefore(draggedElement, event.currentTarget);
+                }
+            }
+        }
+
+        // Toggle feature
+        function toggleFeature(systemKey) {
+            const checkbox = document.getElementById(`feature-${systemKey}`);
+            const modulesDiv = document.getElementById(`modules-${systemKey}`);
+            
+            if (checkbox.checked) {
+                modulesDiv.style.display = 'block';
+            } else {
+                modulesDiv.style.display = 'none';
+                const moduleCheckboxes = modulesDiv.querySelectorAll('input[type="checkbox"]');
+                moduleCheckboxes.forEach(cb => cb.checked = false);
+            }
+        }
+
+        // Toggle all modules
+        function toggleAllModules(systemKey) {
+            const featureCheckbox = document.getElementById(`feature-${systemKey}`);
+            const modulesDiv = document.getElementById(`modules-${systemKey}`);
+            const moduleCheckboxes = modulesDiv.querySelectorAll('input[type="checkbox"]');
+            
+            const allChecked = Array.from(moduleCheckboxes).every(cb => cb.checked);
+            
+            if (allChecked) {
+                moduleCheckboxes.forEach(cb => cb.checked = false);
+                featureCheckbox.checked = false;
+                modulesDiv.style.display = 'none';
+            } else {
+                moduleCheckboxes.forEach(cb => cb.checked = true);
+                featureCheckbox.checked = true;
+                modulesDiv.style.display = 'block';
+            }
+        }
+
+        // Toggle module
+        function toggleModule(systemKey, moduleKey) {
+            // Just track the checkbox state, no additional logic needed
+        }
+
+        // Save features
+        async function saveFeatures() {
+            if (!currentUserId) return;
+
+            const selectedFeatures = {};
+            
+            allFeatures.forEach(feature => {
+                const featureCheckbox = document.getElementById(`feature-${feature.system_key}`);
+                
+                if (featureCheckbox && featureCheckbox.checked) {
+                    const selectedModules = [];
+                    const modulesContainer = document.getElementById(`modules-${feature.system_key}`);
+                    
+                    // Get modules in their current order (after dragging)
+                    const moduleCheckboxes = modulesContainer.querySelectorAll('.module-checkbox input[type="checkbox"]');
+                    moduleCheckboxes.forEach(moduleCheckbox => {
+                        if (moduleCheckbox.checked) {
+                            const moduleKey = moduleCheckbox.getAttribute('data-module');
+                            const module = feature.modules.find(m => m.module_key === moduleKey);
+                            if (module) {
+                                selectedModules.push({
+                                    key: module.module_key,
+                                    name: module.module_name,
+                                    description: module.module_description
+                                });
+                            }
+                        }
+                    });
+
+                    if (selectedModules.length > 0) {
+                        selectedFeatures[feature.system_key] = {
+                            system_name: feature.system_name,
+                            system_description: feature.system_description,
+                            system_icon: feature.system_icon,
+                            selected_modules: selectedModules
+                        };
+                    }
+                }
+            });
+
+            try {
+                const response = await fetch(`${API_URL}/system-features/users/${currentUserId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        assigned_features: selectedFeatures
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ Features updated successfully!');
+                    closeModal('featureModal');
+                    loadUsers();
+                    loadStatistics();
+                } else {
+                    alert('❌ Failed to update features: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error saving features:', error);
+                alert('❌ Error saving features. Please try again.');
+            }
+        }
+
+        // Open Add Feature Modal
+        function openAddFeatureModal() {
+            currentEditFeatureId = null;
+            document.getElementById('addFeatureModalTitle').textContent = 'Add New Feature';
+            document.getElementById('featureForm').reset();
+            document.getElementById('systemKey').disabled = false;
+            document.getElementById('addFeatureModal').classList.add('active');
+        }
+
+        // Open Edit Feature Modal
+        async function openEditFeatureModal(featureId) {
+            currentEditFeatureId = featureId;
+            document.getElementById('addFeatureModalTitle').textContent = 'Edit Feature';
+            
+            const feature = allFeatures.find(f => f.id === featureId);
+            if (feature) {
+                document.getElementById('systemKey').value = feature.system_key;
+                document.getElementById('systemKey').disabled = true;
+                document.getElementById('systemName').value = feature.system_name;
+                document.getElementById('systemDescription').value = feature.system_description;
+                document.getElementById('systemIcon').value = feature.system_icon || '';
+                document.getElementById('systemCategory').value = feature.system_category;
+                document.getElementById('displayOrder').value = feature.display_order;
+            }
+            
+            document.getElementById('addFeatureModal').classList.add('active');
+        }
+
+        // Handle Feature Submit
+        async function handleFeatureSubmit(e) {
+            e.preventDefault();
+            
+            const formData = {
+                system_key: document.getElementById('systemKey').value,
+                system_name: document.getElementById('systemName').value,
+                system_description: document.getElementById('systemDescription').value,
+                system_icon: document.getElementById('systemIcon').value,
+                system_category: document.getElementById('systemCategory').value,
+                is_active: 1,
+                display_order: parseInt(document.getElementById('displayOrder').value)
+            };
+
+            try {
+                let url = `${API_URL}/system-features`;
+                let method = 'POST';
+
+                if (currentEditFeatureId) {
+                    url = `${API_URL}/system-features/${currentEditFeatureId}`;
+                    method = 'PUT';
+                    delete formData.system_key;
+                }
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(currentEditFeatureId ? '✅ Feature updated successfully!' : '✅ Feature created successfully!');
+                    closeModal('addFeatureModal');
+                    loadAllFeatures();
+                    loadStatistics();
+                } else {
+                    alert('❌ Failed to save feature: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error saving feature:', error);
+                alert('❌ Error saving feature. Please try again.');
+            }
+        }
+
+        // Toggle Feature Status
+        async function toggleFeatureStatus(featureId) {
+            if (!confirm('Are you sure you want to change the status of this feature?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/system-features/${featureId}/toggle-status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ Feature status updated successfully!');
+                    loadAllFeatures();
+                    loadStatistics();
+                } else {
+                    alert('❌ Failed to update feature status: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error toggling feature status:', error);
+                alert('❌ Error updating feature status. Please try again.');
+            }
+        }
+
+        // Delete Feature
+        async function deleteFeature(featureId) {
+            if (!confirm('Are you sure you want to DELETE this feature? This action cannot be undone and will remove all associated modules!')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/system-features/${featureId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ Feature deleted successfully!');
+                    loadAllFeatures();
+                    loadStatistics();
+                } else {
+                    alert('❌ Failed to delete feature: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error deleting feature:', error);
+                alert('❌ Error deleting feature. Please try again.');
+            }
+        }
+
+        // Open Add Module Modal
+        function openAddModuleModal(systemFeatureId) {
+            currentEditModuleId = null;
+            document.getElementById('addModuleModalTitle').textContent = 'Add New Module';
+            document.getElementById('moduleForm').reset();
+            document.getElementById('moduleSystemFeatureId').value = systemFeatureId;
+            document.getElementById('moduleKey').disabled = false;
+            document.getElementById('addModuleModal').classList.add('active');
+        }
+
+        // Open Edit Module Modal
+        async function openEditModuleModal(moduleId, systemFeatureId) {
+            currentEditModuleId = moduleId;
+            document.getElementById('addModuleModalTitle').textContent = 'Edit Module';
+            document.getElementById('moduleSystemFeatureId').value = systemFeatureId;
+            
+            const feature = allFeatures.find(f => f.id === systemFeatureId);
+            if (feature) {
+                const module = feature.modules.find(m => m.id === moduleId);
+                if (module) {
+                    document.getElementById('moduleKey').value = module.module_key;
+                    document.getElementById('moduleKey').disabled = true;
+                    document.getElementById('moduleName').value = module.module_name;
+                    document.getElementById('moduleDescription').value = module.module_description;
+                    document.getElementById('moduleDisplayOrder').value = module.display_order;
+                }
+            }
+            
+            document.getElementById('addModuleModal').classList.add('active');
+        }
+
+        // Handle Module Submit
+        async function handleModuleSubmit(e) {
+            e.preventDefault();
+            
+            const formData = {
+                system_feature_id: parseInt(document.getElementById('moduleSystemFeatureId').value),
+                module_key: document.getElementById('moduleKey').value,
+                module_name: document.getElementById('moduleName').value,
+                module_description: document.getElementById('moduleDescription').value,
+                is_active: 1,
+                display_order: parseInt(document.getElementById('moduleDisplayOrder').value)
+            };
+
+            try {
+                let url = `${API_URL}/system-features/modules`;
+                let method = 'POST';
+
+                if (currentEditModuleId) {
+                    url = `${API_URL}/system-features/modules/${currentEditModuleId}`;
+                    method = 'PUT';
+                    delete formData.system_feature_id;
+                    delete formData.module_key;
+                }
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(currentEditModuleId ? '✅ Module updated successfully!' : '✅ Module created successfully!');
+                    closeModal('addModuleModal');
+                    loadAllFeatures();
+                    loadStatistics();
+                } else {
+                    alert('❌ Failed to save module: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error saving module:', error);
+                alert('❌ Error saving module. Please try again.');
+            }
+        }
+
+        // Toggle Module Status
+        async function toggleModuleStatus(moduleId, systemFeatureId) {
+            if (!confirm('Are you sure you want to change the status of this module?')) return;
+
+            const feature = allFeatures.find(f => f.id === systemFeatureId);
+            if (feature) {
+                const module = feature.modules.find(m => m.id === moduleId);
+                if (module) {
+                    try {
+                        const response = await fetch(`${API_URL}/system-features/modules/${moduleId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                module_name: module.module_name,
+                                module_description: module.module_description,
+                                is_active: module.is_active ? 0 : 1,
+                                display_order: module.display_order
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            alert('✅ Module status updated successfully!');
+                            loadAllFeatures();
+                            loadStatistics();
+                        } else {
+                            alert('❌ Failed to update module status: ' + (data.message || 'Unknown error'));
+                        }
+                    } catch (error) {
+                        console.error('Error toggling module status:', error);
+                        alert('❌ Error updating module status. Please try again.');
+                    }
+                }
+            }
+        }
+
+        // Delete Module
+        async function deleteModule(moduleId, systemFeatureId) {
+            if (!confirm('Are you sure you want to DELETE this module? This action cannot be undone!')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/system-features/modules/${moduleId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ Module deleted successfully!');
+                    loadAllFeatures();
+                    loadStatistics();
+                } else {
+                    alert('❌ Failed to delete module: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error deleting module:', error);
+                alert('❌ Error deleting module. Please try again.');
+            }
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            if (modalId === 'featureModal') {
+                currentUserId = null;
+                userFeatures = {};
+            }
+            if (modalId === 'addFeatureModal') {
+                currentEditFeatureId = null;
+            }
+            if (modalId === 'addModuleModal') {
+                currentEditModuleId = null;
+            }
+        }
+
+        // Show error
+        function showError(message) {
+            alert('❌ ' + message);
+        }
+
+        // Close modals when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this.id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

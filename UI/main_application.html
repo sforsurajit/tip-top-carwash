@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institution Management - RONE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Login Styles */
+        .login-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* Dashboard Layout */
+        .dashboard-layout {
+            display: grid;
+            grid-template-areas: 
+                "header header"
+                "sidebar main";
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: 70px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .dashboard-header {
+            grid-area: header;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .institution-info {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            grid-area: sidebar;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            z-index: 999;
+        }
+
+        .sidebar-content {
+            padding: 20px;
+        }
+
+        .user-profile {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .user-profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 10px;
+        }
+
+        .user-profile-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .user-profile-role {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #666;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: #f0f4ff;
+            color: #667eea;
+        }
+
+        .sidebar-nav .icon {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            grid-area: main;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f3f4;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .table td {
+            padding: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Forms */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
+        /* Feature Selection */
+        .features-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .feature-system {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+            overflow: hidden;
+        }
+
+        .feature-header {
+            padding: 15px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .feature-header:hover {
+            background: #e9ecef;
+        }
+
+        .feature-header.selected {
+            background: #e7f3ff;
+            border-color: #667eea;
+        }
+
+        .feature-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .feature-modules {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .feature-modules.expanded {
+            max-height: 300px;
+        }
+
+        .module-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #f1f3f4;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .module-item:last-child {
+            border-bottom: none;
+        }
+
+        .module-item:hover {
+            background: #f8f9fa;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f3f4;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #f8f9fa;
+        }
+
+        /* Module Grid */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .module-card {
+            border: 1px solid #e9ecef;
+            transition: transform 0.2s ease;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .module-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .module-card h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .module-card p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-layout {
+                grid-template-areas: 
+                    "header"
+                    "main";
+                grid-template-columns: 1fr;
+                grid-template-rows: 70px 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Container -->
+    <div id="loginContainer" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>RONE</h2>
+                <p>Institution Management System</p>
+            </div>
+            
+            <div id="loginMessage"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Enter your password">
+                </div>
+                
+                <button type="submit" class="btn btn-full" id="loginBtn">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div id="dashboardContainer" class="dashboard-layout hidden">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="logo">RONE</div>
+                <div class="institution-info">
+                    <div id="institutionName">Loading...</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="user-avatar" id="headerAvatar">U</div>
+                <span id="headerUserName">User</span>
+                <button class="btn btn-secondary btn-small" id="logoutBtn">Logout</button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <div class="user-profile">
+                    <div class="user-profile-avatar" id="profileAvatar">U</div>
+                    <div class="user-profile-name" id="profileName">User Name</div>
+                    <div class="user-profile-role" id="profileRole">Role</div>
+                </div>
+                
+                <nav>
+                    <ul class="sidebar-nav" id="sidebarNav">
+                        <li>
+                            <a href="#" data-section="overview" class="nav-link active">
+                                <span class="icon">📊</span>
+                                Dashboard Overview
+                            </a>
+                        </li>
+                        <!-- Dynamic navigation will be added here -->
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Overview Section -->
+            <div id="overviewSection" class="content-section active">
+                <h1 class="page-title">Dashboard Overview</h1>
+                
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Stats will be populated dynamically -->
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Institution Information</h3>
+                    </div>
+                    <div id="institutionDetails">
+                        <!-- Institution details will be populated -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Management Section (Superadmin only) -->
+            <div id="userManagementSection" class="content-section">
+                <h1 class="page-title">User Management</h1>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Institution Users</h3>
+                        <button class="btn" id="addUserBtn">Add New User</button>
+                    </div>
+                    <div class="table-container">
+                        <table class="table" id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Features</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Users will be populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Management Section (Superadmin only) -->
+            <div id="featureManagementSection" class="content-section">
+                <h1 class="page-title">Feature Management</h1>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Available Features</h3>
+                    </div>
+                    <div id="availableFeatures">
+                        <!-- Available features will be populated -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Feature Sections -->
+            <div id="dynamicSections">
+                <!-- Feature-specific sections will be added here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New User</h3>
+                <button class="close-btn" id="closeAddUserModal">&times;</button>
+            </div>
+            
+            <div id="addUserMessage"></div>
+            
+            <form id="addUserForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userName">Full Name</label>
+                        <input type="text" id="userName" required placeholder="Enter full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Email Address</label>
+                        <input type="email" id="userEmail" required placeholder="Enter email address">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userPassword">Password</label>
+                        <input type="password" id="userPassword" required placeholder="Enter password" minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="userPhone">Phone Number</label>
+                        <input type="tel" id="userPhone" placeholder="Enter phone number">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userType">User Type</label>
+                        <select id="userType" required>
+                            <option value="">Select User Type</option>
+                            <option value="admin">Administrator</option>
+                            <option value="staff">Staff Member</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="accountant">Accountant</option>
+                            <option value="librarian">Librarian</option>
+                            <option value="driver">Driver</option>
+                            <option value="security">Security</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="userRole">Role/Position</label>
+                        <input type="text" id="userRole" required placeholder="e.g., Mathematics Teacher">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userDepartment">Department (Optional)</label>
+                    <input type="text" id="userDepartment" placeholder="e.g., Mathematics Department">
+                </div>
+                
+                <div class="form-group">
+                    <label>Assign Features</label>
+                    <div id="userFeatureSelection" class="features-container">
+                        <!-- Feature selection will be populated -->
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelAddUser">Cancel</button>
+                    <button type="submit" class="btn">Create User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE_URL = 'https://rootsofnortheast.com/main_erp/api_v1';
+        
+        // Global variables
+        let currentUser = null;
+        let institutionUsers = [];
+        let availableFeatures = {};
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+        });
+
+        function initializeApp() {
+            const token = localStorage.getItem('jwt_token');
+            const userData = localStorage.getItem('user_data');
+            
+            if (token && userData) {
+                try {
+                    currentUser = JSON.parse(userData);
+                    showDashboard();
+                } catch (error) {
+                    console.error('Error parsing user data:', error);
+                    showLogin();
+                }
+            } else {
+                showLogin();
+            }
+        }
+
+        function setupEventListeners() {
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            
+            // Navigation
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('nav-link')) {
+                    e.preventDefault();
+                    const section = e.target.getAttribute('data-section');
+                    switchSection(section);
+                }
+            });
+            
+            // User management
+            document.getElementById('addUserBtn').addEventListener('click', openAddUserModal);
+            document.getElementById('closeAddUserModal').addEventListener('click', closeAddUserModal);
+            document.getElementById('cancelAddUser').addEventListener('click', closeAddUserModal);
+            document.getElementById('addUserForm').addEventListener('submit', handleAddUser);
+            
+            // Modal backdrop close
+            document.getElementById('addUserModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAddUserModal();
+                }
+            });
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span class="loading"></span> Signing in...';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('jwt_token', data.data.token);
+                    localStorage.setItem('user_data', JSON.stringify(data.data.user));
+                    currentUser = data.data.user;
+                    
+                    showMessage('loginMessage', '✅ Login successful! Loading dashboard...', 'success');
+                    setTimeout(showDashboard, 1000);
+                } else {
+                    showMessage('loginMessage', '❌ ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showMessage('loginMessage', '❌ Network error. Please try again.', 'error');
+            }
+            
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Sign In';
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('jwt_token');
+            localStorage.removeItem('user_data');
+            currentUser = null;
+            showLogin();
+        }
+
+        function showLogin() {
+            document.getElementById('loginContainer').classList.remove('hidden');
+            document.getElementById('dashboardContainer').classList.add('hidden');
+            clearMessages();
+        }
+
+        async function showDashboard() {
+            document.getElementById('loginContainer').classList.add('hidden');
+            document.getElementById('dashboardContainer').classList.remove('hidden');
+            
+            updateUserDisplay();
+            await loadUserData();
+            setupDashboardNavigation();
+            loadDashboardStats();
+        }
+
+        function updateUserDisplay() {
+            const initials = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase();
+            
+            // Header
+            document.getElementById('headerAvatar').textContent = initials;
+            document.getElementById('headerUserName').textContent = currentUser.name;
+            document.getElementById('institutionName').textContent = currentUser.institution_name || 'System Administration';
+            
+            // Sidebar
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileRole').textContent = currentUser.role || currentUser.user_type;
+        }
+
+        async function loadUserData() {
+            try {
+                const token = localStorage.getItem('jwt_token');
+                
+                // Load user's assigned features
+                const featuresResponse = await fetch(`${API_BASE_URL}/users/my-features`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (featuresResponse.ok) {
+                    const featuresData = await featuresResponse.json();
+                    availableFeatures = featuresData.data.features || {};
+                }
+                
+                // Load institution users if superadmin
+                if (currentUser.user_type === 'superadmin') {
+                    const usersResponse = await fetch(`${API_BASE_URL}/users/institution`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    
+                    if (usersResponse.ok) {
+                        const usersData = await usersResponse.json();
+                        institutionUsers = usersData.data.users || [];
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        function setupDashboardNavigation() {
+            const nav = document.getElementById('sidebarNav');
+            
+            // Clear existing nav (except overview)
+            const existingItems = nav.querySelectorAll('li:not(:first-child)');
+            existingItems.forEach(item => item.remove());
+            
+            // Add superadmin-only sections
+            if (currentUser.user_type === 'superadmin') {
+                nav.innerHTML += `
+                    <li>
+                        <a href="#" data-section="userManagement" class="nav-link">
+                            <span class="icon">👥</span>
+                            User Management
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="featureManagement" class="nav-link">
+                            <span class="icon">⚙️</span>
+                            Feature Management
+                        </a>
+                    </li>
+                `;
+            }
+            
+            // Add feature-based sections
+            Object.keys(availableFeatures).forEach(systemKey => {
+                const feature = availableFeatures[systemKey];
+                const icon = getFeatureIcon(systemKey);
+                
+                nav.innerHTML += `
+                    <li>
+                        <a href="#" data-section="${systemKey}" class="nav-link">
+                            <span class="icon">${icon}</span>
+                            ${feature.system_name}
+                        </a>
+                    </li>
+                `;
+                
+                // Create section content
+                createFeatureSection(systemKey, feature);
+            });
+        }
+
+        function getFeatureIcon(systemKey) {
+            const icons = {
+                'student_management': '👨‍🎓',
+                'bus_management': '🚌',
+                'library_management': '📚',
+                'staff_management': '👨‍💼',
+                'fee_management': '💰',
+                'exam_management': '📝',
+                'hostel_management': '🏠',
+                'inventory_management': '📦',
+                'communication_system': '📢',
+                'event_management': '📅',
+                'alumni_management': '🎓',
+                'sports_management': '⚽'
+            };
+            return icons[systemKey] || '⚙️';
+        }
+
+        function createFeatureSection(systemKey, feature) {
+            const dynamicSections = document.getElementById('dynamicSections');
+            
+            const sectionHtml = `
+                <div id="${systemKey}Section" class="content-section">
+                    <h1 class="page-title">${feature.system_name}</h1>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Available Modules</h3>
+                        </div>
+                        <div class="module-grid">
+                            ${feature.selected_modules.map(module => `
+                                <div class="card module-card">
+                                    <h4>${module.name}</h4>
+                                    <p>${module.description}</p>
+                                    <button class="btn btn-small">Access Module</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            dynamicSections.innerHTML += sectionHtml;
+        }
+
+        function switchSection(sectionName) {
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
+            
+            // Update content
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionName + 'Section').classList.add('active');
+            
+            // Load section-specific data
+            if (sectionName === 'userManagement') {
+                loadUsersTable();
+            } else if (sectionName === 'featureManagement') {
+                loadFeatureManagement();
+            }
+        }
+
+        function loadDashboardStats() {
+            const statsGrid = document.getElementById('statsGrid');
+            
+            const stats = [
+                { number: Object.keys(availableFeatures).length, label: 'Available Features' },
+                { number: institutionUsers.length, label: 'Total Users' },
+                { number: institutionUsers.filter(u => u.status === 'active').length, label: 'Active Users' },
+                { number: '1', label: 'Institution' }
+            ];
+            
+            statsGrid.innerHTML = stats.map(stat => `
+                <div class="stat-card">
+                    <div class="stat-number">${stat.number}</div>
+                    <div class="stat-label">${stat.label}</div>
+                </div>
+            `).join('');
+            
+            // Load institution details
+            const institutionDetails = document.getElementById('institutionDetails');
+            institutionDetails.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div>
+                        <strong>Institution:</strong><br>
+                        ${currentUser.institution_name || 'System Administration'}
+                    </div>
+                    <div>
+                        <strong>Type:</strong><br>
+                        ${currentUser.institution_type || 'System'}
+                    </div>
+                    <div>
+                        <strong>Your Role:</strong><br>
+                        ${currentUser.role}
+                    </div>
+                    <div>
+                        <strong>User Type:</strong><br>
+                        ${currentUser.user_type}
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadUsersTable() {
+            const tbody = document.querySelector('#usersTable tbody');
+            
+            tbody.innerHTML = institutionUsers.map(user => `
+                <tr>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td>${user.user_type}</td>
+                    <td><span class="status-badge status-${user.status}">${user.status}</span></td>
+                    <td>
+                        <button class="btn btn-small" onclick="viewUserFeatures(${user.id})">
+                            ${user.assigned_features ? Object.keys(user.assigned_features).length : 0} Features
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-small btn-secondary" onclick="editUser(${user.id})">Edit</button>
+                        ${user.id !== currentUser.id ? `<button class="btn btn-small btn-danger" onclick="deleteUser(${user.id})">Delete</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function loadFeatureManagement() {
+            const featuresContainer = document.getElementById('availableFeatures');
+            
+            featuresContainer.innerHTML = Object.keys(availableFeatures).map(systemKey => {
+                const feature = availableFeatures[systemKey];
+                return `
+                    <div class="feature-system">
+                        <div class="feature-header">
+                            <div>
+                                <h4>${feature.system_name}</h4>
+                                <p>${feature.system_description}</p>
+                            </div>
+                            <div>${feature.selected_modules.length} modules</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openAddUserModal() {
+            document.getElementById('addUserModal').classList.add('show');
+            populateFeatureSelection();
+        }
+
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').classList.remove('show');
+            document.getElementById('addUserForm').reset();
+            clearMessages('addUserMessage');
+        }
+
+        function populateFeatureSelection() {
+            const container = document.getElementById('userFeatureSelection');
+            
+            container.innerHTML = Object.keys(availableFeatures).map(systemKey => {
+                const feature = availableFeatures[systemKey];
+                return `
+                    <div class="feature-system">
+                        <div class="feature-header" onclick="toggleFeatureSelection('${systemKey}')">
+                            <div>
+                                <input type="checkbox" id="system_${systemKey}" onchange="toggleSystemFeatures('${systemKey}')">
+                                <span class="feature-name">${feature.system_name}</span>
+                            </div>
+                            <span>▼</span>
+                        </div>
+                        <div class="feature-modules" id="modules_${systemKey}">
+                            ${feature.selected_modules.map(module => `
+                                <div class="module-item">
+                                    <input type="checkbox" name="features[${systemKey}][]" value="${module.key}" id="module_${systemKey}_${module.key}">
+                                    <label for="module_${systemKey}_${module.key}">
+                                        <strong>${module.name}</strong><br>
+                                        <small>${module.description}</small>
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleFeatureSelection(systemKey) {
+            const modules = document.getElementById(`modules_${systemKey}`);
+            modules.classList.toggle('expanded');
+        }
+
+        function toggleSystemFeatures(systemKey) {
+            const systemCheckbox = document.getElementById(`system_${systemKey}`);
+            const moduleCheckboxes = document.querySelectorAll(`input[name="features[${systemKey}][]"]`);
+            
+            moduleCheckboxes.forEach(checkbox => {
+                checkbox.checked = systemCheckbox.checked;
+            });
+        }
+
+        async function handleAddUser(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const selectedFeatures = {};
+            
+            // Collect selected features
+            Object.keys(availableFeatures).forEach(systemKey => {
+                const selectedModules = [];
+                const moduleCheckboxes = document.querySelectorAll(`input[name="features[${systemKey}][]"]:checked`);
+                
+                moduleCheckboxes.forEach(checkbox => {
+                    const moduleKey = checkbox.value;
+                    const module = availableFeatures[systemKey].selected_modules.find(m => m.key === moduleKey);
+                    if (module) {
+                        selectedModules.push(module);
+                    }
+                });
+                
+                if (selectedModules.length > 0) {
+                    selectedFeatures[systemKey] = {
+                        system_name: availableFeatures[systemKey].system_name,
+                        system_description: availableFeatures[systemKey].system_description,
+                        system_icon: availableFeatures[systemKey].system_icon,
+                        selected_modules: selectedModules
+                    };
+                }
+            });
+            
+            const userData = {
+                name: formData.get('userName'),
+                email: formData.get('userEmail'),
+                password: formData.get('userPassword'),
+                phone: formData.get('userPhone'),
+                user_type: formData.get('userType'),
+                role: formData.get('userRole'),
+                department: formData.get('userDepartment'),
+                assigned_features: selectedFeatures
+            };
+            
+            try {
+                const token = localStorage.getItem('jwt_token');
+                const response = await fetch(`${API_BASE_URL}/users/institution`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('addUserMessage', '✅ User created successfully!', 'success');
+                    setTimeout(() => {
+                        closeAddUserModal();
+                        loadUserData().then(() => loadUsersTable());
+                    }, 2000);
+                } else {
+                    showMessage('addUserMessage', '❌ ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Add user error:', error);
+                showMessage('addUserMessage', '❌ Network error. Please try again.', 'error');
+            }
+        }
+
+        function showMessage(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div class="alert ${type}">${message}</div>`;
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 5000);
+            }
+        }
+
+        function clearMessages(containerId = null) {
+            const containers = containerId ? [containerId] : ['loginMessage', 'addUserMessage'];
+            containers.forEach(id => {
+                const container = document.getElementById(id);
+                if (container) container.innerHTML = '';
+            });
+        }
+
+        // Additional functions for user management
+        function viewUserFeatures(userId) {
+            alert('View features for user ID: ' + userId);
+        }
+
+        function editUser(userId) {
+            alert('Edit user ID: ' + userId);
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                alert('Delete user ID: ' + userId);
+            }
+        }
+
+        console.log('Dashboard loaded successfully');
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+[2025-12-31 03:54:25] Class: Booking, Method: allocateToWasher, Line: 214, Message: Allocating booking 1 to washer 
+[2025-12-31 03:54:25] Class: Booking, Method: allocateToWasher, Line: 233, Message: SUCCESS: Booking 1 allocated to washer 
+[2025-12-31 04:00:02] Class: Booking, Method: allocateToWasher, Line: 214, Message: Allocating booking 1 to washer 
+[2025-12-31 04:00:02] Class: Booking, Method: allocateToWasher, Line: 233, Message: SUCCESS: Booking 1 allocated to washer 
+[2025-12-31 04:09:04] Class: Booking, Method: allocateToWasher, Line: 214, Message: Allocating booking 1 to washer 45
+[2025-12-31 04:09:04] Class: Booking, Method: allocateToWasher, Line: 233, Message: SUCCESS: Booking 1 allocated to washer 45
+[2025-12-31 04:50:41] Class: Booking, Method: allocateToWasher, Line: 211, Message: Allocating booking 1 to washer 3
+[2025-12-31 05:36:27] Class: Booking, Method: allocateToWasher, Line: 211, Message: Allocating booking 1 to washer 3
+[2025-12-31 05:54:21] Class: Booking, Method: allocateToWasher, Line: 211, Message: Allocating booking 1 to washer 3

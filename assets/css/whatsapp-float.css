@@ -1,0 +1,63 @@
+/* Floating WhatsApp Button */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #25D366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+    z-index: 997;
+    /* Below mobile menu (999) and overlay (998) */
+    transition: all 0.3s ease;
+    text-decoration: none;
+    animation: pulse 2s infinite;
+}
+
+.whatsapp-float svg {
+    width: 32px;
+    height: 32px;
+    fill: white;
+}
+
+.whatsapp-float:hover {
+    background: #20BA5A;
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+    animation: none;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4),
+            0 0 0 10px rgba(37, 211, 102, 0.2),
+            0 0 0 20px rgba(37, 211, 102, 0.1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .whatsapp-float svg {
+        width: 26px;
+        height: 26px;
+    }
+}

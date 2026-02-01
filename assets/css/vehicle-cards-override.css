@@ -1,0 +1,309 @@
+/* ========================================
+   PREMIUM VEHICLE CARDS - COMPACT & SUBTLE
+   ======================================== */
+
+/* Container grid */
+.quick-buttons-grid {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 16px !important;
+    position: relative;
+    z-index: 1;
+}
+
+/* Base card styling - Compact */
+.vehicle-card {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 16px !important;
+    padding: 16px !important;
+    cursor: pointer;
+    transition: all 0.25s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    position: relative;
+    overflow: hidden !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Subtle top accent line */
+.vehicle-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 40px !important;
+    height: 3px !important;
+    background: #e5e7eb !important;
+    border-radius: 0 0 4px 4px !important;
+    transition: all 0.25s ease !important;
+}
+
+.vehicle-card::after {
+    display: none !important;
+}
+
+/* Subtle hover state */
+.vehicle-card:hover {
+    border-color: #fb923c !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 16px rgba(251, 146, 60, 0.12) !important;
+}
+
+.vehicle-card:hover::before {
+    width: 60px !important;
+    background: linear-gradient(90deg, #fb923c, #f97316) !important;
+}
+
+/* Selected state */
+.vehicle-card.selected {
+    background: #fffbf7 !important;
+    border-color: #fb923c !important;
+}
+
+.vehicle-card.selected::before {
+    width: 60px !important;
+    background: linear-gradient(90deg, #fb923c, #f97316) !important;
+}
+
+/* Popular card */
+.vehicle-card.popular {
+    background: #fffbf7 !important;
+    border: 1.5px solid #fb923c !important;
+}
+
+.vehicle-card.popular::before {
+    width: 50px !important;
+    background: linear-gradient(90deg, #fb923c, #f97316) !important;
+}
+
+/* Popular badge - Compact */
+.popular-badge {
+    position: absolute !important;
+    top: 0 !important;
+    right: 12px !important;
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 100%) !important;
+    color: white !important;
+    padding: 3px 8px 4px !important;
+    border-radius: 0 0 6px 6px !important;
+    font-size: 8px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 0 2px 6px rgba(251, 146, 60, 0.3) !important;
+}
+
+/* Icon wrapper - Compact */
+.vehicle-icon-wrapper {
+    width: 90px !important;
+    height: 90px !important;
+    min-width: 90px !important;
+    background: #f8fafc !important;
+    border-radius: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.25s ease !important;
+    position: relative !important;
+    overflow: visible !important;
+    padding: 8px !important;
+}
+
+.vehicle-icon-wrapper::before {
+    display: none !important;
+}
+
+/* Icon wrapper hover - Enhanced glow effect */
+.vehicle-card:hover .vehicle-icon-wrapper {
+    background: linear-gradient(145deg, #fff7ed 0%, #ffedd5 100%) !important;
+    box-shadow:
+        0 0 20px rgba(251, 146, 60, 0.25),
+        0 4px 12px rgba(251, 146, 60, 0.15),
+        inset 0 0 0 1px rgba(251, 146, 60, 0.1) !important;
+    transform: scale(1.02) !important;
+}
+
+.vehicle-card.popular .vehicle-icon-wrapper {
+    background: linear-gradient(145deg, #fff7ed 0%, #ffedd5 100%) !important;
+    box-shadow: 0 0 12px rgba(251, 146, 60, 0.15) !important;
+}
+
+/* Vehicle image styling */
+.vehicle-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08)) !important;
+}
+
+.vehicle-card:hover .vehicle-img {
+    transform: scale(1.12) translateY(-3px) !important;
+    filter:
+        drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15)) drop-shadow(0 4px 8px rgba(251, 146, 60, 0.2)) !important;
+}
+
+/* Hide SVGs */
+.vehicle-icon-wrapper svg {
+    display: none !important;
+}
+
+/* Text content container */
+.vehicle-info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+    text-align: center !important;
+}
+
+.vehicle-card>div:not(.vehicle-icon-wrapper):not(.popular-badge) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+/* Vehicle name - Compact */
+.vehicle-name {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #1f2937 !important;
+    letter-spacing: -0.2px !important;
+    margin: 0 !important;
+    transition: color 0.25s ease !important;
+}
+
+.vehicle-card:hover .vehicle-name {
+    color: #ea580c !important;
+}
+
+/* Vehicle examples text */
+.vehicle-examples {
+    font-size: 11px !important;
+    color: #6b7280 !important;
+    line-height: 1.4 !important;
+    max-width: 140px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+}
+
+/* Price info badge - Compact */
+.vehicle-price-info {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: #6b7280 !important;
+    background: #f3f4f6 !important;
+    padding: 4px 10px !important;
+    border-radius: 20px !important;
+    transition: all 0.25s ease !important;
+}
+
+.vehicle-card:hover .vehicle-price-info {
+    background: #fff7ed !important;
+    color: #ea580c !important;
+}
+
+.vehicle-card.popular .vehicle-price-info {
+    background: #fff7ed !important;
+    color: #ea580c !important;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 1200px) {
+    .quick-buttons-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 14px !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .quick-buttons-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .quick-buttons-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .vehicle-card {
+        padding: 12px !important;
+        border-radius: 12px !important;
+        gap: 10px !important;
+    }
+
+    .vehicle-card::before {
+        width: 30px !important;
+        height: 2px !important;
+    }
+
+    .vehicle-card:hover::before,
+    .vehicle-card.popular::before {
+        width: 40px !important;
+    }
+
+    .vehicle-icon-wrapper {
+        width: 70px !important;
+        height: 70px !important;
+        min-width: 70px !important;
+        border-radius: 10px !important;
+        padding: 6px !important;
+    }
+
+    .vehicle-name {
+        font-size: 12px !important;
+    }
+
+    .vehicle-examples {
+        font-size: 10px !important;
+        max-width: 100px !important;
+        -webkit-line-clamp: 1 !important;
+    }
+
+    .vehicle-price-info {
+        font-size: 10px !important;
+        padding: 3px 8px !important;
+    }
+
+    .popular-badge {
+        font-size: 7px !important;
+        padding: 2px 6px 3px !important;
+        right: 8px !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .vehicle-icon-wrapper {
+        width: 60px !important;
+        height: 60px !important;
+        min-width: 60px !important;
+    }
+
+    .vehicle-examples {
+        display: none !important;
+    }
+}
+
+/* Active state */
+.vehicle-card:active {
+    transform: translateY(-1px) scale(0.99) !important;
+}
+
+/* Focus state for accessibility */
+.vehicle-card:focus {
+    outline: none !important;
+    border-color: #fb923c !important;
+    box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.2) !important;
+}

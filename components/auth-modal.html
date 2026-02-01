@@ -1,0 +1,203 @@
+<!-- ============================================
+     Premium Authentication Modal
+     Clean, Minimalist Design
+     ============================================ -->
+
+<div id="phone-auth-modal" class="auth-modal" style="display: none;">
+    <!-- Overlay -->
+    <div class="auth-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+
+    <!-- Modal Container -->
+    <div class="auth-container">
+        <!-- Close Button -->
+        <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()" aria-label="Close">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+
+        <!-- Step 1: Phone Input -->
+        <div class="auth-step active" id="auth-step-phone">
+            <div class="auth-content">
+                <div class="auth-header">
+                    <h1 class="auth-title">What's your<br>phone number?</h1>
+                    <p class="auth-desc">We'll send you a code to verify your number</p>
+                </div>
+
+                <div class="input-group">
+                    <div class="phone-field">
+                        <div class="country-select">
+                            <span class="flag">🇮🇳</span>
+                            <span class="code">+91</span>
+                        </div>
+                        <div class="divider"></div>
+                        <input type="tel" id="auth-phone-input" class="phone-input" placeholder="10 digit mobile number"
+                            maxlength="10" autocomplete="tel" oninput="AuthSystem.onAuthPhoneInput(this)"
+                            onkeypress="if(event.key === 'Enter' && !this.disabled) AuthSystem.sendAuthOTP()">
+                    </div>
+                </div>
+
+                <button class="auth-btn primary" id="btn-auth-send-otp" onclick="AuthSystem.sendAuthOTP()" disabled>
+                    <span class="btn-text">Continue</span>
+                    <span class="btn-loader" style="display: none;">
+                        <span class="spinner"></span>
+                    </span>
+                </button>
+
+                <p class="auth-terms">
+                    By continuing, you agree to our <a href="#">Terms</a> & <a href="#">Privacy Policy</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 2: OTP Verification -->
+        <div class="auth-step" id="auth-step-otp">
+            <div class="auth-content">
+                <button class="back-btn" onclick="AuthSystem.changeAuthNumber()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                <div class="auth-header">
+                    <h1 class="auth-title">Enter the code<br>we sent you</h1>
+                    <p class="auth-desc" id="auth-otp-sent-msg">
+                        Sent to <strong>+91 XXXXXXXXXX</strong>
+                    </p>
+                </div>
+
+                <div class="otp-group">
+                    <div class="otp-inputs">
+                        <input type="text" class="otp-box-auth" maxlength="1" data-index="0" inputmode="numeric"
+                            oninput="AuthSystem.handleAuthOTPInput(this)"
+                            onkeydown="AuthSystem.handleAuthOTPKeydown(event, this)" autocomplete="off">
+                        <input type="text" class="otp-box-auth" maxlength="1" data-index="1" inputmode="numeric"
+                            oninput="AuthSystem.handleAuthOTPInput(this)"
+                            onkeydown="AuthSystem.handleAuthOTPKeydown(event, this)" autocomplete="off">
+                        <input type="text" class="otp-box-auth" maxlength="1" data-index="2" inputmode="numeric"
+                            oninput="AuthSystem.handleAuthOTPInput(this)"
+                            onkeydown="AuthSystem.handleAuthOTPKeydown(event, this)" autocomplete="off">
+                        <input type="text" class="otp-box-auth" maxlength="1" data-index="3" inputmode="numeric"
+                            oninput="AuthSystem.handleAuthOTPInput(this)"
+                            onkeydown="AuthSystem.handleAuthOTPKeydown(event, this)" autocomplete="off">
+                        <input type="text" class="otp-box-auth" maxlength="1" data-index="4" inputmode="numeric"
+                            oninput="AuthSystem.handleAuthOTPInput(this)"
+                            onkeydown="AuthSystem.handleAuthOTPKeydown(event, this)" autocomplete="off">
+                        <input type="text" class="otp-box-auth" maxlength="1" data-index="5" inputmode="numeric"
+                            oninput="AuthSystem.handleAuthOTPInput(this)"
+                            onkeydown="AuthSystem.handleAuthOTPKeydown(event, this)" autocomplete="off">
+                    </div>
+                </div>
+
+                <button class="auth-btn primary" id="btn-auth-verify-otp" onclick="AuthSystem.verifyAuthOTP()" disabled>
+                    <span class="btn-text">Verify</span>
+                    <span class="btn-loader" style="display: none;">
+                        <span class="spinner"></span>
+                    </span>
+                </button>
+
+                <div class="resend-section">
+                    <span class="timer-text" id="auth-otp-timer">Resend code in <strong>30s</strong></span>
+                    <button class="resend-btn" id="btn-auth-resend" onclick="AuthSystem.resendAuthOTP()"
+                        style="display: none;">
+                        Resend Code
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2.5: Registration -->
+        <div class="auth-step" id="auth-step-register">
+            <div class="auth-content">
+                <button class="back-btn" onclick="AuthSystem.changeAuthNumber()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                <div class="auth-header">
+                    <h1 class="auth-title">Complete your<br>profile</h1>
+                    <p class="auth-desc">Tell us a bit about yourself</p>
+                </div>
+
+                <div class="input-group">
+                    <div class="text-field">
+                        <input type="text" id="auth-register-name" class="text-input" placeholder="Full name"
+                            maxlength="50" autocomplete="name"
+                            onkeypress="if(event.key === 'Enter') document.getElementById('auth-register-email').focus()">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="text-field">
+                        <input type="email" id="auth-register-email" class="text-input"
+                            placeholder="Email address (optional)" maxlength="100" autocomplete="email"
+                            onkeypress="if(event.key === 'Enter') AuthSystem.completeRegistration()">
+                    </div>
+                </div>
+
+                <button class="auth-btn primary" id="btn-auth-complete-register"
+                    onclick="AuthSystem.completeRegistration()">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-loader" style="display: none;">
+                        <span class="spinner"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Welcome New -->
+        <div class="auth-step" id="auth-step-welcome-new">
+            <div class="auth-content center">
+                <div class="success-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+
+                <h1 class="auth-title">You're all set!</h1>
+                <p class="auth-desc">Welcome to Tip-Top Car Wash</p>
+
+                <button class="auth-btn primary" onclick="AuthSystem.startBookingAfterAuth()">
+                    <span class="btn-text">Book a Service</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Welcome Back -->
+        <div class="auth-step" id="auth-step-welcome-back">
+            <div class="auth-content center">
+                <div class="welcome-avatar">
+                    <span>👋</span>
+                </div>
+
+                <h1 class="auth-title">Welcome back!</h1>
+                <p class="auth-desc" id="auth-customer-name">Good to see you again</p>
+
+                <div class="quick-stats">
+                    <div class="stat">
+                        <span class="stat-num" id="auth-total-bookings">0</span>
+                        <span class="stat-label">Bookings</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-num" id="auth-last-booking">-</span>
+                        <span class="stat-label">Last Visit</span>
+                    </div>
+                </div>
+
+                <button class="auth-btn primary" onclick="AuthSystem.showQuickRebook()">
+                    <span class="btn-text">Quick Rebook</span>
+                </button>
+
+                <button class="auth-btn secondary" onclick="AuthSystem.closeAuthModal()">
+                    <span class="btn-text">Browse Services</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

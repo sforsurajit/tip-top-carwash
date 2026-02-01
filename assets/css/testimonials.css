@@ -1,0 +1,208 @@
+/* Testimonials Section */
+.testimonials {
+    padding: 80px 0;
+    background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+}
+
+.testimonials .section-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.testimonials .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.testimonials .section-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(249, 115, 22, 0.1);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    border-radius: 24px;
+    color: #f97316;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+
+.testimonials .section-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
+
+.testimonials .section-title .gradient {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.testimonials .section-subtitle {
+    font-size: 18px;
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Testimonials Grid */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.testimonial-card {
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(249, 115, 22, 0.15);
+    border-color: rgba(249, 115, 22, 0.2);
+}
+
+/* Rating Stars */
+.testimonial-rating {
+    display: flex;
+    gap: 4px;
+}
+
+.testimonial-rating svg {
+    width: 20px;
+    height: 20px;
+    fill: #f97316;
+}
+
+/* Testimonial Text */
+.testimonial-text {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #1a1a1a;
+    margin: 0;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.testimonial-translation {
+    font-size: 14px;
+    color: #666;
+    margin: -10px 0 0 0;
+    font-style: normal;
+}
+
+/* Author Section */
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.author-avatar span {
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.author-info {
+    flex: 1;
+}
+
+.author-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 4px 0;
+}
+
+.author-location {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .testimonials-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .testimonials {
+        padding: 60px 0;
+    }
+
+    .testimonials .section-title {
+        font-size: 36px;
+    }
+
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .testimonial-card {
+        padding: 24px;
+    }
+}
+
+/* ========================================
+   SCROLL-TRIGGERED ANIMATIONS
+   ======================================== */
+
+/* Initial state for cards that will animate */
+.testimonial-card.will-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Animated state when card enters viewport */
+.testimonial-card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Ensure animations respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+    .testimonial-card.will-animate {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .testimonial-card:hover {
+        transform: none;
+    }
+}

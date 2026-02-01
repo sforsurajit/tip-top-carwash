@@ -1,0 +1,106 @@
+/* ========================================
+   FLOATING CALL BUTTON
+   Professional Sticky Call-to-Book Button
+   ======================================== */
+
+.floating-call-btn {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    box-shadow:
+        0 8px 32px rgba(249, 115, 22, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: callButtonPulse 2s ease-in-out infinite;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.floating-call-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow:
+        0 12px 40px rgba(249, 115, 22, 0.5),
+        0 6px 16px rgba(0, 0, 0, 0.2);
+    animation: none;
+}
+
+.floating-call-btn svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.call-btn-text {
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+/* Pulse Animation */
+@keyframes callButtonPulse {
+
+    0%,
+    100% {
+        box-shadow:
+            0 8px 32px rgba(249, 115, 22, 0.4),
+            0 4px 12px rgba(0, 0, 0, 0.15),
+            0 0 0 0 rgba(249, 115, 22, 0.4);
+    }
+
+    50% {
+        box-shadow:
+            0 8px 32px rgba(249, 115, 22, 0.4),
+            0 4px 12px rgba(0, 0, 0, 0.15),
+            0 0 0 12px rgba(249, 115, 22, 0);
+    }
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .floating-call-btn {
+        left: 16px;
+        bottom: 16px;
+        padding: 14px 20px;
+        font-size: 14px;
+    }
+
+    .floating-call-btn svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    /* Compact version on very small screens */
+    @media (max-width: 480px) {
+        .call-btn-text {
+            display: none;
+        }
+
+        .floating-call-btn {
+            padding: 16px;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            justify-content: center;
+        }
+
+        .floating-call-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
+
+/* Accessibility - Reduce Motion */
+@media (prefers-reduced-motion: reduce) {
+    .floating-call-btn {
+        animation: none;
+    }
+}

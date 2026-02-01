@@ -1,0 +1,194 @@
+/* Quick Actions Section */
+.quick-actions-section {
+    background: var(--white);
+    padding: 80px 24px;
+    border-top: 1px solid #f3f4f6;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.quick-actions-container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.quick-actions-header {
+    text-align: center;
+    margin-bottom: 56px;
+}
+
+.quick-actions-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--dark-charcoal);
+    margin-bottom: 16px;
+}
+
+.quick-actions-title .gradient {
+    background: var(--gradient-orange);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.quick-actions-subtitle {
+    font-size: 18px;
+    color: var(--medium-gray);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.action-button {
+    background: var(--white);
+    border: 2px solid #f3f4f6;
+    border-radius: 24px;
+    padding: 40px 32px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.action-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.03) 0%, rgba(234, 88, 12, 0.01) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.action-button:hover::before {
+    opacity: 1;
+}
+
+.action-button:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-orange);
+    box-shadow: 0 20px 40px rgba(249, 115, 22, 0.15);
+}
+
+/* Featured Button */
+.action-button.featured {
+    background: linear-gradient(135deg, #fff7ed 0%, #fff 100%);
+    border: 2px solid var(--primary-orange);
+}
+
+.action-button.featured:hover {
+    box-shadow: 0 25px 50px rgba(249, 115, 22, 0.25);
+}
+
+.featured-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--gradient-orange);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+}
+
+.action-icon-wrapper {
+    margin-bottom: 24px;
+}
+
+.action-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.services-icon {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%);
+}
+
+.works-icon {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(234, 88, 12, 0.1) 100%);
+}
+
+.app-icon {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%);
+}
+
+.action-button:hover .action-icon {
+    transform: scale(1.1) rotate(-5deg);
+    box-shadow: 0 15px 35px rgba(249, 115, 22, 0.25);
+}
+
+.action-button.featured .works-icon {
+    background: var(--gradient-orange);
+}
+
+.action-icon svg {
+    width: 40px;
+    height: 40px;
+    color: var(--primary-orange);
+    transition: all 0.3s ease;
+}
+
+.action-button.featured .works-icon svg {
+    color: var(--white);
+}
+
+.action-content h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dark-charcoal);
+    margin-bottom: 12px;
+    transition: color 0.3s ease;
+}
+
+.action-content p {
+    font-size: 15px;
+    color: var(--medium-gray);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.action-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary-orange);
+    transition: all 0.3s ease;
+}
+
+.action-link svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+}
+
+.action-button:hover .action-link {
+    gap: 12px;
+}
+
+.action-button:hover .action-link svg {
+    transform: translateX(4px);
+}

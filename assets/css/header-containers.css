@@ -1,0 +1,36 @@
+/* Header Container Styling for Component Architecture */
+
+/* Site Header - Main wrapper - STICKY */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: white;
+    width: 100%;
+}
+
+/* Topbar Container */
+#topbar-container {
+    background-color: var(--dark-charcoal, #1a1a1a);
+}
+
+/* Navbar Container */
+#navbar-container {
+    background: white;
+}
+
+/* Alternative: If you need navbar-container to be sticky independently */
+/* Uncomment below if site-header sticky doesn't work */
+/*
+#navbar-container {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+}
+*/
+
+/* When scrolled, add shadow to navbar */
+.navbar.scrolled {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

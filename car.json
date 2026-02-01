@@ -1,0 +1,1767 @@
+{
+  "pricing": {
+    "categories": {
+      "Hatchback": {
+        "multiplier": 1.0,
+        "label": "BASE PRICE"
+      },
+      "Sedan": {
+        "multiplier": 1.2,
+        "label": "+20%"
+      },
+      "Compact SUV": {
+        "multiplier": 1.3,
+        "label": "+30%"
+      },
+      "SUV": {
+        "multiplier": 1.6,
+        "label": "+60%"
+      },
+      "Bike": {
+        "multiplier": 0.5,
+        "label": "-50%"
+      }
+    },
+    "services": {
+      "basicWash": {
+        "basePrice": 250,
+        "name": "Basic Car Wash"
+      },
+      "foamWashPolish": {
+        "basePrice": 400,
+        "name": "Foam Wash + Polish"
+      },
+      "premiumDetailing": {
+        "basePrice": 600,
+        "name": "Premium Detailing"
+      }
+    }
+  },
+  "cars": [
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Alto",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "S-Presso",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Celerio",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Wagon R",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Ignis",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Swift",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Baleno",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Ritz",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Zen",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "A-Star",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "800",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Omni",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Eeco",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Esteem",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Dzire",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Ciaz",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Kizashi",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "SX4",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Brezza",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Fronx",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Jimny",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "S-Cross",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Grand Vitara",
+      "category": "SUV"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Ertiga",
+      "category": "SUV"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "XL6",
+      "category": "SUV"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Invicto",
+      "category": "SUV"
+    },
+    {
+      "brand": "Maruti Suzuki",
+      "model": "Gypsy",
+      "category": "SUV"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Santro",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Eon",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "i10",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Grand i10",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "i20",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Getz",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Accent",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Xcent",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Aura",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Verna",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Elantra",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Sonata",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Exter",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Venue",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Creta",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Kona",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Alcazar",
+      "category": "SUV"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Tucson",
+      "category": "SUV"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Santa Fe",
+      "category": "SUV"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Ioniq 5",
+      "category": "SUV"
+    },
+    {
+      "brand": "Hyundai",
+      "model": "Ioniq 6",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Tata",
+      "model": "Nano",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Tata",
+      "model": "Indica",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Tata",
+      "model": "Bolt",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Tata",
+      "model": "Tiago",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Tata",
+      "model": "Altroz",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Tata",
+      "model": "Indigo",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Tata",
+      "model": "Manza",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Tata",
+      "model": "Zest",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Tata",
+      "model": "Tigor",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Tata",
+      "model": "Punch",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Tata",
+      "model": "Nexon",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Tata",
+      "model": "Curvv",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Tata",
+      "model": "Harrier",
+      "category": "SUV"
+    },
+    {
+      "brand": "Tata",
+      "model": "Safari",
+      "category": "SUV"
+    },
+    {
+      "brand": "Tata",
+      "model": "Hexa",
+      "category": "SUV"
+    },
+    {
+      "brand": "Tata",
+      "model": "Aria",
+      "category": "SUV"
+    },
+    {
+      "brand": "Tata",
+      "model": "Sumo",
+      "category": "SUV"
+    },
+    {
+      "brand": "Tata",
+      "model": "Sierra",
+      "category": "SUV"
+    },
+    {
+      "brand": "Tata",
+      "model": "Xenon",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "KUV 100",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "e2o",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "Verito",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "Logan",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "XUV 300",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "XUV 3XO",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "XUV400",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "TUV 300",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "NuvoSport",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "Quanto",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "Bolero",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "Thar",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "Scorpio",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "XUV 500",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "XUV 700",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "Marazzo",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "Xylo",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "Alturas G4",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "BE 6",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "XEV 9e",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mahindra",
+      "model": "Armada",
+      "category": "SUV"
+    },
+    {
+      "brand": "Honda",
+      "model": "Brio",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Honda",
+      "model": "Jazz",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Honda",
+      "model": "WR-V",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Honda",
+      "model": "BR-V",
+      "category": "SUV"
+    },
+    {
+      "brand": "Honda",
+      "model": "Mobilio",
+      "category": "SUV"
+    },
+    {
+      "brand": "Honda",
+      "model": "Amaze",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Honda",
+      "model": "City",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Honda",
+      "model": "Civic",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Honda",
+      "model": "Accord",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Honda",
+      "model": "CR-V",
+      "category": "SUV"
+    },
+    {
+      "brand": "Honda",
+      "model": "Elevate",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Etios Liva",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Glanza",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Starlet",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Etios",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Yaris",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Corolla",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Camry",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Taisor",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Urban Cruiser",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Hyryder",
+      "category": "SUV"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Innova",
+      "category": "SUV"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Rumion",
+      "category": "SUV"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Fortuner",
+      "category": "SUV"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Hilux",
+      "category": "SUV"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Land Cruiser",
+      "category": "SUV"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Vellfire",
+      "category": "SUV"
+    },
+    {
+      "brand": "Toyota",
+      "model": "Prius",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Kia",
+      "model": "Sonet",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Kia",
+      "model": "Seltos",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Kia",
+      "model": "Carens",
+      "category": "SUV"
+    },
+    {
+      "brand": "Kia",
+      "model": "Carnival",
+      "category": "SUV"
+    },
+    {
+      "brand": "Kia",
+      "model": "EV6",
+      "category": "SUV"
+    },
+    {
+      "brand": "Kia",
+      "model": "EV9",
+      "category": "SUV"
+    },
+    {
+      "brand": "Kia",
+      "model": "Syros",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Volkswagen",
+      "model": "Polo",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Volkswagen",
+      "model": "Ameo",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Volkswagen",
+      "model": "Vento",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Volkswagen",
+      "model": "Virtus",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Volkswagen",
+      "model": "Jetta",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Volkswagen",
+      "model": "Passat",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Volkswagen",
+      "model": "Taigun",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Volkswagen",
+      "model": "Tiguan",
+      "category": "SUV"
+    },
+    {
+      "brand": "Volkswagen",
+      "model": "T-Roc",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Volkswagen",
+      "model": "Beetle",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Skoda",
+      "model": "Fabia",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Skoda",
+      "model": "Rapid",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Skoda",
+      "model": "Slavia",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Skoda",
+      "model": "Octavia",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Skoda",
+      "model": "Laura",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Skoda",
+      "model": "Superb",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Skoda",
+      "model": "Kylaq",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Skoda",
+      "model": "Kushaq",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Skoda",
+      "model": "Kodiaq",
+      "category": "SUV"
+    },
+    {
+      "brand": "Skoda",
+      "model": "Yeti",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Renault",
+      "model": "Kwid",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Renault",
+      "model": "Pulse",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Renault",
+      "model": "Scala",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Renault",
+      "model": "Fluence",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Renault",
+      "model": "Triber",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Renault",
+      "model": "Kiger",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Renault",
+      "model": "Duster",
+      "category": "SUV"
+    },
+    {
+      "brand": "Renault",
+      "model": "Captur",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Renault",
+      "model": "Lodgy",
+      "category": "SUV"
+    },
+    {
+      "brand": "Renault",
+      "model": "Koleos",
+      "category": "SUV"
+    },
+    {
+      "brand": "Nissan",
+      "model": "Micra",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Nissan",
+      "model": "Sunny",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Nissan",
+      "model": "Magnite",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Nissan",
+      "model": "Kicks",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Nissan",
+      "model": "Terrano",
+      "category": "SUV"
+    },
+    {
+      "brand": "Nissan",
+      "model": "X-Trail",
+      "category": "SUV"
+    },
+    {
+      "brand": "Nissan",
+      "model": "GT-R",
+      "category": "Sedan"
+    },
+    {
+      "brand": "MG",
+      "model": "Comet EV",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "MG",
+      "model": "Astor",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "MG",
+      "model": "Hector",
+      "category": "SUV"
+    },
+    {
+      "brand": "MG",
+      "model": "ZS EV",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "MG",
+      "model": "Gloster",
+      "category": "SUV"
+    },
+    {
+      "brand": "MG",
+      "model": "Windsor EV",
+      "category": "SUV"
+    },
+    {
+      "brand": "MG",
+      "model": "Cyberster",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Jeep",
+      "model": "Compass",
+      "category": "SUV"
+    },
+    {
+      "brand": "Jeep",
+      "model": "Meridian",
+      "category": "SUV"
+    },
+    {
+      "brand": "Jeep",
+      "model": "Wrangler",
+      "category": "SUV"
+    },
+    {
+      "brand": "Jeep",
+      "model": "Grand Cherokee",
+      "category": "SUV"
+    },
+    {
+      "brand": "Citroen",
+      "model": "C3",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Citroen",
+      "model": "C3 Aircross",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Citroen",
+      "model": "Basalt",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Citroen",
+      "model": "C5 Aircross",
+      "category": "SUV"
+    },
+    {
+      "brand": "Fiat",
+      "model": "Punto",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Fiat",
+      "model": "Palio",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Fiat",
+      "model": "Uno",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Fiat",
+      "model": "Linea",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Fiat",
+      "model": "Petra",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Fiat",
+      "model": "Avventura",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Ford",
+      "model": "Figo",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Ford",
+      "model": "Freestyle",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Ford",
+      "model": "Fiesta",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Ford",
+      "model": "Aspire",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Ford",
+      "model": "EcoSport",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Ford",
+      "model": "Endeavour",
+      "category": "SUV"
+    },
+    {
+      "brand": "Ford",
+      "model": "Mustang",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Chevrolet",
+      "model": "Spark",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Chevrolet",
+      "model": "Beat",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Chevrolet",
+      "model": "Aveo",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Chevrolet",
+      "model": "Sail",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Chevrolet",
+      "model": "Optra",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Chevrolet",
+      "model": "Cruze",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Chevrolet",
+      "model": "Enjoy",
+      "category": "SUV"
+    },
+    {
+      "brand": "Chevrolet",
+      "model": "Tavera",
+      "category": "SUV"
+    },
+    {
+      "brand": "Chevrolet",
+      "model": "Captiva",
+      "category": "SUV"
+    },
+    {
+      "brand": "Chevrolet",
+      "model": "Trailblazer",
+      "category": "SUV"
+    },
+    {
+      "brand": "BYD",
+      "model": "Atto 3",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "BYD",
+      "model": "Seal",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BYD",
+      "model": "e6",
+      "category": "SUV"
+    },
+    {
+      "brand": "BYD",
+      "model": "Sealion 7",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "A-Class",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "B-Class",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "C-Class",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "CLA",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "E-Class",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "S-Class",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "GLA",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "GLB",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "GLC",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "GLE",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "GLS",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "G-Class",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "EQA",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "EQB",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "EQC",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "EQE",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "EQS",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "Maybach",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "V-Class",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "model": "AMG GT",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "1 Series",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "BMW",
+      "model": "2 Series",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "3 Series",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "4 Series",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "5 Series",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "6 Series",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "7 Series",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "8 Series",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "X1",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "BMW",
+      "model": "X2",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "BMW",
+      "model": "X3",
+      "category": "SUV"
+    },
+    {
+      "brand": "BMW",
+      "model": "X4",
+      "category": "SUV"
+    },
+    {
+      "brand": "BMW",
+      "model": "X5",
+      "category": "SUV"
+    },
+    {
+      "brand": "BMW",
+      "model": "X6",
+      "category": "SUV"
+    },
+    {
+      "brand": "BMW",
+      "model": "X7",
+      "category": "SUV"
+    },
+    {
+      "brand": "BMW",
+      "model": "iX",
+      "category": "SUV"
+    },
+    {
+      "brand": "BMW",
+      "model": "i4",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "i7",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "Z4",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "M3",
+      "category": "Sedan"
+    },
+    {
+      "brand": "BMW",
+      "model": "M5",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Audi",
+      "model": "A3",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Audi",
+      "model": "A4",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Audi",
+      "model": "A5",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Audi",
+      "model": "A6",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Audi",
+      "model": "A7",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Audi",
+      "model": "A8",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Audi",
+      "model": "Q2",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Audi",
+      "model": "Q3",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Audi",
+      "model": "Q5",
+      "category": "SUV"
+    },
+    {
+      "brand": "Audi",
+      "model": "Q7",
+      "category": "SUV"
+    },
+    {
+      "brand": "Audi",
+      "model": "Q8",
+      "category": "SUV"
+    },
+    {
+      "brand": "Audi",
+      "model": "e-tron",
+      "category": "SUV"
+    },
+    {
+      "brand": "Audi",
+      "model": "RS5",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Audi",
+      "model": "RS7",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Audi",
+      "model": "TT",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Audi",
+      "model": "R8",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Volvo",
+      "model": "S60",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Volvo",
+      "model": "S90",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Volvo",
+      "model": "XC40",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Volvo",
+      "model": "XC60",
+      "category": "SUV"
+    },
+    {
+      "brand": "Volvo",
+      "model": "XC90",
+      "category": "SUV"
+    },
+    {
+      "brand": "Volvo",
+      "model": "C40",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Jaguar",
+      "model": "XE",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Jaguar",
+      "model": "XF",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Jaguar",
+      "model": "XJ",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Jaguar",
+      "model": "F-Type",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Jaguar",
+      "model": "E-Pace",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Jaguar",
+      "model": "F-Pace",
+      "category": "SUV"
+    },
+    {
+      "brand": "Jaguar",
+      "model": "I-Pace",
+      "category": "SUV"
+    },
+    {
+      "brand": "Land Rover",
+      "model": "Defender",
+      "category": "SUV"
+    },
+    {
+      "brand": "Land Rover",
+      "model": "Discovery",
+      "category": "SUV"
+    },
+    {
+      "brand": "Land Rover",
+      "model": "Freelander",
+      "category": "SUV"
+    },
+    {
+      "brand": "Land Rover",
+      "model": "Range Rover Evoque",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Land Rover",
+      "model": "Range Rover Velar",
+      "category": "SUV"
+    },
+    {
+      "brand": "Land Rover",
+      "model": "Range Rover Sport",
+      "category": "SUV"
+    },
+    {
+      "brand": "Land Rover",
+      "model": "Range Rover",
+      "category": "SUV"
+    },
+    {
+      "brand": "Porsche",
+      "model": "718",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Porsche",
+      "model": "911",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Porsche",
+      "model": "Panamera",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Porsche",
+      "model": "Macan",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Porsche",
+      "model": "Cayenne",
+      "category": "SUV"
+    },
+    {
+      "brand": "Porsche",
+      "model": "Taycan",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Lexus",
+      "model": "ES",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Lexus",
+      "model": "IS",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Lexus",
+      "model": "LS",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Lexus",
+      "model": "NX",
+      "category": "SUV"
+    },
+    {
+      "brand": "Lexus",
+      "model": "RX",
+      "category": "SUV"
+    },
+    {
+      "brand": "Lexus",
+      "model": "LX",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mini",
+      "model": "Cooper",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Mini",
+      "model": "Clubman",
+      "category": "Hatchback"
+    },
+    {
+      "brand": "Mini",
+      "model": "Countryman",
+      "category": "Compact SUV"
+    },
+    {
+      "brand": "Lamborghini",
+      "model": "Huracan",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Lamborghini",
+      "model": "Urus",
+      "category": "SUV"
+    },
+    {
+      "brand": "Lamborghini",
+      "model": "Revuelto",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Ferrari",
+      "model": "Roma",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Ferrari",
+      "model": "Portofino",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Ferrari",
+      "model": "SF90",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Ferrari",
+      "model": "296",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Ferrari",
+      "model": "F8",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Ferrari",
+      "model": "812",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Ferrari",
+      "model": "Purosangue",
+      "category": "SUV"
+    },
+    {
+      "brand": "Bentley",
+      "model": "Continental GT",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Bentley",
+      "model": "Flying Spur",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Bentley",
+      "model": "Bentayga",
+      "category": "SUV"
+    },
+    {
+      "brand": "Rolls-Royce",
+      "model": "Ghost",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Rolls-Royce",
+      "model": "Phantom",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Rolls-Royce",
+      "model": "Wraith",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Rolls-Royce",
+      "model": "Cullinan",
+      "category": "SUV"
+    },
+    {
+      "brand": "Rolls-Royce",
+      "model": "Spectre",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Maserati",
+      "model": "Ghibli",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Maserati",
+      "model": "Quattroporte",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Maserati",
+      "model": "Levante",
+      "category": "SUV"
+    },
+    {
+      "brand": "Maserati",
+      "model": "GranTurismo",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Maserati",
+      "model": "Grecale",
+      "category": "SUV"
+    },
+    {
+      "brand": "Maserati",
+      "model": "MC20",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Aston Martin",
+      "model": "Vantage",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Aston Martin",
+      "model": "DB11",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Aston Martin",
+      "model": "DB12",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Aston Martin",
+      "model": "DBS",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Aston Martin",
+      "model": "DBX",
+      "category": "SUV"
+    },
+    {
+      "brand": "McLaren",
+      "model": "GT",
+      "category": "Sedan"
+    },
+    {
+      "brand": "McLaren",
+      "model": "Artura",
+      "category": "Sedan"
+    },
+    {
+      "brand": "McLaren",
+      "model": "750S",
+      "category": "Sedan"
+    },
+    {
+      "brand": "McLaren",
+      "model": "720S",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Force",
+      "model": "Gurkha",
+      "category": "SUV"
+    },
+    {
+      "brand": "Force",
+      "model": "Traveller",
+      "category": "SUV"
+    },
+    {
+      "brand": "Force",
+      "model": "Trax",
+      "category": "SUV"
+    },
+    {
+      "brand": "Isuzu",
+      "model": "D-Max",
+      "category": "SUV"
+    },
+    {
+      "brand": "Isuzu",
+      "model": "MU-X",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mitsubishi",
+      "model": "Lancer",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Mitsubishi",
+      "model": "Outlander",
+      "category": "SUV"
+    },
+    {
+      "brand": "Mitsubishi",
+      "model": "Pajero",
+      "category": "SUV"
+    },
+    {
+      "brand": "Tesla",
+      "model": "Model 3",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Tesla",
+      "model": "Model Y",
+      "category": "SUV"
+    },
+    {
+      "brand": "Tesla",
+      "model": "Model S",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Tesla",
+      "model": "Model X",
+      "category": "SUV"
+    },
+    {
+      "brand": "Genesis",
+      "model": "G80",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Genesis",
+      "model": "GV70",
+      "category": "SUV"
+    },
+    {
+      "brand": "Genesis",
+      "model": "GV80",
+      "category": "SUV"
+    },
+    {
+      "brand": "Hindustan",
+      "model": "Ambassador",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Hindustan",
+      "model": "Contessa",
+      "category": "Sedan"
+    },
+    {
+      "brand": "Premier",
+      "model": "Padmini",
+      "category": "Sedan"
+    }
+  ]
+}

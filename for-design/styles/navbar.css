@@ -1,0 +1,123 @@
+/* Main Navbar */
+.navbar {
+    background-color: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.navbar-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+}
+
+.logo {
+    height: 56px;
+    width: auto;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--dark-charcoal);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-links a:hover {
+    color: var(--primary-orange);
+}
+
+.nav-links a.active {
+    color: var(--primary-orange);
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background: var(--primary-orange);
+    border-radius: 1px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cart-btn {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    color: var(--dark-charcoal);
+}
+
+.cart-btn:hover {
+    color: var(--primary-orange);
+}
+
+.cart-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.cart-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--primary-orange);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-now-btn {
+    background: var(--gradient-orange);
+    color: var(--white);
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(249, 115, 22, 0.25);
+}
+
+.book-now-btn:hover {
+    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+    transform: translateY(-1px);
+}

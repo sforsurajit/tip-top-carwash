@@ -1,0 +1,21 @@
+{
+  "name": "Doorstep Car Wash",
+  "short_name": "Car Wash",
+  "description": "Professional doorstep car washing service at your location",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "assets/images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

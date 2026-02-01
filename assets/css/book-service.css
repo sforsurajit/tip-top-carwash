@@ -1,0 +1,833 @@
+/* ========================================
+   OPTIMIZED BOOKING FLOW - MODERN CSS
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    min-height: 100vh;
+}
+
+/* Header */
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #1e293b;
+}
+
+.header-logo img {
+    height: 40px;
+}
+
+.header-logo span {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.back-link {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+/* Main */
+.booking-main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 32px 20px;
+}
+
+/* Steps */
+.booking-step {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.booking-step.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.step-content {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.step-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.step-subtitle {
+    font-size: 16px;
+    color: #64748b;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+/* ========================================
+   STEP 1: CAR SELECTION
+   ======================================== */
+
+/* Car Search */
+.car-search-container {
+    margin-bottom: 32px;
+}
+
+.search-input-wrapper {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+.car-search-input {
+    width: 100%;
+    padding: 16px 16px 16px 48px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.car-search-input:focus {
+    outline: none;
+    border-color: #f97316;
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+}
+
+/* Search Results */
+.search-results {
+    position: absolute;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    margin-top: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 10;
+    display: none;
+}
+
+.search-results.active {
+    display: block;
+}
+
+.search-result-item {
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background: #f8fafc;
+}
+
+.result-name {
+    font-weight: 600;
+    color: #1e293b;
+    display: block;
+}
+
+.result-type {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+/* Quick Select Divider */
+.quick-select-divider {
+    text-align: center;
+    margin: 32px 0 24px;
+    position: relative;
+}
+
+.quick-select-divider::before,
+.quick-select-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+.quick-select-divider::before {
+    left: 0;
+}
+
+.quick-select-divider::after {
+    right: 0;
+}
+
+.quick-select-divider span {
+    background: white;
+    padding: 0 16px;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Vehicle Type Buttons */
+.vehicle-types {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.vehicle-type-btn {
+    padding: 24px 16px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.vehicle-type-btn:hover {
+    border-color: #f97316;
+    background: #fff7ed;
+    transform: translateY(-2px);
+}
+
+.vehicle-type-btn svg {
+    color: #64748b;
+}
+
+.vehicle-type-btn:hover svg {
+    color: #f97316;
+}
+
+.vehicle-type-btn span {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* ========================================
+   STEP 2: SERVICE SELECTION
+   ======================================== */
+
+/* Sticky Vehicle Bar */
+.sticky-vehicle-bar {
+    position: sticky;
+    top: 72px;
+    background: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    z-index: 50;
+}
+
+.selected-vehicle {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.vehicle-label {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.selected-vehicle strong {
+    font-size: 18px;
+    color: #1e293b;
+}
+
+.change-vehicle-btn {
+    padding: 8px 16px;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 8px;
+    color: #f97316;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.change-vehicle-btn:hover {
+    background: #e2e8f0;
+}
+
+/* Service Packages */
+.service-packages {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.service-package {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.service-package:hover {
+    border-color: #f97316;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.15);
+}
+
+.package-badge {
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.package-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.package-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.package-price {
+    font-size: 28px;
+    font-weight: 800;
+    color: #f97316;
+}
+
+.package-duration {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 12px;
+}
+
+.package-features {
+    list-style: none;
+    margin-bottom: 16px;
+}
+
+.package-features li {
+    padding: 6px 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.package-features li::before {
+    content: '✓';
+    color: #22c55e;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.package-nudge {
+    background: #f0fdf4;
+    color: #16a34a;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+/* ========================================
+   STEP 3: SMART SCHEDULING
+   ======================================== */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #f97316;
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+}
+
+/* Time Slots */
+.time-slots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.time-slot {
+    padding: 14px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.time-slot:hover {
+    border-color: #f97316;
+    background: #fff7ed;
+}
+
+.time-slot.selected {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: white;
+    border-color: #f97316;
+}
+
+.time-slot.unavailable {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: #f1f5f9;
+}
+
+/* Slot Suggestion */
+.slot-suggestion {
+    background: #fef3c7;
+    border: 2px solid #fbbf24;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.suggestion-icon {
+    font-size: 32px;
+}
+
+.suggestion-text {
+    flex: 1;
+}
+
+.suggestion-text strong {
+    color: #92400e;
+}
+
+.suggestion-text p {
+    margin-top: 4px;
+    color: #78350f;
+}
+
+.btn-accept-suggestion {
+    padding: 10px 20px;
+    background: #f59e0b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-accept-suggestion:hover {
+    background: #d97706;
+}
+
+/* ========================================
+   STEP 4: LOGIN & PAYMENT
+   ======================================== */
+
+.login-section {
+    margin-bottom: 32px;
+}
+
+.phone-input-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.country-code {
+    padding: 14px 16px;
+    background: #f1f5f9;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.phone-input-group input {
+    flex: 1;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.btn-send-otp,
+.btn-verify-otp {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-send-otp:hover,
+.btn-verify-otp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.4);
+}
+
+.otp-section {
+    margin-top: 20px;
+}
+
+.otp-section input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 18px;
+    letter-spacing: 4px;
+    text-align: center;
+    margin-top: 8px;
+}
+
+/* Payment Options */
+.payment-section h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 16px;
+}
+
+.payment-option {
+    display: block;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.payment-option input {
+    display: none;
+}
+
+.payment-card {
+    padding: 20px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.payment-option input:checked+.payment-card {
+    border-color: #f97316;
+    background: #fff7ed;
+}
+
+.payment-card.online {
+    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+}
+
+.payment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.payment-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.payment-badge {
+    background: #22c55e;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.payment-desc {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.trust-signal {
+    background: #f0fdf4;
+    color: #16a34a;
+    padding: 14px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 20px 0;
+}
+
+/* ========================================
+   STEP 5: CONFIRMATION
+   ======================================== */
+
+.success-content {
+    text-align: center;
+}
+
+.success-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.success-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 24px;
+}
+
+.booking-details {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-row.total {
+    font-size: 18px;
+    font-weight: 700;
+    color: #f97316;
+    margin-top: 10px;
+    padding-top: 16px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.detail-label {
+    color: #64748b;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* WhatsApp Message */
+.whatsapp-message {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.whatsapp-icon {
+    width: 48px;
+    height: 48px;
+    background: #22c55e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+}
+
+.whatsapp-icon svg {
+    color: white;
+}
+
+.whatsapp-message p {
+    font-weight: 700;
+    color: #166534;
+    margin-bottom: 4px;
+}
+
+.whatsapp-message small {
+    color: #15803d;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.action-buttons button,
+.action-buttons a {
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn-primary {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.4);
+}
+
+.btn-secondary {
+    background: #f1f5f9;
+    color: #64748b;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.btn-full {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .booking-main {
+        padding: 20px 16px;
+    }
+
+    .step-content {
+        padding: 24px;
+    }
+
+    .step-title {
+        font-size: 24px;
+    }
+
+    .vehicle-types {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .time-slots {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sticky-vehicle-bar {
+        top: 68px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}

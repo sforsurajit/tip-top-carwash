@@ -1,0 +1,869 @@
+/* ===================================
+   HOW IT WORKS PAGE - ZIGZAG TIMELINE DESIGN
+   Inspired by WashWoosh reference
+   =================================== */
+
+/* Page Hero Section */
+.page-hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    padding: 120px 20px 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.05;
+    background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+}
+
+.page-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.page-hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.breadcrumb a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+    color: #ffffff;
+}
+
+.breadcrumb svg {
+    width: 14px;
+    height: 14px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.breadcrumb span {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.page-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 16px;
+}
+
+.page-subtitle {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+}
+
+.gradient {
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Timeline Section */
+.how-it-works-timeline {
+    padding: 80px 20px;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+/* Timeline Intro */
+.timeline-intro {
+    text-align: center;
+    max-width: 1100px;
+    margin: 0 auto 80px;
+}
+
+.intro-heading {
+    font-size: 42px;
+    font-weight: 900;
+    color: #1e293b;
+    margin-bottom: 40px;
+    line-height: 1.2;
+}
+
+.highlight-text {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Booking Options Cards - CLEAN MODERN DESIGN */
+.booking-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-bottom: 60px;
+}
+
+.booking-option {
+    text-align: center;
+    padding: 50px 36px 44px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    position: relative;
+    border: none;
+}
+
+.booking-option:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Icon container - Large and prominent */
+.option-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 28px;
+    transition: all 0.4s ease;
+}
+
+.booking-option:nth-child(1) .option-icon {
+    background: linear-gradient(145deg, #22c55e, #16a34a);
+    box-shadow: 0 12px 35px rgba(34, 197, 94, 0.35);
+}
+
+.booking-option:nth-child(2) .option-icon {
+    background: linear-gradient(145deg, #3b82f6, #1d4ed8);
+    box-shadow: 0 12px 35px rgba(59, 130, 246, 0.35);
+}
+
+.booking-option:nth-child(3) .option-icon {
+    background: linear-gradient(145deg, #f97316, #dc2626);
+    box-shadow: 0 12px 35px rgba(249, 115, 22, 0.4);
+}
+
+.option-icon svg {
+    width: 48px;
+    height: 48px;
+    color: white;
+    stroke-width: 1.8;
+}
+
+.booking-option:hover .option-icon {
+    transform: scale(1.1) rotate(-3deg);
+}
+
+.booking-option:nth-child(1):hover .option-icon {
+    box-shadow: 0 20px 50px rgba(34, 197, 94, 0.5);
+}
+
+.booking-option:nth-child(2):hover .option-icon {
+    box-shadow: 0 20px 50px rgba(59, 130, 246, 0.5);
+}
+
+.booking-option:nth-child(3):hover .option-icon {
+    box-shadow: 0 20px 50px rgba(249, 115, 22, 0.55);
+}
+
+.booking-option h3 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.booking-option:nth-child(1):hover h3 {
+    color: #16a34a;
+}
+
+.booking-option:nth-child(2):hover h3 {
+    color: #2563eb;
+}
+
+.booking-option:nth-child(3):hover h3 {
+    color: #ea580c;
+}
+
+.booking-option p {
+    font-size: 16px;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Featured App Option */
+.booking-option.featured {
+    background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+}
+
+.featured-badge {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: #ffffff;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.app-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.benefit {
+    display: inline-block;
+    background: rgba(249, 115, 22, 0.08);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ea580c;
+}
+
+.intro-subtext {
+    font-size: 17px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.intro-text {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #475569;
+}
+
+.intro-text strong {
+    color: #f97316;
+    font-weight: 700;
+}
+
+/* Timeline Wrapper */
+.timeline-wrapper {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 0;
+}
+
+/* Vertical Timeline Line */
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.timeline-line::before,
+.timeline-line::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background: #f97316;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2);
+}
+
+.timeline-line::before {
+    top: 0;
+}
+
+.timeline-line::after {
+    bottom: 0;
+}
+
+/* Timeline Step */
+.timeline-step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 60px;
+    z-index: 2;
+}
+
+.timeline-step:last-child {
+    margin-bottom: 0;
+}
+
+/* Timeline Dot */
+.timeline-dot {
+    width: 24px;
+    height: 24px;
+    background: #ffffff;
+    border: 4px solid #f97316;
+    border-radius: 50%;
+    box-shadow: 0 0 0 8px rgba(249, 115, 22, 0.15);
+    z-index: 3;
+    transition: all 0.3s ease;
+}
+
+.timeline-step:hover .timeline-dot {
+    transform: scale(1.3);
+    box-shadow: 0 0 0 12px rgba(249, 115, 22, 0.25);
+}
+
+/* Step Card - UNIQUE PREMIUM DESIGN */
+.step-card {
+    padding: 28px 28px 28px 36px;
+    background: #ffffff;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: visible;
+}
+
+/* Gradient left border accent */
+.step-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20px;
+    bottom: 20px;
+    width: 4px;
+    border-radius: 4px;
+    transition: all 0.4s ease;
+}
+
+.timeline-step:nth-child(2) .step-card::before {
+    background: linear-gradient(180deg, #22c55e, #16a34a);
+}
+
+.timeline-step:nth-child(3) .step-card::before {
+    background: linear-gradient(180deg, #3b82f6, #2563eb);
+}
+
+.timeline-step:nth-child(4) .step-card::before {
+    background: linear-gradient(180deg, #f97316, #ea580c);
+}
+
+.timeline-step:nth-child(5) .step-card::before {
+    background: linear-gradient(180deg, #a855f7, #9333ea);
+}
+
+.timeline-step:nth-child(6) .step-card::before {
+    background: linear-gradient(180deg, #ec4899, #db2777);
+}
+
+.timeline-step:nth-child(7) .step-card::before {
+    background: linear-gradient(180deg, #0ea5e9, #0284c7);
+}
+
+.step-card:hover::before {
+    top: 0;
+    bottom: 0;
+    width: 5px;
+}
+
+.step-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+/* Step Icon - Rounded with glow */
+.step-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeline-step:nth-child(2) .step-icon {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
+}
+
+.timeline-step:nth-child(3) .step-icon {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+}
+
+.timeline-step:nth-child(4) .step-icon {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    box-shadow: 0 8px 24px rgba(249, 115, 22, 0.25);
+}
+
+.timeline-step:nth-child(5) .step-icon {
+    background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.25);
+}
+
+.timeline-step:nth-child(6) .step-icon {
+    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+    box-shadow: 0 8px 24px rgba(236, 72, 153, 0.25);
+}
+
+.timeline-step:nth-child(7) .step-icon {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    box-shadow: 0 8px 24px rgba(14, 165, 233, 0.25);
+}
+
+.step-icon svg {
+    width: 30px;
+    height: 30px;
+    color: white;
+    stroke-width: 2;
+}
+
+.step-card:hover .step-icon {
+    transform: scale(1.08);
+}
+
+/* Enhance shadow on hover per color */
+.timeline-step:nth-child(2):hover .step-icon {
+    box-shadow: 0 12px 32px rgba(34, 197, 94, 0.35);
+}
+
+.timeline-step:nth-child(3):hover .step-icon {
+    box-shadow: 0 12px 32px rgba(59, 130, 246, 0.35);
+}
+
+.timeline-step:nth-child(4):hover .step-icon {
+    box-shadow: 0 12px 32px rgba(249, 115, 22, 0.35);
+}
+
+.timeline-step:nth-child(5):hover .step-icon {
+    box-shadow: 0 12px 32px rgba(168, 85, 247, 0.35);
+}
+
+.timeline-step:nth-child(6):hover .step-icon {
+    box-shadow: 0 12px 32px rgba(236, 72, 153, 0.35);
+}
+
+.timeline-step:nth-child(7):hover .step-icon {
+    box-shadow: 0 12px 32px rgba(14, 165, 233, 0.35);
+}
+
+/* Step Illustration - Custom Images */
+.step-illustration {
+    width: 140px;
+    height: 140px;
+    margin-bottom: 20px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.step-illustration img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+}
+
+.step-card:hover .step-illustration {
+    transform: scale(1.05);
+}
+
+.step-card:hover .step-illustration img {
+    transform: scale(1.05);
+}
+
+/* Step Content */
+.step-content {
+    flex: 1;
+    padding-top: 4px;
+}
+
+/* Step Title */
+.step-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 8px;
+    transition: color 0.3s ease;
+    line-height: 1.3;
+}
+
+/* Title color changes on hover */
+.timeline-step:nth-child(2):hover .step-title {
+    color: #22c55e;
+}
+
+.timeline-step:nth-child(3):hover .step-title {
+    color: #3b82f6;
+}
+
+.timeline-step:nth-child(4):hover .step-title {
+    color: #f97316;
+}
+
+.timeline-step:nth-child(5):hover .step-title {
+    color: #a855f7;
+}
+
+.timeline-step:nth-child(6):hover .step-title {
+    color: #ec4899;
+}
+
+.timeline-step:nth-child(7):hover .step-title {
+    color: #0ea5e9;
+}
+
+/* Step Description */
+.step-description {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Left Step */
+.step-left {
+    grid-template-columns: 1fr auto 1fr;
+}
+
+.step-left .step-card {
+    grid-column: 1;
+}
+
+.step-left .timeline-dot {
+    grid-column: 2;
+}
+
+/* Right Step */
+.step-right {
+    grid-template-columns: 1fr auto 1fr;
+}
+
+.step-right .timeline-dot {
+    grid-column: 2;
+}
+
+.step-right .step-card {
+    grid-column: 3;
+}
+
+/* Timeline Footer */
+.timeline-footer {
+    text-align: center;
+    max-width: 900px;
+    margin: 80px auto 0;
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(234, 88, 12, 0.05) 100%);
+    border-radius: 20px;
+    border: 2px solid rgba(249, 115, 22, 0.1);
+}
+
+.footer-text {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #475569;
+    margin: 0;
+}
+
+.footer-text strong {
+    color: #f97316;
+    font-weight: 700;
+}
+
+/* Download App Section */
+.download-app-section {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.download-app-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.download-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.download-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    backdrop-filter: blur(10px);
+}
+
+.download-icon svg {
+    width: 40px;
+    height: 40px;
+    color: #ffffff;
+}
+
+.download-title {
+    font-size: 40px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 16px;
+}
+
+.download-subtitle {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 700px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+}
+
+.download-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.store-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.store-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.store-button svg {
+    width: 32px;
+    height: 32px;
+}
+
+.store-button div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.store-text {
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.store-name {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 992px) {
+    .page-title {
+        font-size: 40px;
+    }
+
+    .timeline-wrapper {
+        padding: 20px 0;
+    }
+
+    .timeline-step {
+        gap: 30px;
+        margin-bottom: 50px;
+    }
+
+    .step-card {
+        padding: 28px;
+    }
+
+    .step-title {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-hero {
+        padding: 100px 20px 50px;
+    }
+
+    .page-title {
+        font-size: 36px;
+    }
+
+    .page-subtitle {
+        font-size: 16px;
+    }
+
+    .intro-heading {
+        font-size: 32px;
+    }
+
+    .booking-options {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .booking-option {
+        padding: 24px 20px;
+    }
+
+    .option-icon {
+        width: 64px;
+        height: 64px;
+    }
+
+    .option-icon svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* Stack timeline vertically on mobile */
+    .timeline-line {
+        left: 30px;
+    }
+
+    .timeline-step {
+        grid-template-columns: auto 1fr;
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    .step-left,
+    .step-right {
+        grid-template-columns: auto 1fr;
+    }
+
+    .step-left .step-card,
+    .step-right .step-card {
+        grid-column: 2;
+    }
+
+    .step-left .timeline-dot,
+    .step-right .timeline-dot {
+        grid-column: 1;
+    }
+
+    .step-card {
+        padding: 24px;
+    }
+
+    .step-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .step-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .step-title {
+        font-size: 20px;
+    }
+
+    .step-description {
+        font-size: 15px;
+    }
+
+    .download-title {
+        font-size: 32px;
+    }
+
+    .download-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .store-button {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .timeline-line {
+        left: 20px;
+    }
+
+    .intro-text {
+        font-size: 16px;
+    }
+
+    .step-card {
+        padding: 20px;
+    }
+
+    .step-title {
+        font-size: 18px;
+    }
+
+    .step-description {
+        font-size: 14px;
+    }
+
+    .download-title {
+        font-size: 28px;
+    }
+
+    .download-subtitle {
+        font-size: 16px;
+    }
+}

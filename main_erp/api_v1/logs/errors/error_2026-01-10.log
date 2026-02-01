@@ -1,0 +1,2 @@
+[2026-01-10 17:28:21] Class: Booking, Method: allocateToWasher, Line: 267, Message: Allocating booking 6 to washer 3
+[2026-01-10 17:43:34] Class: Booking, Method: allocateToWasher, Line: 267, Message: Allocating booking 7 to washer 3

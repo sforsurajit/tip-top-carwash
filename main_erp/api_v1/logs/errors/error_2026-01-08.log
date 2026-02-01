@@ -1,0 +1,4 @@
+[2026-01-08 05:09:17] Vehicle: Vehicle, Method: create, Line: 71, Message: Starting vehicle creation. Data: {"customer_id":2,"make":"Toyota","model":"Camry","license_plate":"ABC-3456","type":"sedan","year":2020,"color":"white"}
+[2026-01-08 05:09:17] Vehicle: Vehicle, Method: create, Line: 89, Message: Vehicle created successfully with ID: 10
+[2026-01-08 05:12:41] Vehicle: Vehicle, Method: create, Line: 71, Message: Starting vehicle creation. Data: {"customer_id":2,"make":"Toyota","model":"Camry","license_plate":"ABC-356","type":"sedan","year":2020,"color":"white"}
+[2026-01-08 05:12:41] Vehicle: Vehicle, Method: create, Line: 89, Message: Vehicle created successfully with ID: 11

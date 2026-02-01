@@ -1,0 +1,93 @@
+/* Top Bar */
+.top-bar {
+    background-color: var(--dark-charcoal);
+    color: var(--white);
+    font-size: 14px;
+}
+
+.top-bar-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 44px;
+}
+
+.top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.top-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.top-bar-item:hover {
+    color: var(--primary-orange);
+}
+
+.top-bar-item svg {
+    width: 14px;
+    height: 14px;
+    color: var(--primary-orange);
+}
+
+.location-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.location-badge svg {
+    width: 14px;
+    height: 14px;
+    color: var(--primary-orange);
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.social-links {
+    display: flex;
+    gap: 12px;
+}
+
+.social-links a {
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--primary-orange);
+}
+
+.social-links svg {
+    width: 16px;
+    height: 16px;
+}
+
+.login-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.login-btn:hover {
+    color: var(--primary-orange);
+}

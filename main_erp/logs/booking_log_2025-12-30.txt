@@ -1,0 +1,21 @@
+[2025-12-30 17:45:49]
+Endpoint: POST /bookings/1/accept
+User ID: Not provided
+Request Data: {
+    "washer_id": 3
+}
+Headers: {
+    "Accept": "application\/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJuYW1lIjoiVGVzdCBtYWxlbiIsImVtYWlsIjoibUBnbWFpbC5jb20iLCJ1c2VyX3R5cGUiOiJkcml2ZXIiLCJpbnN0aXR1dGlvbl9pZCI6MywiYXV0aF90eXBlIjoib3JnYW5pemF0aW9uIiwib3JnYW5pemF0aW9uX2lkIjozLCJpYXQiOjE3NjcxMTM2NDUsImV4cCI6MTc2NzIwMDA0NX0.XFd5P57pH4VCMW3sE8uj4uyFhRVhdrmaTa4R2BLuYAg",
+    "Content-Type": "application\/json",
+    "User-Agent": "Dalvik\/2.1.0 (Linux; U; Android 11; sdk_gphone_x86 Build\/RSR1.201013.001)",
+    "Host": "tip-topcarwash.in",
+    "Connection": "Keep-Alive",
+    "Accept-Encoding": "gzip",
+    "Content-Length": "15"
+}
+GET Params: []
+POST Input: {"washer_id":3}
+Washer ID in data: 3
+--------------------------------------------------
+

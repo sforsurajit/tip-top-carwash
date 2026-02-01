@@ -1,0 +1,23 @@
+[2025-12-31 04:00:02]
+Endpoint: POST /bookings/1/accept
+User ID: Not provided
+Request Data: {
+    "washer_id": 45
+}
+Headers: {
+    "Host": "tip-topcarwash.in",
+    "Accept": "*\/*",
+    "Accept-Encoding": "deflate, gzip",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJuYW1lIjoiVGVzdCBtYWxlbiIsImVtYWlsIjoibUBnbWFpbC5jb20iLCJ1c2VyX3R5cGUiOiJkcml2ZXIiLCJpbnN0aXR1dGlvbl9pZCI6MywiYXV0aF90eXBlIjoib3JnYW5pemF0aW9uIiwib3JnYW5pemF0aW9uX2lkIjozLCJpYXQiOjE3NjcxNTMxNzUsImV4cCI6MTc2NzIzOTU3NX0.Y2mIjq22H_ORi3DZuBaOyVJv531Ebcka6IsOlGPa8T4",
+    "Content-Type": "application\/json",
+    "User-Agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+    "X-Real-IP": "103.199.202.8",
+    "Content-Length": "33"
+}
+GET Params: []
+POST Input: {
+        "washer_id": 45
+      }
+Washer ID in data: 45
+--------------------------------------------------
+

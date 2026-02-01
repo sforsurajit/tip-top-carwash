@@ -1,0 +1,3113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Wash | Tip-Top Car Wash</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Styles (Inline) -->
+    <style>
+        /* ============================================
+   TIP-TOP CAR WASH - PREMIUM BOOKING STYLES
+   Modern, Refined, World-Class UI/UX
+   ============================================ */
+
+        /* CSS Variables */
+        :root {
+            /* Primary Colors - Deep Ocean Blue */
+            --primary-50: #e6f4ff;
+            --primary-100: #bae3ff;
+            --primary-200: #7cc4fa;
+            --primary-300: #47a3f3;
+            --primary-400: #2186eb;
+            --primary-500: #0967d2;
+            --primary-600: #0552b5;
+            --primary-700: #03449e;
+            --primary-800: #01337d;
+            --primary-900: #002159;
+
+            /* Accent Colors - Vibrant Teal */
+            --accent-400: #3eead4;
+            --accent-500: #0bc5af;
+            --accent-600: #099a87;
+
+            /* Success */
+            --success-400: #68d391;
+            --success-500: #48bb78;
+            --success-600: #38a169;
+
+            /* Warning */
+            --warning-400: #f6ad55;
+            --warning-500: #ed8936;
+
+            /* Error */
+            --error-400: #fc8181;
+            --error-500: #f56565;
+            --error-600: #e53e3e;
+
+            /* Neutrals */
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e1;
+            --neutral-400: #94a3b8;
+            --neutral-500: #64748b;
+            --neutral-600: #475569;
+            --neutral-700: #334155;
+            --neutral-800: #1e293b;
+            --neutral-900: #0f172a;
+
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-700) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent-400) 0%, var(--accent-600) 100%);
+            --gradient-dark: linear-gradient(135deg, var(--neutral-800) 0%, var(--neutral-900) 100%);
+            --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+
+            /* Typography */
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Outfit', sans-serif;
+
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+
+            /* Borders */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-glow: 0 0 40px rgba(9, 103, 210, 0.3);
+
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-base: 250ms ease;
+            --transition-slow: 350ms ease;
+            --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Reset & Base */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--neutral-800);
+            background: var(--neutral-50);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(180deg, #f0f7ff 0%, #e6f0fa 50%, #f8fafc 100%);
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary-200);
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-400);
+            bottom: 20%;
+            left: -50px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--primary-300);
+            bottom: -50px;
+            right: 20%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            25% {
+                transform: translate(30px, -30px) scale(1.05);
+            }
+
+            50% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+
+            75% {
+                transform: translate(20px, 10px) scale(1.02);
+            }
+        }
+
+        /* ============================================
+   HEADER - Modern Glassmorphic Design
+   ============================================ */
+        .booking-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 15px rgba(9, 103, 210, 0.3);
+            transition: transform var(--transition-base);
+        }
+
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .header-logo:hover .logo-icon {
+            transform: scale(1.05) rotate(-5deg);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-700);
+            letter-spacing: -0.02em;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--neutral-500);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            border: none;
+            background: var(--neutral-100);
+            color: var(--neutral-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+        }
+
+        .btn-icon:hover {
+            background: var(--primary-50);
+            color: var(--primary-600);
+            transform: translateY(-2px);
+        }
+
+        .btn-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem 0.375rem 0.375rem;
+            background: var(--neutral-100);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .user-profile:hover {
+            background: var(--primary-50);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-full);
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .user-avatar svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .user-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--neutral-700);
+        }
+
+        /* ============================================
+   PROGRESS SECTION - Stunning Step Indicators
+   ============================================ */
+        .progress-section {
+            background: white;
+            border-bottom: 1px solid var(--neutral-200);
+            position: sticky;
+            top: 61px;
+            z-index: 90;
+        }
+
+        .progress-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .steps-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-icon-wrapper {
+            position: relative;
+        }
+
+        .step-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-full);
+            background: var(--neutral-100);
+            border: 2px solid var(--neutral-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-400);
+            transition: all var(--transition-base);
+        }
+
+        .step-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .step-pulse {
+            position: absolute;
+            inset: -4px;
+            border-radius: var(--radius-full);
+            background: var(--primary-500);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all var(--transition-base);
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--neutral-400);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all var(--transition-base);
+        }
+
+        /* Step States */
+        .step-item.active .step-icon {
+            background: var(--gradient-primary);
+            border-color: var(--primary-500);
+            color: white;
+            box-shadow: 0 4px 20px rgba(9, 103, 210, 0.4);
+            transform: scale(1.1);
+        }
+
+        .step-item.active .step-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .step-item.active .step-label {
+            color: var(--primary-600);
+        }
+
+        .step-item.completed .step-icon {
+            background: var(--success-500);
+            border-color: var(--success-500);
+            color: white;
+        }
+
+        .step-item.completed .step-label {
+            color: var(--success-600);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 0.3;
+                transform: scale(1.3);
+            }
+        }
+
+        /* Step Connectors */
+        .step-connector {
+            flex: 1;
+            height: 4px;
+            background: var(--neutral-200);
+            border-radius: 2px;
+            margin: 0 0.5rem;
+            position: relative;
+            transform: translateY(-12px);
+        }
+
+        .connector-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            transition: width var(--transition-slow);
+        }
+
+        .step-connector.active .connector-progress {
+            width: 100%;
+        }
+
+        /* Mobile Step Counter */
+        .step-counter-mobile {
+            display: none;
+            justify-content: center;
+            align-items: baseline;
+            gap: 0.25rem;
+            padding-top: 0.75rem;
+        }
+
+        .current-step {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-600);
+        }
+
+        .step-divider {
+            color: var(--neutral-400);
+        }
+
+        .total-steps {
+            font-size: 1rem;
+            color: var(--neutral-400);
+        }
+
+        /* ============================================
+   MAIN CONTENT
+   ============================================ */
+        .booking-main {
+            min-height: calc(100vh - 61px);
+        }
+
+        .booking-content {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 6rem;
+        }
+
+        /* Step Panels */
+        .step-panel {
+            display: none;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .step-panel.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Step Header */
+        .step-header {
+            margin-bottom: 2rem;
+        }
+
+        .step-title-group {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-number {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary-500);
+            background: var(--primary-50);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+        }
+
+        .step-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--neutral-800);
+            letter-spacing: -0.02em;
+        }
+
+        .step-description {
+            font-size: 1rem;
+            color: var(--neutral-500);
+        }
+
+        /* Section Headers */
+        .section-header {
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--neutral-600);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .section-title svg {
+            width: 18px;
+            height: 18px;
+            color: var(--primary-500);
+        }
+
+        /* ============================================
+   STEP 1: VEHICLE SELECTION
+   ============================================ */
+
+        /* Search Container */
+        .search-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: var(--neutral-400);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 3rem;
+            font-size: 1rem;
+            font-family: var(--font-body);
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            background: white;
+            transition: all var(--transition-base);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-400);
+            box-shadow: 0 0 0 4px rgba(9, 103, 210, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: var(--neutral-400);
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: var(--neutral-100);
+            border-radius: var(--radius-full);
+            color: var(--neutral-500);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+        }
+
+        .search-clear:hover {
+            background: var(--neutral-200);
+        }
+
+        .search-clear svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Search Results */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+            border: 1px solid var(--neutral-200);
+            margin-top: 0.5rem;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 0.875rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: background var(--transition-fast);
+            border-bottom: 1px solid var(--neutral-100);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background: var(--primary-50);
+        }
+
+        .result-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--neutral-100);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--neutral-500);
+        }
+
+        .result-info {
+            flex: 1;
+        }
+
+        .result-name {
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        .result-type {
+            font-size: 0.75rem;
+            color: var(--neutral-500);
+        }
+
+        /* Divider */
+        .divider-text {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .divider-text::before,
+        .divider-text::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--neutral-200);
+        }
+
+        .divider-text span {
+            font-size: 0.875rem;
+            color: var(--neutral-400);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Vehicle Types Grid */
+        .vehicle-types-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .vehicle-type-card {
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vehicle-type-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .vehicle-type-card:hover {
+            border-color: var(--primary-300);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .vehicle-type-card.selected {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .vehicle-type-card.selected::after {
+            content: '';
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 24px;
+            height: 24px;
+            background: var(--primary-500);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vehicle-type-icon {
+            font-size: 3rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .vehicle-type-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+            position: relative;
+            z-index: 1;
+        }
+
+        .vehicle-type-multiplier {
+            font-size: 0.75rem;
+            color: var(--neutral-500);
+            margin-top: 0.25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Skeleton Loaders */
+        .vehicle-type-skeleton,
+        .service-skeleton {
+            background: linear-gradient(90deg, var(--neutral-100) 25%, var(--neutral-200) 50%, var(--neutral-100) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: var(--radius-lg);
+            height: 140px;
+        }
+
+        .service-skeleton {
+            height: 180px;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        /* Saved Vehicles */
+        .saved-vehicles-section {
+            margin-bottom: 2rem;
+        }
+
+        .saved-vehicles-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .saved-vehicle-card {
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .saved-vehicle-card:hover {
+            border-color: var(--primary-300);
+            box-shadow: var(--shadow-md);
+        }
+
+        .saved-vehicle-card.selected {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .saved-vehicle-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--neutral-100);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .saved-vehicle-info {
+            flex: 1;
+        }
+
+        .saved-vehicle-name {
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        .saved-vehicle-type {
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+        }
+
+        .btn-add-new {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px dashed var(--neutral-300);
+            border-radius: var(--radius-lg);
+            background: transparent;
+            color: var(--neutral-500);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all var(--transition-base);
+        }
+
+        .btn-add-new:hover {
+            border-color: var(--primary-400);
+            color: var(--primary-600);
+            background: var(--primary-50);
+        }
+
+        .btn-add-new svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ============================================
+   STEP 2: SERVICES
+   ============================================ */
+        .services-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .service-card {
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            border-color: var(--primary-300);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .service-card.selected {
+            border-color: var(--primary-500);
+            background: linear-gradient(135deg, var(--primary-50) 0%, white 100%);
+        }
+
+        .service-card.popular::before {
+            content: '⭐ Most Popular';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--gradient-accent);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0 var(--radius-lg) 0 var(--radius-md);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        .service-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-600);
+        }
+
+        .service-price .original {
+            font-size: 0.875rem;
+            color: var(--neutral-400);
+            text-decoration: line-through;
+            margin-right: 0.25rem;
+        }
+
+        .service-description {
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+            margin-bottom: 0.75rem;
+        }
+
+        .service-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .feature-tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--neutral-100);
+            color: var(--neutral-600);
+            border-radius: var(--radius-full);
+        }
+
+        .service-card.selected .feature-tag {
+            background: var(--primary-100);
+            color: var(--primary-700);
+        }
+
+        /* ============================================
+   STEP 3: LOCATION
+   ============================================ */
+        .location-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .location-option-card {
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.75rem;
+            position: relative;
+        }
+
+        .location-option-card:hover {
+            border-color: var(--primary-300);
+        }
+
+        .location-option-card.active {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .option-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--neutral-100);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-500);
+            transition: all var(--transition-base);
+        }
+
+        .location-option-card.active .option-icon {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .option-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .option-content h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        .option-content p {
+            font-size: 0.75rem;
+            color: var(--neutral-500);
+        }
+
+        .option-check {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 24px;
+            height: 24px;
+            background: var(--primary-500);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            opacity: 0;
+            transform: scale(0);
+            transition: all var(--transition-base);
+        }
+
+        .location-option-card.active .option-check {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .option-check svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Location Detection Area */
+        .location-detect-area {
+            background: white;
+            border: 2px dashed var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .detect-status {
+            cursor: pointer;
+        }
+
+        .detect-animation {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detect-animation svg {
+            width: 32px;
+            height: 32px;
+            color: var(--primary-500);
+            position: relative;
+            z-index: 2;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--primary-300);
+            border-radius: var(--radius-full);
+            animation: detectPulse 2s ease-out infinite;
+        }
+
+        .pulse-ring:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .pulse-ring:nth-child(3) {
+            animation-delay: 0.8s;
+        }
+
+        @keyframes detectPulse {
+            0% {
+                transform: scale(0.5);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .detect-text {
+            color: var(--neutral-500);
+            font-size: 0.875rem;
+        }
+
+        .detect-status.loading .detect-text {
+            color: var(--primary-600);
+        }
+
+        .detect-status.loading .detect-animation svg {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Location Success */
+        .location-success {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.1) 0%, rgba(72, 187, 120, 0.05) 100%);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--success-400);
+        }
+
+        .success-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--success-500);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .success-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .success-content {
+            flex: 1;
+        }
+
+        .success-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--success-600);
+            margin-bottom: 0.25rem;
+        }
+
+        .detected-address {
+            font-size: 0.875rem;
+            color: var(--neutral-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .zone-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            background: var(--success-500);
+            color: white;
+            border-radius: var(--radius-full);
+        }
+
+        .zone-badge svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .btn-change-location {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: white;
+            color: var(--neutral-600);
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            transition: all var(--transition-base);
+            white-space: nowrap;
+        }
+
+        .btn-change-location:hover {
+            background: var(--neutral-100);
+        }
+
+        .btn-change-location svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Location Error */
+        .location-error {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(245, 101, 101, 0.1) 0%, rgba(245, 101, 101, 0.05) 100%);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--error-400);
+            text-align: center;
+        }
+
+        .error-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--error-500);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+
+        .error-icon svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .error-content h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--error-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .error-content p {
+            font-size: 0.875rem;
+            color: var(--neutral-600);
+            margin-bottom: 1rem;
+        }
+
+        .btn-try-manual {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: var(--error-500);
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all var(--transition-base);
+        }
+
+        .btn-try-manual:hover {
+            background: var(--error-600);
+            transform: translateY(-2px);
+        }
+
+        .btn-try-manual svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Manual Entry Area */
+        .manual-entry-area {
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--neutral-700);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-label svg {
+            width: 18px;
+            height: 18px;
+            color: var(--primary-500);
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            font-size: 1rem;
+            font-family: var(--font-body);
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+            background: white;
+            transition: all var(--transition-base);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-400);
+            box-shadow: 0 0 0 4px rgba(9, 103, 210, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper .select-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: var(--neutral-400);
+            pointer-events: none;
+        }
+
+        .form-select {
+            appearance: none;
+            padding-right: 3rem;
+            cursor: pointer;
+        }
+
+        .btn-confirm-address {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            transition: all var(--transition-base);
+        }
+
+        .btn-confirm-address:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-confirm-address svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ============================================
+   STEP 4: SCHEDULE
+   ============================================ */
+        .date-selection {
+            margin-bottom: 2rem;
+        }
+
+        /* Quick Dates */
+        .quick-dates {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .quick-date-card {
+            flex-shrink: 0;
+            min-width: 90px;
+            padding: 1rem;
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .quick-date-card:hover {
+            border-color: var(--primary-300);
+        }
+
+        .quick-date-card.selected {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .quick-date-card.today {
+            position: relative;
+        }
+
+        .quick-date-card.today::before {
+            content: 'Today';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.125rem 0.5rem;
+            background: var(--accent-500);
+            color: white;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+        }
+
+        .date-day {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--neutral-500);
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .date-num {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neutral-800);
+        }
+
+        .date-month {
+            font-size: 0.75rem;
+            color: var(--neutral-400);
+        }
+
+        .quick-date-card.selected .date-day,
+        .quick-date-card.selected .date-num,
+        .quick-date-card.selected .date-month {
+            color: var(--primary-600);
+        }
+
+        /* Show Calendar Button */
+        .btn-show-calendar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px dashed var(--neutral-300);
+            border-radius: var(--radius-md);
+            background: transparent;
+            color: var(--neutral-500);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .btn-show-calendar:hover {
+            border-color: var(--primary-400);
+            color: var(--primary-600);
+        }
+
+        .btn-show-calendar svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Calendar */
+        .calendar-container {
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .calendar-month {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        .calendar-nav {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--neutral-100);
+            border-radius: var(--radius-md);
+            color: var(--neutral-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+        }
+
+        .calendar-nav:hover {
+            background: var(--primary-50);
+            color: var(--primary-600);
+        }
+
+        .calendar-nav svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .calendar-weekdays span {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--neutral-400);
+            text-transform: uppercase;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--neutral-700);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .calendar-day:hover:not(.disabled):not(.selected) {
+            background: var(--neutral-100);
+        }
+
+        .calendar-day.today {
+            border: 2px solid var(--primary-400);
+        }
+
+        .calendar-day.selected {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .calendar-day.disabled {
+            color: var(--neutral-300);
+            cursor: not-allowed;
+        }
+
+        .calendar-day.other-month {
+            color: var(--neutral-300);
+        }
+
+        /* Time Selection */
+        .time-slots-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .time-slot {
+            padding: 0.875rem;
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .time-slot:hover:not(.disabled) {
+            border-color: var(--primary-300);
+        }
+
+        .time-slot.selected {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .time-slot.disabled {
+            background: var(--neutral-100);
+            color: var(--neutral-400);
+            cursor: not-allowed;
+        }
+
+        .time-slot-time {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        .time-slot.selected .time-slot-time {
+            color: var(--primary-600);
+        }
+
+        .time-slot.disabled .time-slot-time {
+            color: var(--neutral-400);
+        }
+
+        .time-slot-label {
+            font-size: 0.7rem;
+            color: var(--neutral-500);
+            text-transform: uppercase;
+            margin-top: 0.125rem;
+        }
+
+        /* ============================================
+   STEP 5: CONFIRMATION
+   ============================================ */
+
+        /* User Details Section */
+        .user-details-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .user-form {
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        /* Landmark Section */
+        .landmark-section {
+            background: linear-gradient(135deg, rgba(9, 103, 210, 0.08) 0%, rgba(9, 103, 210, 0.03) 100%);
+            border: 2px solid var(--primary-200);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .landmark-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .landmark-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-500);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .landmark-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .landmark-text h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        .landmark-text p {
+            font-size: 0.75rem;
+            color: var(--neutral-500);
+        }
+
+        .landmark-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .landmark-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 0.875rem;
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--neutral-700);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .landmark-chip:hover {
+            border-color: var(--primary-300);
+        }
+
+        .landmark-chip.selected {
+            border-color: var(--primary-500);
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .chip-icon {
+            font-size: 1rem;
+        }
+
+        .landmark-input-wrapper {
+            margin-top: 0.75rem;
+        }
+
+        .landmark-input {
+            background: white;
+        }
+
+        /* Booking Summary */
+        .booking-summary {
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-card {
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .summary-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--neutral-100);
+        }
+
+        .summary-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .summary-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--neutral-100);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-500);
+            flex-shrink: 0;
+        }
+
+        .summary-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .summary-content {
+            flex: 1;
+        }
+
+        .summary-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--neutral-500);
+            margin-bottom: 0.125rem;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        .summary-divider {
+            height: 1px;
+            background: var(--neutral-200);
+            margin: 0 1.25rem;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+            background: var(--neutral-50);
+        }
+
+        .total-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--neutral-700);
+        }
+
+        .total-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-600);
+        }
+
+        /* Payment Options */
+        .payment-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-options {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .payment-option {
+            cursor: pointer;
+        }
+
+        .payment-option input {
+            display: none;
+        }
+
+        .payment-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            transition: all var(--transition-base);
+        }
+
+        .payment-option:hover .payment-card {
+            border-color: var(--primary-300);
+        }
+
+        .payment-option input:checked+.payment-card {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .payment-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--neutral-100);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-500);
+            transition: all var(--transition-base);
+        }
+
+        .payment-option input:checked+.payment-card .payment-icon {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .payment-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .payment-info {
+            flex: 1;
+        }
+
+        .payment-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        .payment-info p {
+            font-size: 0.75rem;
+            color: var(--neutral-500);
+        }
+
+        .payment-badge {
+            padding: 0.25rem 0.625rem;
+            background: var(--gradient-accent);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: var(--radius-full);
+        }
+
+        /* ============================================
+   NAVIGATION BUTTONS
+   ============================================ */
+        .booking-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--neutral-200);
+            padding: 1rem 1.5rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 80;
+        }
+
+        .btn-back,
+        .btn-next,
+        .btn-confirm {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all var(--transition-base);
+        }
+
+        .btn-back {
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+            flex: 0 0 auto;
+        }
+
+        .btn-back:hover {
+            background: var(--neutral-200);
+        }
+
+        .btn-next {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(9, 103, 210, 0.3);
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(9, 103, 210, 0.4);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-confirm {
+            background: var(--success-500);
+            color: white;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-confirm:hover {
+            background: var(--success-600);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+        }
+
+        .btn-back svg,
+        .btn-next svg,
+        .btn-confirm svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ============================================
+   LOADING OVERLAY
+   ============================================ */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loader {
+            text-align: center;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--neutral-200);
+            border-top-color: var(--primary-500);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        .loader-text {
+            font-size: 1rem;
+            color: var(--neutral-600);
+            font-weight: 500;
+        }
+
+        /* ============================================
+   SUCCESS MODAL
+   ============================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            animation: modalIn 0.4s ease-out;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .success-animation {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .success-checkmark {
+            width: 100px;
+            height: 100px;
+            background: var(--success-500);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .success-checkmark svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .success-modal h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neutral-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .success-modal p {
+            color: var(--neutral-500);
+            margin-bottom: 1.5rem;
+        }
+
+        .booking-id {
+            background: var(--neutral-100);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            color: var(--neutral-600);
+            margin-bottom: 1.5rem;
+        }
+
+        .booking-id strong {
+            color: var(--primary-600);
+        }
+
+        .success-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-home,
+        .btn-track {
+            flex: 1;
+            padding: 0.875rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+            text-decoration: none;
+            transition: all var(--transition-base);
+        }
+
+        .btn-home {
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+            border: none;
+        }
+
+        .btn-home:hover {
+            background: var(--neutral-200);
+        }
+
+        .btn-track {
+            background: var(--primary-500);
+            color: white;
+            border: none;
+        }
+
+        .btn-track:hover {
+            background: var(--primary-600);
+        }
+
+        .btn-home svg,
+        .btn-track svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+        .toast-container {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 250;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            padding: 0.875rem 1.25rem;
+            background: var(--neutral-800);
+            color: white;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-xl);
+            animation: toastIn 0.3s ease-out;
+        }
+
+        .toast.success {
+            background: var(--success-500);
+        }
+
+        .toast.error {
+            background: var(--error-500);
+        }
+
+        .toast svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+        @media (max-width: 768px) {
+
+            /* Header */
+            .logo-subtitle {
+                display: none;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            /* Steps - Show mobile counter */
+            .steps-wrapper {
+                display: none;
+            }
+
+            .step-counter-mobile {
+                display: flex;
+            }
+
+            /* Progress Dots for Mobile */
+            .progress-container::after {
+                content: '';
+                display: flex;
+                justify-content: center;
+                gap: 0.5rem;
+                margin-top: 0.75rem;
+            }
+
+            .steps-wrapper-mobile {
+                display: flex;
+                justify-content: center;
+                gap: 0.5rem;
+                padding-top: 0.75rem;
+            }
+
+            .step-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: var(--radius-full);
+                background: var(--neutral-300);
+                transition: all var(--transition-base);
+            }
+
+            .step-dot.active {
+                width: 24px;
+                background: var(--primary-500);
+            }
+
+            .step-dot.completed {
+                background: var(--success-500);
+            }
+
+            /* Content */
+            .booking-content {
+                padding: 1.5rem 1rem 6rem;
+            }
+
+            .step-title {
+                font-size: 1.5rem;
+            }
+
+            /* Vehicle Types */
+            .vehicle-types-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Location Options */
+            .location-options {
+                grid-template-columns: 1fr;
+            }
+
+            /* Time Slots */
+            .time-slots-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Location Success */
+            .location-success {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .btn-change-location {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .vehicle-type-card {
+                padding: 1rem;
+            }
+
+            .vehicle-type-icon {
+                font-size: 2.5rem;
+            }
+
+            .quick-date-card {
+                min-width: 75px;
+                padding: 0.75rem;
+            }
+
+            .date-num {
+                font-size: 1.25rem;
+            }
+
+            .landmark-chips {
+                gap: 0.375rem;
+            }
+
+            .landmark-chip {
+                padding: 0.375rem 0.625rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Hide scrollbar but allow scrolling */
+        .quick-dates::-webkit-scrollbar {
+            display: none;
+        }
+
+        .quick-dates {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+    </div>
+
+    <!-- Modern Header -->
+    <header class="booking-header">
+        <div class="header-content">
+            <a href="/" class="header-logo">
+                <div class="logo-icon">
+                    <i data-lucide="droplets"></i>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">Tip-Top</span>
+                    <span class="logo-subtitle">Car Wash</span>
+                </div>
+            </a>
+
+            <div class="header-actions">
+                <button class="btn-icon" id="helpBtn" title="Need Help?">
+                    <i data-lucide="headphones"></i>
+                </button>
+                <div class="user-profile" id="userProfile">
+                    <div class="user-avatar">
+                        <i data-lucide="user"></i>
+                    </div>
+                    <span class="user-name" id="userName">Guest</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Booking Container -->
+    <main class="booking-main">
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <div class="progress-container">
+                <!-- Modern Step Indicators -->
+                <div class="steps-wrapper">
+                    <div class="step-item active" data-step="1">
+                        <div class="step-icon-wrapper">
+                            <div class="step-icon">
+                                <i data-lucide="car"></i>
+                            </div>
+                            <div class="step-pulse"></div>
+                        </div>
+                        <span class="step-label">Vehicle</span>
+                    </div>
+
+                    <div class="step-connector">
+                        <div class="connector-line"></div>
+                        <div class="connector-progress"></div>
+                    </div>
+
+                    <div class="step-item" data-step="2">
+                        <div class="step-icon-wrapper">
+                            <div class="step-icon">
+                                <i data-lucide="sparkles"></i>
+                            </div>
+                            <div class="step-pulse"></div>
+                        </div>
+                        <span class="step-label">Service</span>
+                    </div>
+
+                    <div class="step-connector">
+                        <div class="connector-line"></div>
+                        <div class="connector-progress"></div>
+                    </div>
+
+                    <div class="step-item" data-step="3">
+                        <div class="step-icon-wrapper">
+                            <div class="step-icon">
+                                <i data-lucide="map-pin"></i>
+                            </div>
+                            <div class="step-pulse"></div>
+                        </div>
+                        <span class="step-label">Location</span>
+                    </div>
+
+                    <div class="step-connector">
+                        <div class="connector-line"></div>
+                        <div class="connector-progress"></div>
+                    </div>
+
+                    <div class="step-item" data-step="4">
+                        <div class="step-icon-wrapper">
+                            <div class="step-icon">
+                                <i data-lucide="calendar-clock"></i>
+                            </div>
+                            <div class="step-pulse"></div>
+                        </div>
+                        <span class="step-label">Schedule</span>
+                    </div>
+
+                    <div class="step-connector">
+                        <div class="connector-line"></div>
+                        <div class="connector-progress"></div>
+                    </div>
+
+                    <div class="step-item" data-step="5">
+                        <div class="step-icon-wrapper">
+                            <div class="step-icon">
+                                <i data-lucide="check-circle"></i>
+                            </div>
+                            <div class="step-pulse"></div>
+                        </div>
+                        <span class="step-label">Confirm</span>
+                    </div>
+                </div>
+
+                <!-- Step Counter Mobile -->
+                <div class="step-counter-mobile">
+                    <span class="current-step">1</span>
+                    <span class="step-divider">/</span>
+                    <span class="total-steps">5</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Content Area -->
+        <div class="booking-content">
+            <!-- Step 1: Vehicle Selection -->
+            <section class="step-panel active" id="step1">
+                <div class="step-header">
+                    <div class="step-title-group">
+                        <span class="step-number">01</span>
+                        <h2 class="step-title">Select Your Vehicle</h2>
+                    </div>
+                    <p class="step-description">Choose your vehicle type to see tailored services</p>
+                </div>
+
+                <div class="step-body">
+                    <!-- Saved Vehicles for Returning Users -->
+                    <div class="saved-vehicles-section" id="savedVehiclesSection" style="display: none;">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i data-lucide="history"></i>
+                                Your Vehicles
+                            </h3>
+                        </div>
+                        <div class="saved-vehicles-grid" id="savedVehiclesGrid">
+                            <!-- Populated dynamically -->
+                        </div>
+                        <button class="btn-add-new" id="addNewVehicleBtn">
+                            <i data-lucide="plus-circle"></i>
+                            Add New Vehicle
+                        </button>
+                    </div>
+
+                    <!-- New Vehicle Selection -->
+                    <div class="new-vehicle-section" id="newVehicleSection">
+                        <!-- Search Bar -->
+                        <div class="search-container">
+                            <div class="search-input-wrapper">
+                                <i data-lucide="search" class="search-icon"></i>
+                                <input type="text" id="carSearchInput" class="search-input"
+                                    placeholder="Search your car model..." autocomplete="off">
+                                <button class="search-clear" id="searchClear" style="display: none;">
+                                    <i data-lucide="x"></i>
+                                </button>
+                            </div>
+                            <div class="search-results" id="searchResults"></div>
+                        </div>
+
+                        <div class="divider-text">
+                            <span>or select vehicle type</span>
+                        </div>
+
+                        <!-- Vehicle Type Cards -->
+                        <div class="vehicle-types-grid" id="vehicleTypesGrid">
+                            <!-- Populated from API -->
+                            <div class="vehicle-type-skeleton"></div>
+                            <div class="vehicle-type-skeleton"></div>
+                            <div class="vehicle-type-skeleton"></div>
+                            <div class="vehicle-type-skeleton"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Service Selection -->
+            <section class="step-panel" id="step2">
+                <div class="step-header">
+                    <div class="step-title-group">
+                        <span class="step-number">02</span>
+                        <h2 class="step-title">Choose Your Service</h2>
+                    </div>
+                    <p class="step-description">Select the perfect wash for your <span
+                            id="selectedVehicleType">vehicle</span></p>
+                </div>
+
+                <div class="step-body">
+                    <div class="services-grid" id="servicesGrid">
+                        <!-- Populated from API -->
+                        <div class="service-skeleton"></div>
+                        <div class="service-skeleton"></div>
+                        <div class="service-skeleton"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Location -->
+            <section class="step-panel" id="step3">
+                <div class="step-header">
+                    <div class="step-title-group">
+                        <span class="step-number">03</span>
+                        <h2 class="step-title">Set Your Location</h2>
+                    </div>
+                    <p class="step-description">Tell us where to come for your doorstep wash</p>
+                </div>
+
+                <div class="step-body">
+                    <!-- Location Options -->
+                    <div class="location-options">
+                        <button class="location-option-card active" id="detectLocationBtn">
+                            <div class="option-icon">
+                                <i data-lucide="locate-fixed"></i>
+                            </div>
+                            <div class="option-content">
+                                <h4>Use Current Location</h4>
+                                <p>We'll detect your location automatically</p>
+                            </div>
+                            <div class="option-check">
+                                <i data-lucide="check"></i>
+                            </div>
+                        </button>
+
+                        <button class="location-option-card" id="manualLocationBtn">
+                            <div class="option-icon">
+                                <i data-lucide="pencil-line"></i>
+                            </div>
+                            <div class="option-content">
+                                <h4>Enter Manually</h4>
+                                <p>Type your address and select zone</p>
+                            </div>
+                            <div class="option-check">
+                                <i data-lucide="check"></i>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Auto Detection Area -->
+                    <div class="location-detect-area" id="locationDetectArea">
+                        <div class="detect-status" id="detectStatus">
+                            <div class="detect-animation">
+                                <div class="pulse-ring"></div>
+                                <div class="pulse-ring"></div>
+                                <div class="pulse-ring"></div>
+                                <i data-lucide="map-pin"></i>
+                            </div>
+                            <p class="detect-text">Click to detect your location</p>
+                        </div>
+
+                        <!-- Location Success -->
+                        <div class="location-success" id="locationSuccess" style="display: none;">
+                            <div class="success-icon">
+                                <i data-lucide="check-circle-2"></i>
+                            </div>
+                            <div class="success-content">
+                                <h4>Location Detected!</h4>
+                                <p class="detected-address" id="detectedAddress">-</p>
+                                <span class="zone-badge" id="zoneBadge">
+                                    <i data-lucide="map"></i>
+                                    <span id="zoneName">-</span>
+                                </span>
+                            </div>
+                            <button class="btn-change-location" id="changeLocationBtn">
+                                <i data-lucide="edit-3"></i>
+                                Change
+                            </button>
+                        </div>
+
+                        <!-- Location Error / Outside Zone -->
+                        <div class="location-error" id="locationError" style="display: none;">
+                            <div class="error-icon">
+                                <i data-lucide="map-pin-off"></i>
+                            </div>
+                            <div class="error-content">
+                                <h4>Outside Service Area</h4>
+                                <p>We're expanding soon! Please enter your address manually to check availability.</p>
+                            </div>
+                            <button class="btn-try-manual" id="tryManualBtn">
+                                <i data-lucide="edit-3"></i>
+                                Enter Manually
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Manual Entry Area -->
+                    <div class="manual-entry-area" id="manualEntryArea" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i data-lucide="map"></i>
+                                Select Service Zone
+                            </label>
+                            <div class="select-wrapper">
+                                <select id="zoneSelect" class="form-select">
+                                    <option value="">Loading zones...</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="select-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i data-lucide="home"></i>
+                                Full Address
+                            </label>
+                            <textarea id="manualAddress" class="form-textarea"
+                                placeholder="Enter your complete address..." rows="3"></textarea>
+                        </div>
+
+                        <button class="btn-confirm-address" id="confirmAddressBtn">
+                            <i data-lucide="check"></i>
+                            Confirm Address
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 4: Schedule -->
+            <section class="step-panel" id="step4">
+                <div class="step-header">
+                    <div class="step-title-group">
+                        <span class="step-number">04</span>
+                        <h2 class="step-title">Pick Date & Time</h2>
+                    </div>
+                    <p class="step-description">When should we arrive?</p>
+                </div>
+
+                <div class="step-body">
+                    <!-- Date Selection -->
+                    <div class="date-selection">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i data-lucide="calendar"></i>
+                                Select Date
+                            </h3>
+                        </div>
+
+                        <!-- Quick Date Options -->
+                        <div class="quick-dates" id="quickDates">
+                            <!-- Populated dynamically -->
+                        </div>
+
+                        <!-- Calendar Toggle -->
+                        <button class="btn-show-calendar" id="showCalendarBtn">
+                            <i data-lucide="calendar-range"></i>
+                            Choose another date
+                        </button>
+
+                        <!-- Full Calendar -->
+                        <div class="calendar-container" id="calendarContainer" style="display: none;">
+                            <div class="calendar-header">
+                                <button class="calendar-nav" id="prevMonth">
+                                    <i data-lucide="chevron-left"></i>
+                                </button>
+                                <h4 class="calendar-month" id="calendarMonth">February 2026</h4>
+                                <button class="calendar-nav" id="nextMonth">
+                                    <i data-lucide="chevron-right"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-weekdays">
+                                <span>Sun</span>
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+                            </div>
+                            <div class="calendar-days" id="calendarDays">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time Selection -->
+                    <div class="time-selection">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i data-lucide="clock"></i>
+                                Select Time
+                            </h3>
+                        </div>
+
+                        <div class="time-slots-grid" id="timeSlotsGrid">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 5: Confirmation -->
+            <section class="step-panel" id="step5">
+                <div class="step-header">
+                    <div class="step-title-group">
+                        <span class="step-number">05</span>
+                        <h2 class="step-title">Confirm Booking</h2>
+                    </div>
+                    <p class="step-description">Review your details and complete booking</p>
+                </div>
+
+                <div class="step-body">
+                    <!-- User Details for New Users -->
+                    <div class="user-details-section" id="userDetailsSection" style="display: none;">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i data-lucide="user-circle"></i>
+                                Your Details
+                            </h3>
+                        </div>
+                        <div class="user-form">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" id="customerName" class="form-input" placeholder="Enter your name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email (Optional)</label>
+                                <input type="email" id="customerEmail" class="form-input"
+                                    placeholder="Enter email for receipt">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Landmark Section -->
+                    <div class="landmark-section">
+                        <div class="landmark-header">
+                            <div class="landmark-icon">
+                                <i data-lucide="navigation"></i>
+                            </div>
+                            <div class="landmark-text">
+                                <h4>Help our driver find you easily</h4>
+                                <p>Select a nearby landmark (Optional but recommended)</p>
+                            </div>
+                        </div>
+
+                        <div class="landmark-chips" id="landmarkChips">
+                            <button class="landmark-chip" data-landmark="temple">
+                                <span class="chip-icon">🛕</span>
+                                <span>Temple</span>
+                            </button>
+                            <button class="landmark-chip" data-landmark="mosque">
+                                <span class="chip-icon">🕌</span>
+                                <span>Mosque</span>
+                            </button>
+                            <button class="landmark-chip" data-landmark="school">
+                                <span class="chip-icon">🏫</span>
+                                <span>School</span>
+                            </button>
+                            <button class="landmark-chip" data-landmark="market">
+                                <span class="chip-icon">🏪</span>
+                                <span>Market</span>
+                            </button>
+                            <button class="landmark-chip" data-landmark="petrol">
+                                <span class="chip-icon">⛽</span>
+                                <span>Petrol Pump</span>
+                            </button>
+                            <button class="landmark-chip" data-landmark="hospital">
+                                <span class="chip-icon">🏥</span>
+                                <span>Hospital</span>
+                            </button>
+                            <button class="landmark-chip" data-landmark="bank">
+                                <span class="chip-icon">🏦</span>
+                                <span>Bank</span>
+                            </button>
+                            <button class="landmark-chip" data-landmark="other">
+                                <span class="chip-icon">📍</span>
+                                <span>Other</span>
+                            </button>
+                        </div>
+
+                        <div class="landmark-input-wrapper" id="landmarkInputWrapper" style="display: none;">
+                            <input type="text" id="landmarkInput" class="form-input landmark-input"
+                                placeholder="Enter landmark name...">
+                        </div>
+                    </div>
+
+                    <!-- Booking Summary -->
+                    <div class="booking-summary">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i data-lucide="receipt"></i>
+                                Booking Summary
+                            </h3>
+                        </div>
+
+                        <div class="summary-card">
+                            <div class="summary-row">
+                                <div class="summary-icon">
+                                    <i data-lucide="car"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <span class="summary-label">Vehicle</span>
+                                    <span class="summary-value" id="summaryVehicle">-</span>
+                                </div>
+                            </div>
+
+                            <div class="summary-row">
+                                <div class="summary-icon">
+                                    <i data-lucide="sparkles"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <span class="summary-label">Service</span>
+                                    <span class="summary-value" id="summaryService">-</span>
+                                </div>
+                            </div>
+
+                            <div class="summary-row">
+                                <div class="summary-icon">
+                                    <i data-lucide="map-pin"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <span class="summary-label">Location</span>
+                                    <span class="summary-value" id="summaryLocation">-</span>
+                                </div>
+                            </div>
+
+                            <div class="summary-row">
+                                <div class="summary-icon">
+                                    <i data-lucide="calendar-clock"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <span class="summary-label">Schedule</span>
+                                    <span class="summary-value" id="summarySchedule">-</span>
+                                </div>
+                            </div>
+
+                            <div class="summary-divider"></div>
+
+                            <div class="summary-total">
+                                <span class="total-label">Total Amount</span>
+                                <span class="total-value" id="summaryTotal">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Options -->
+                    <div class="payment-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i data-lucide="wallet"></i>
+                                Payment Method
+                            </h3>
+                        </div>
+
+                        <div class="payment-options">
+                            <label class="payment-option active">
+                                <input type="radio" name="paymentMethod" value="cash" checked>
+                                <div class="payment-card">
+                                    <div class="payment-icon">
+                                        <i data-lucide="banknote"></i>
+                                    </div>
+                                    <div class="payment-info">
+                                        <h4>Pay After Service</h4>
+                                        <p>Cash payment after wash</p>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="online">
+                                <div class="payment-card">
+                                    <div class="payment-icon">
+                                        <i data-lucide="smartphone"></i>
+                                    </div>
+                                    <div class="payment-info">
+                                        <h4>Pay Online</h4>
+                                        <p>UPI / Card</p>
+                                    </div>
+                                    <div class="payment-badge">7% OFF</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Buttons -->
+            <div class="booking-navigation">
+                <button class="btn-back" id="backBtn" style="display: none;">
+                    <i data-lucide="arrow-left"></i>
+                    <span>Back</span>
+                </button>
+
+                <button class="btn-next" id="nextBtn">
+                    <span>Continue</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
+
+                <button class="btn-confirm" id="confirmBtn" style="display: none;">
+                    <i data-lucide="check-circle"></i>
+                    <span>Confirm Booking</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader">
+            <div class="loader-spinner"></div>
+            <p class="loader-text">Processing...</p>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content success-modal">
+            <div class="success-animation">
+                <div class="success-checkmark">
+                    <i data-lucide="check"></i>
+                </div>
+                <div class="confetti"></div>
+            </div>
+            <h2>Booking Confirmed! 🎉</h2>
+            <p>Your doorstep car wash is scheduled</p>
+            <div class="booking-id">
+                Booking ID: <strong id="bookingIdDisplay">#TTC-XXXX</strong>
+            </div>
+            <div class="success-actions">
+                <a href="/" class="btn-home">
+                    <i data-lucide="home"></i>
+                    Back to Home
+                </a>
+                <button class="btn-track" id="trackBookingBtn">
+                    <i data-lucide="map-pin"></i>
+                    Track Booking
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Authentication Scripts (MUST load first) -->
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/auth-guard.js"></script>
+
+    <!-- Booking Scripts -->
+    <script src="new-config.js"></script>
+    <script src="booking-flow.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

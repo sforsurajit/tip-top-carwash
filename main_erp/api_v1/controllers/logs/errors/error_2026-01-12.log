@@ -1,0 +1,23 @@
+[2026-01-12 21:07:08] File: /home/u341108544/domains/tip-topcarwash.in/public_html/main_erp/api_v1/controllers/VehicleController.php, Line: 120, Message: Received vehicle data: Array
+(
+    [customer_id] => 3
+    [make] => maruti 800
+    [model] => base
+    [license_plate] => as168971
+    [type] => hatchback
+    [year] => 2020
+    [color] => white
+)
+
+[2026-01-12 21:07:08] File: /home/u341108544/domains/tip-topcarwash.in/public_html/main_erp/api_v1/controllers/VehicleController.php, Line: 150, Message: Attempting to create vehicle with data: Array
+(
+    [customer_id] => 3
+    [make] => maruti 800
+    [model] => base
+    [license_plate] => as168971
+    [type] => hatchback
+    [year] => 2020
+    [color] => white
+)
+
+[2026-01-12 21:07:08] File: /home/u341108544/domains/tip-topcarwash.in/public_html/main_erp/api_v1/controllers/VehicleController.php, Line: 156, Message: Vehicle created successfully with ID: 12

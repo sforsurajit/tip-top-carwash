@@ -1,0 +1,76 @@
+doorstep-car-wash/
+│
+├── index.html (UPDATED)
+├── .htaccess (NEW)
+├── .env.example (NEW)
+├── .gitignore (NEW)
+├── security.txt (NEW)
+├── manifest.json
+│
+├── assets/
+│   ├── css/
+│   │   ├── main.css
+│   │   ├── header.css
+│   │   ├── hero.css
+│   │   ├── services.css
+│   │   ├── products.css
+│   │   ├── categories.css
+│   │   ├── why-choose-us.css
+│   │   ├── testimonials.css
+│   │   ├── cta.css
+│   │   ├── footer.css
+│   │   └── responsive.css
+│   │
+│   ├── js/
+│   │   ├── main.js (UPDATED)
+│   │   ├── header.js (UPDATED)
+│   │   ├── hero.js
+│   │   ├── services.js
+│   │   ├── products.js (UPDATED)
+│   │   ├── categories.js
+│   │   ├── booking.js (UPDATED)
+│   │   ├── auth.js (UPDATED)
+│   │   ├── utils.js (UPDATED)
+│   │   ├── security.js (NEW)
+│   │   ├── rate-limiter.js (NEW)
+│   │   └── validator.js (NEW)
+│   │
+│   ├── images/
+│   │   ├── logo.png
+│   │   ├── hero/
+│   │   ├── services/
+│   │   ├── products/
+│   │   ├── categories/
+│   │   └── testimonials/
+│   │
+│   └── icons/
+│
+├── components/
+│   ├── header.html
+│   ├── hero.html
+│   ├── services.html
+│   ├── products.html
+│   ├── categories.html
+│   ├── why-choose-us.html
+│   ├── testimonials.html
+│   ├── cta.html
+│   └── footer.html
+│
+├── api/
+│   ├── config.js (UPDATED)
+│   ├── auth.js (UPDATED)
+│   ├── services.js (UPDATED)
+│   ├── products.js (UPDATED)
+│   ├── categories.js (UPDATED)
+│   ├── booking.js (UPDATED)
+│   ├── user.js (UPDATED)
+│   └── interceptor.js (NEW)
+├── pages/
+│   ├── booking.html
+│   ├── auth.html
+│   ├── services.html
+│   ├── products.html
+│   └── profile.html
+│
+└── docs/
+    └── SECURITY.md (NEW)

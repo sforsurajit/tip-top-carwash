@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Auth Modal</title>
+    <link rel="stylesheet" href="assets/css/auth-modal.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .test-btn {
+            padding: 12px 24px;
+            background: #f97316;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Auth Modal Test Page</h1>
+    <button class="test-btn" onclick="openModal()">Open Auth Modal</button>
+
+    <!-- Auth Modal Container -->
+    <div id="auth-modal-container"></div>
+
+    <script src="api/config.js"></script>
+    <script src="assets/js/auth.js"></script>
+
+    <script>
+        // Load auth modal component
+        fetch('components/auth-modal.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('auth-modal-container').innerHTML = data;
+                console.log('Auth modal loaded');
+            })
+            .catch(error => console.error('Error loading auth modal:', error));
+
+        function openModal() {
+            if (window.AuthSystem && typeof window.AuthSystem.openAuthModal === 'function') {
+                window.AuthSystem.openAuthModal();
+            } else {
+                alert('AuthSystem not loaded yet. Wait a moment and try again.');
+            }
+        }
+    </script>
+</body>
+
+</html>

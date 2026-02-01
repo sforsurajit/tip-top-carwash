@@ -1,0 +1,330 @@
+curl -X POST "https://tip-topcarwash.in/main_erp/api_v1/auth/register" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "phone": "8135892720",
+    "name": "John Doe",
+    "email": "john.doe@example.com"
+  }'
+
+{
+    "success": true,
+    "message": "Registration successful",
+    "data": {
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMSwibmFtZSI6IkpvaG4gRG9lIiwicGhvbmUiOiI4MTM1ODkyNzIwIiwiZW1haWwiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImF1dGhfdHlwZSI6InBob25lX290cCIsImlhdCI6MTc2OTc5MTk1MCwiZXhwIjoxNzY5ODc4MzUwfQ.nwoLANpEE2DgXlWdGnZr8VB2vHoiAkvoHHUlt8KBTrs",
+        "auth_type": "phone_otp",
+        "user": {
+            "id": 31,
+            "name": "John Doe",
+            "phone": "8135892720",
+            "email": "john.doe@example.com",
+            "profile_image": null,
+            "status": "active",
+            "created_at": "2026-01-30 16:52:30"
+        }
+    },
+    "timestamp": "2026-01-30 16:52:30"
+}
+//Create Booking for the user
+
+curl -X POST "https://tip-topcarwash.in/main_erp/api_v1/bookings/" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJuYW1lIjoiVGVzdCBtYWxlbiIsImVtYWlsIjoibUBnbWFpbC5jb20iLCJ1c2VyX3R5cGUiOiJkcml2ZXIiLCJpbnN0aXR1dGlvbl9pZCI6MywiYXV0aF90eXBlIjoib3JnYW5pemF0aW9uIiwib3JnYW5pemF0aW9uX2lkIjozLCJpYXQiOjE3Njc4MDU0NTYsImV4cCI6MTc2Nzg5MTg1Nn0.UFXU3_EMLdQFUt4q5GbkxZR19qai_YKcJ_GVOG0RC1k" \
+  -d '{
+    "customer_id":2,
+    "vehicle_id": 1,
+    "service_ids": [1, 3],
+    "booking_date": "2026-01-10",
+    "start_time": "09:00:00",
+    "end_time": "10:00:00",
+    "address": "Magurmari, Kokrajhar",
+    "latitude": 26.401150644506842,
+    "longitude": 90.26834889543073,
+    "total_price": 350
+  }'
+"{
+    "success": true,
+    "message": "Booking created successfully",
+    "data": {
+        "message": "Booking created successfully"
+    },
+    "timestamp": "2026-01-07 17:30:12"
+}"
+
+//view vehicle added by the customer here 2 is the customer id 
+curl -X GET "https://tip-topcarwash.in/main_erp/api_v1/vehicles/2" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJuYW1lIjoiVGVzdCBtYWxlbiIsImVtYWlsIjoibUBnbWFpbC5jb20iLCJ1c2VyX3R5cGUiOiJkcml2ZXIiLCJpbnN0aXR1dGlvbl9pZCI6MywiYXV0aF90eXBlIjoib3JnYW5pemF0aW9uIiwib3JnYW5pemF0aW9uX2lkIjozLCJpYXQiOjE3Njc4MDgzNzQsImV4cCI6MTc2Nzg5NDc3NH0.8Bkq67zeWJW6ltyDxvM0dJJyzmrBxJG8v8_1m-WjCiw" \
+  -d '{
+  }'
+"{
+    "success": true,
+    "message": "Vehicles retrieved successfully",
+    "data": {
+        "vehicles": [{
+            "id": 1,
+            "customer_id": "2",
+            "make": "Toyota",
+            "model": "Camry",
+            "year": "2020",
+            "color": "white",
+            "license_plate": "ABC-1234",
+            "type": "sedan"
+        }, {
+            "id": 4,
+            "customer_id": "2",
+            "make": "Toyota",
+            "model": "Camry",
+            "year": "2020",
+            "color": "white",
+            "license_plate": "ABC-12",
+            "type": "sedan"
+        }, {
+            "id": 5,
+            "customer_id": "2",
+            "make": "Toyota",
+            "model": "Camry",
+            "year": "2020",
+            "color": "white",
+            "license_plate": "ABC-12345",
+            "type": "sedan"
+        }, {
+            "id": 6,
+            "customer_id": "2",
+            "make": "Toyota",
+            "model": "Camry",
+            "year": "2020",
+            "color": "white",
+            "license_plate": "ABC-123456",
+            "type": "sedan"
+        }, {
+            "id": 7,
+            "customer_id": "2",
+            "make": "Toyota",
+            "model": "Camry",
+            "year": "2020",
+            "color": "white",
+            "license_plate": "ABC-1123456",
+            "type": "sedan"
+        }, {
+            "id": 8,
+            "customer_id": "2",
+            "make": "Toyota",
+            "model": "Camry",
+            "year": "2020",
+            "color": "white",
+            "license_plate": "ABC-11223456",
+            "type": "sedan"
+        }, {
+            "id": 9,
+            "customer_id": "2",
+            "make": "Toyota",
+            "model": "Camry",
+            "year": "2020",
+            "color": "white",
+            "license_plate": "ABC-112223456",
+            "type": "sedan"
+        }, {
+            "id": 10,
+            "customer_id": "2",
+            "make": "Toyota",
+            "model": "Camry",
+            "year": "2020",
+            "color": "white",
+            "license_plate": "ABC-3456",
+            "type": "sedan"
+        }, {
+            "id": 11,
+            "customer_id": "2",
+            "make": "Toyota",
+            "model": "Camry",
+            "year": "2020",
+            "color": "white",
+            "license_plate": "ABC-356",
+            "type": "sedan"
+        }],
+        "total": 9,
+        "customer_id": "2"
+    },
+    "timestamp": "2026-01-08 05:22:15"
+}"
+
+// add vehicle by the customer 
+"curl -X POST "https://tip-topcarwash.in/main_erp/api_v1/vehicles/" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJuYW1lIjoiVGVzdCBtYWxlbiIsImVtYWlsIjoibUBnbWFpbC5jb20iLCJ1c2VyX3R5cGUiOiJkcml2ZXIiLCJpbnN0aXR1dGlvbl9pZCI6MywiYXV0aF90eXBlIjoib3JnYW5pemF0aW9uIiwib3JnYW5pemF0aW9uX2lkIjozLCJpYXQiOjE3Njc4MDgzNzQsImV4cCI6MTc2Nzg5NDc3NH0.8Bkq67zeWJW6ltyDxvM0dJJyzmrBxJG8v8_1m-WjCiw" \
+  -d '{
+    "customer_id" :2,
+    "make": "Toyota",
+    "model": "Camry",
+    "license_plate": "ABC-356",
+    "type": "sedan",
+    "year": 2020,
+    "color": "white"
+  }'"
+"{
+    "success": true,
+    "message": "Vehicle created successfully",
+    "data": {
+        "vehicle_id": "11",
+        "vehicle": {
+            "customer_id": 2,
+            "make": "Toyota",
+            "model": "Camry",
+            "license_plate": "ABC-356",
+            "type": "sedan",
+            "year": 2020,
+            "color": "white",
+            "id": "11"
+        }
+    },
+    "timestamp": "2026-01-08 05:12:41"
+}"
+
+
+//view my bookings 
+curl -X POST "https://tip-topcarwash.in/main_erp/api_v1/bookings/customer-bookings" \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJuYW1lIjoiVGVzdCBtYWxlbiIsImVtYWlsIjoibUBnbWFpbC5jb20iLCJ1c2VyX3R5cGUiOiJkcml2ZXIiLCJpbnN0aXR1dGlvbl9pZCI6MywiYXV0aF90eXBlIjoib3JnYW5pemF0aW9uIiwib3JnYW5pemF0aW9uX2lkIjozLCJpYXQiOjE3Njc5NTk1NDUsImV4cCI6MTc2ODA0NTk0NX0.WeCplz2v0JzwM6FDvmpDLB4HAu-vGzV7cMpraOfJia4" \
+  -H "Content-Type: application/json" \
+  -d '{"customer_id": 2}'
+
+"{
+    "success": true,
+    "message": "Customer bookings retrieved successfully",
+    "data": {
+        "bookings": [{
+            "id": 6,
+            "customer_id": "2",
+            "washer_id": null,
+            "vehicle_id": 1,
+            "service_ids": [1, 3],
+            "booking_date": "2026-01-10",
+            "start_time": "09:00:00",
+            "end_time": "10:00:00",
+            "address": "Magurmari, Kokrajhar",
+            "latitude": "26.401150644507",
+            "longitude": "90.268348895431",
+            "status": "pending",
+            "total_price": "350",
+            "payment_status": "pending",
+            "payment_method": "pending",
+            "notes": null,
+            "created_at": "2026-01-07 17:29:08",
+            "updated_at": "2026-01-07 17:29:08",
+            "customer_name": "Surajit",
+            "customer_phone": "9887776756",
+            "vehicle_make": "Toyota",
+            "vehicle_model": "Camry",
+            "vehicle_plate": "ABC-1234",
+            "service_titles": "Basic Car Wash, Full Detailing",
+            "booking_date_formatted": "10 Jan 2026",
+            "start_time_formatted": "09:00 AM",
+            "end_time_formatted": "10:00 AM",
+            "created_at_formatted": "07 Jan 2026, 05:29 PM"
+        }, {
+            "id": 7,
+            "customer_id": "2",
+            "washer_id": null,
+            "vehicle_id": 1,
+            "service_ids": [1, 3],
+            "booking_date": "2026-01-10",
+            "start_time": "09:00:00",
+            "end_time": "10:00:00",
+            "address": "Magurmari, Kokrajhar",
+            "latitude": "26.401150644507",
+            "longitude": "90.268348895431",
+            "status": "pending",
+            "total_price": "350",
+            "payment_status": "pending",
+            "payment_method": "pending",
+            "notes": null,
+            "created_at": "2026-01-07 17:30:12",
+            "updated_at": "2026-01-07 17:30:12",
+            "customer_name": "Surajit",
+            "customer_phone": "9887776756",
+            "vehicle_make": "Toyota",
+            "vehicle_model": "Camry",
+            "vehicle_plate": "ABC-1234",
+            "service_titles": "Basic Car Wash, Full Detailing",
+            "booking_date_formatted": "10 Jan 2026",
+            "start_time_formatted": "09:00 AM",
+            "end_time_formatted": "10:00 AM",
+            "created_at_formatted": "07 Jan 2026, 05:30 PM"
+        }, {
+            "id": 5,
+            "customer_id": "2",
+            "washer_id": null,
+            "vehicle_id": 1,
+            "service_ids": [1, 3],
+            "booking_date": "2026-01-09",
+            "start_time": "09:00:00",
+            "end_time": "10:00:00",
+            "address": "Magurmari, Kokrajhar",
+            "latitude": "26.401150644507",
+            "longitude": "90.268348895431",
+            "status": "pending",
+            "total_price": "350",
+            "payment_status": "pending",
+            "payment_method": "pending",
+            "notes": null,
+            "created_at": "2026-01-07 17:25:54",
+            "updated_at": "2026-01-07 17:25:54",
+            "customer_name": "Surajit",
+            "customer_phone": "9887776756",
+            "vehicle_make": "Toyota",
+            "vehicle_model": "Camry",
+            "vehicle_plate": "ABC-1234",
+            "service_titles": "Basic Car Wash, Full Detailing",
+            "booking_date_formatted": "09 Jan 2026",
+            "start_time_formatted": "09:00 AM",
+            "end_time_formatted": "10:00 AM",
+            "created_at_formatted": "07 Jan 2026, 05:25 PM"
+        }, {
+            "id": 1,
+            "customer_id": "2",
+            "washer_id": "3",
+            "vehicle_id": 1,
+            "service_ids": [3],
+            "booking_date": "2026-01-01",
+            "start_time": "09:46:38",
+            "end_time": "10:46:38",
+            "address": "Magurmari,Kokrajhar",
+            "latitude": "26.401150644506842",
+            "longitude": "90.26834889543073",
+            "status": "allocated",
+            "total_price": "200",
+            "payment_status": "pending",
+            "payment_method": "pending",
+            "notes": null,
+            "created_at": "2025-12-26 04:21:11",
+            "updated_at": "2026-01-01 06:32:51",
+            "customer_name": "Surajit",
+            "customer_phone": "9887776756",
+            "vehicle_make": "Toyota",
+            "vehicle_model": "Camry",
+            "vehicle_plate": "ABC-1234",
+            "service_titles": "Full Detailing",
+            "booking_date_formatted": "01 Jan 2026",
+            "start_time_formatted": "09:46 AM",
+            "end_time_formatted": "10:46 AM",
+            "created_at_formatted": "26 Dec 2025, 04:21 AM"
+        }],
+        "total": 4,
+        "customer_id": 2,
+        "filter_date": null
+    },
+    "timestamp": "2026-01-09 12:21:16"
+}"
+
+//update status 
+curl -X POST "https://tip-topcarwash.in/main_erp/api_v1/bookings/1/status" \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJuYW1lIjoiVGVzdCBtYWxlbiIsImVtYWlsIjoibUBnbWFpbC5jb20iLCJ1c2VyX3R5cGUiOiJkcml2ZXIiLCJpbnN0aXR1dGlvbl9pZCI6MywiYXV0aF90eXBlIjoib3JnYW5pemF0aW9uIiwib3JnYW5pemF0aW9uX2lkIjozLCJpYXQiOjE3NjgyMzY3MDgsImV4cCI6MTc2ODMyMzEwOH0.j-JUsLBRz_5xv1zQitN1kvRKoF55CJpkf8-lwFg_6HA" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "status": "cancelled"
+      }'
+"{
+    "success": true,
+    "message": "Booking status updated successfully",
+    "data": null,
+    "timestamp": "2026-01-12 17:15:45"
+}"

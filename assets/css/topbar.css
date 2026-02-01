@@ -1,0 +1,132 @@
+/* Top Bar */
+.top-bar {
+    background-color: var(--dark-charcoal);
+    color: var(--white);
+    font-size: 14px;
+    max-height: 44px;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    opacity: 1;
+}
+
+.top-bar.hidden {
+    max-height: 0;
+    opacity: 0;
+}
+
+.top-bar-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 44px;
+}
+
+.top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.top-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.top-bar-item:hover {
+    color: var(--primary-orange);
+}
+
+.top-bar-item svg {
+    width: 14px;
+    height: 14px;
+    color: var(--primary-orange);
+}
+
+.location-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.location-badge svg {
+    width: 14px;
+    height: 14px;
+    color: var(--primary-orange);
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.social-links {
+    display: flex;
+    gap: 12px;
+}
+
+.social-links a {
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--primary-orange);
+}
+
+.social-links svg {
+    width: 16px;
+    height: 16px;
+}
+
+.login-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px;
+
+    background: rgba(255, 255, 255, 0.1);
+    border: 1.5px solid rgba(249, 115, 22, 0.5);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.login-btn:hover {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    border-color: transparent;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+}
+
+.login-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+}
+
+.social-links a {
+    color: var(--text-white);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1.5px solid rgba(249, 115, 22, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}

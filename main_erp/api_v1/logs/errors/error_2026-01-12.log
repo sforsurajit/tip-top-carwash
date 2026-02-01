@@ -1,0 +1,2 @@
+[2026-01-12 21:07:08] Vehicle: Vehicle, Method: create, Line: 71, Message: Starting vehicle creation. Data: {"customer_id":3,"make":"maruti 800","model":"base","license_plate":"as168971","type":"hatchback","year":2020,"color":"white"}
+[2026-01-12 21:07:08] Vehicle: Vehicle, Method: create, Line: 89, Message: Vehicle created successfully with ID: 12

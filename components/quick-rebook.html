@@ -1,0 +1,102 @@
+<!-- Quick Rebook Section for Returning Customers -->
+<section class="quick-rebook-section" id="quickRebookSection" style="display: none;">
+    <div class="section-container">
+        <div class="quick-rebook-wrapper">
+            <!-- Welcome Back Message -->
+            <div class="welcome-back">
+                <h2 class="welcome-title">
+                    <span class="wave-emoji">👋</span>
+                    Welcome back, <span id="customerName" class="gradient">there</span>!
+                </h2>
+                <p class="welcome-subtitle">Book your wash in just 10 seconds</p>
+            </div>
+
+            <!-- Quick Rebook Card -->
+            <div class="homepage-quick-rebook">
+                <div class="rebook-header">
+                    <span class="rebook-badge">⚡ Quick Rebook</span>
+                    <button class="book-different-btn" id="bookDifferentBtn">Book Different Service</button>
+                </div>
+
+                <div class="rebook-last-booking">
+                    <div class="last-booking-info">
+                        <div class="info-row">
+                            <span class="info-icon" id="vehicleIcon">🚗</span>
+                            <span class="info-text" id="lastVehicle">Your Vehicle</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon">✨</span>
+                            <span class="info-text" id="lastService">Your Service</span>
+                            <span class="info-price" id="lastPrice">₹0</span>
+                        </div>
+                        <div class="info-row location-row">
+                            <span class="info-icon">📍</span>
+                            <span class="info-text" id="lastLocation">Your Location</span>
+                            <button class="change-location-btn" id="changeLocationBtn">Change</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Time Slots -->
+                <div class="quick-time-slots">
+                    <p class="slots-label">When would you like us to come?</p>
+                    <div class="slots-grid">
+                        <button class="quick-slot" data-slot="today-morning">
+                            <span class="slot-day">Today</span>
+                            <span class="slot-time">11:00 AM</span>
+                        </button>
+                        <button class="quick-slot" data-slot="today-afternoon">
+                            <span class="slot-day">Today</span>
+                            <span class="slot-time">3:00 PM</span>
+                        </button>
+                        <button class="quick-slot" data-slot="tomorrow-morning">
+                            <span class="slot-day">Tomorrow</span>
+                            <span class="slot-time">11:00 AM</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Booking Status -->
+                <div class="booking-status" id="bookingStatus" style="display: none;">
+                    <div class="status-loader"></div>
+                    <span class="status-text">Booking your wash...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Location Change Modal -->
+<div class="location-modal-overlay" id="locationModalOverlay" style="display: none;">
+    <div class="location-modal">
+        <div class="modal-header">
+            <h3>📍 Change Location</h3>
+            <button class="modal-close-btn" id="closeLocationModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Saved Locations -->
+            <div class="saved-locations-list" id="savedLocationsList">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- GPS Option -->
+            <button class="gps-location-btn" id="useGpsBtn">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                Use Current Location
+            </button>
+
+            <!-- Manual Input -->
+            <div class="manual-location">
+                <textarea id="newLocationInput" placeholder="Enter your address with a nearby landmark..."
+                    rows="2"></textarea>
+                <button class="use-location-btn" id="useNewLocation">Use This Location</button>
+            </div>
+        </div>
+    </div>
+</div>

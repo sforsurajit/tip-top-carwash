@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Browse all our professional car washing and detailing services. Book your preferred service at doorstep.">
+    <meta name="keywords" content="car wash services, car detailing, car cleaning, doorstep car wash">
+    <meta name="author" content="Tip-Top Car Wash">
+    <meta name="theme-color" content="#2563eb">
+
+    <title>Our Services - Tip-Top Car Wash</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/icons/tipttop_logo.png">
+    <link rel="apple-touch-icon" href="../assets/icons/tipttop_logo.png">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/topbar.css">
+    <link rel="stylesheet" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/header-containers.css">
+    <link rel="stylesheet" href="../assets/css/mobile-menu.css">
+    <link rel="stylesheet" href="../assets/css/services-page.css">
+    <link rel="stylesheet" href="../assets/css/vehicle-cards-override.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="../assets/css/auth-modal.css?v=2.1">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <!-- Location Booking Styles -->
+    <link rel="stylesheet" href="../assets/css/location-booking.css">
+    <!-- Leaflet.js for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+</head>
+
+<body>
+
+    <header id="header" class="site-header">
+        <div id="topbar-container"></div>
+        <div id="navbar-container"></div>
+    </header>
+
+    <!-- Authentication Modal Container -->
+    <div id="auth-modal-container"></div>
+
+    <section class="page-hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6"></path>
+                </svg>
+                <span>Service</span>
+            </div>
+            <h1 class="page-title">Know Our <span class="gradient">Service</span></h1>
+            <p class="page-subtitle">Have questions? We're here to help! Reach out to us anytime.</p>
+        </div>
+        <div class="cta-background-image"></div>
+    </section>
+    <section class="services-page-content">
+        <div class="container">
+            <!-- Car Selection Section -->
+            <div class="car-selection-banner">
+                <div class="banner-header">
+                    <div class="banner-text">
+                        <h2 class="banner-title">Select Your Vehicle</h2>
+                        <p class="banner-subtitle">Get instant pricing tailored to your vehicle type</p>
+                    </div>
+                </div>
+
+                <div class="car-search-wrapper">
+                    <div class="search-box-enhanced">
+                        <svg class="search-icon-enhanced" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" id="car-model-search"
+                            placeholder="Type your car model... (Swift, Nexon, Creta, Fortuner)" autocomplete="off">
+                        <div class="search-badge">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M13 3l3.293 3.293-7 7 1.414 1.414 7-7L21 11V3z" />
+                                <path
+                                    d="M19 19H5V5h7l-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-5l-2-2v7z" />
+                            </svg>
+                            Instant
+                        </div>
+                    </div>
+                    <div class="car-search-results" id="car-search-results"></div>
+                </div>
+
+                <div class="quick-vehicle-select-enhanced">
+                    <div class="divider-with-text">
+                        <span>Or choose your vehicle type</span>
+                    </div>
+                    <div class="quick-buttons-grid">
+                        <button class="vehicle-card" data-type="hatchback" onclick="selectVehicleType('hatchback')">
+                            <div class="vehicle-icon-wrapper">
+                                <img src="../assets/images/vehicles/hatchback.webp" alt="Hatchback" class="vehicle-img">
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="vehicle-name">Hatchback</span>
+                                <span class="vehicle-examples">Swift, i20, Baleno, Alto, Wagon R</span>
+                                <span class="vehicle-price-info">Base Price</span>
+                            </div>
+                        </button>
+                        <button class="vehicle-card" data-type="sedan" onclick="selectVehicleType('sedan')">
+                            <div class="vehicle-icon-wrapper">
+                                <img src="../assets/images/vehicles/sedan.webp" alt="Sedan" class="vehicle-img">
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="vehicle-name">Sedan</span>
+                                <span class="vehicle-examples">City, Verna, Dzire, Ciaz</span>
+                                <span class="vehicle-price-info">+20%</span>
+                            </div>
+                        </button>
+                        <button class="vehicle-card" data-type="compact-suv" onclick="selectVehicleType('compact-suv')">
+                            <div class="vehicle-icon-wrapper">
+                                <img src="../assets/images/vehicles/compact-suv.webp" alt="Compact SUV"
+                                    class="vehicle-img">
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="vehicle-name">Compact SUV</span>
+                                <span class="vehicle-examples">Punch, Venue, Nexon, Brezza, Sonet, Creta</span>
+                                <span class="vehicle-price-info">+30%</span>
+                            </div>
+                        </button>
+                        <button class="vehicle-card" data-type="suv" onclick="selectVehicleType('suv')">
+                            <div class="vehicle-icon-wrapper">
+                                <img src="../assets/images/vehicles/suv.webp" alt="SUV / MUV" class="vehicle-img">
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="vehicle-name">SUV / MUV</span>
+                                <span class="vehicle-examples">Fortuner, Safari, Innova, Scorpio, XUV700</span>
+                                <span class="vehicle-price-info">+60%</span>
+                            </div>
+                        </button>
+                        <button class="vehicle-card" data-type="bike" onclick="selectVehicleType('bike')">
+                            <div class="vehicle-icon-wrapper">
+                                <img src="../assets/images/vehicles/bike.webp" alt="Bike" class="vehicle-img">
+                            </div>
+                            <div class="vehicle-info">
+                                <span class="vehicle-name">Bike</span>
+                                <span class="vehicle-examples">All bikes</span>
+                                <span class="vehicle-price-info">-50%</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Toggle (Mobile/Tablet Only) -->
+            <button class="filter-toggle-btn" id="filter-toggle-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="4" y1="6" x2="20" y2="6"></line>
+                    <line x1="4" y1="12" x2="16" y2="12"></line>
+                    <line x1="4" y1="18" x2="12" y2="18"></line>
+                </svg>
+                Filters & Sort
+            </button>
+
+            <div class="services-layout">
+                <!-- FILTERS SIDEBAR (Desktop) -->
+                <aside class="filters-sidebar">
+                    <div class="filters-header">
+                        <h3>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                            </svg>
+                            Filters
+                        </h3>
+                        <button id="clear-filters" class="btn-clear-filters">Clear All</button>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="filter-section">
+                        <div class="filter-search">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input type="search" id="service-search" placeholder="Search services...">
+                        </div>
+                    </div>
+
+                    <!-- Vehicle Type -->
+                    <div class="filter-section">
+                        <div class="filter-section-title">Vehicle Type</div>
+                        <select id="vehicle-filter" class="filter-select">
+                            <option value="">All Vehicles</option>
+                            <option value="sedan">Sedan</option>
+                            <option value="suv">SUV</option>
+                            <option value="hatchback">Hatchback</option>
+                            <option value="bike">Bike</option>
+                        </select>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="filter-section">
+                        <div class="filter-section-title">Category</div>
+                        <select id="category-filter" class="filter-select">
+                            <option value="">All Categories</option>
+                            <option value="washing">Washing</option>
+                            <option value="detailing">Detailing</option>
+                            <option value="protection">Protection</option>
+                            <option value="maintenance">Maintenance</option>
+                        </select>
+                    </div>
+
+                    <!-- Price Range -->
+                    <div class="filter-section">
+                        <div class="filter-section-title">Price Range</div>
+                        <select id="price-filter" class="filter-select">
+                            <option value="">All Prices</option>
+                            <option value="0-500">Under ₹500</option>
+                            <option value="500-1000">₹500 - ₹1000</option>
+                            <option value="1000-2000">₹1000 - ₹2000</option>
+                            <option value="2000+">Above ₹2000</option>
+                        </select>
+                    </div>
+                </aside>
+
+                <!-- SERVICES MAIN -->
+                <div class="services-main">
+                    <!-- Services Header -->
+                    <div class="services-header">
+                        <div class="results-info">
+                            <p id="results-count">Showing <strong>0</strong> services</p>
+                        </div>
+                        <div class="sort-wrapper">
+                            <label for="sort-filter">Sort by:</label>
+                            <select id="sort-filter" class="filter-select">
+                                <option value="default">Default</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="name">Name: A to Z</option>
+                                <option value="popular">Most Popular</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Services Grid -->
+                    <div id="services-grid" class="services-grid">
+                        <div class="loading-container">
+                            <div class="spinner"></div>
+                            <p>Loading services...</p>
+                        </div>
+                    </div>
+
+                    <!-- Load More Button -->
+                    <div class="load-more-container" id="load-more-container" style="display: none;">
+                        <button id="load-more-btn" class="btn-secondary btn-large">
+                            Load More Services
+                        </button>
+                    </div>
+
+                    <!-- No Results -->
+                    <div id="no-results" class="no-results" style="display: none;">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <h3>No services found</h3>
+                        <p>Try adjusting your filters or search term</p>
+                        <button id="reset-filters" class="btn-primary">Reset Filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FILTER BOTTOM SHEET (Mobile/Tablet) -->
+    <div class="filter-sheet-overlay" id="filter-sheet-overlay"></div>
+    <div class="filter-bottom-sheet" id="filter-bottom-sheet">
+        <div class="filter-sheet-header">
+            <h3>Filters</h3>
+            <button class="filter-sheet-close" id="filter-sheet-close">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="filter-sheet-content">
+            <!-- Search -->
+            <div class="filter-section">
+                <div class="filter-search">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="search" id="service-search-mobile" placeholder="Search services...">
+                </div>
+            </div>
+
+            <!-- Vehicle Type -->
+            <div class="filter-section">
+                <div class="filter-section-title">Vehicle Type</div>
+                <select id="vehicle-filter-mobile" class="filter-select">
+                    <option value="">All Vehicles</option>
+                    <option value="sedan">Sedan</option>
+                    <option value="suv">SUV</option>
+                    <option value="hatchback">Hatchback</option>
+                    <option value="bike">Bike</option>
+                </select>
+            </div>
+
+            <!-- Category -->
+            <div class="filter-section">
+                <div class="filter-section-title">Category</div>
+                <select id="category-filter-mobile" class="filter-select">
+                    <option value="">All Categories</option>
+                    <option value="washing">Washing</option>
+                    <option value="detailing">Detailing</option>
+                    <option value="protection">Protection</option>
+                    <option value="maintenance">Maintenance</option>
+                </select>
+            </div>
+
+            <!-- Price Range -->
+            <div class="filter-section">
+                <div class="filter-section-title">Price Range</div>
+                <select id="price-filter-mobile" class="filter-select">
+                    <option value="">All Prices</option>
+                    <option value="0-500">Under ₹500</option>
+                    <option value="500-1000">₹500 - ₹1000</option>
+                    <option value="1000-2000">₹1000 - ₹2000</option>
+                    <option value="2000+">Above ₹2000</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="filter-sheet-footer">
+            <button class="btn-reset-filters" id="reset-filters-btn">Reset</button>
+            <button class="btn-apply-filters" id="apply-filters-btn">Apply Filters</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../api/config.js"></script>
+    <script src="../api/services.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/header.js"></script>
+    <script src="../assets/js/active-nav.js"></script>
+    <!-- Leaflet.js for Maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <!-- Offline Booking Infrastructure -->
+    <script src="../assets/js/offline-db.js"></script>
+    <script src="../assets/js/network-monitor.js"></script>
+    <script src="../assets/js/booking-sync.js"></script>
+    <script src="../assets/js/location-booking.js"></script>
+    <!-- Services Page -->
+    <script src="../assets/js/services-page.js"></script>
+
+    <script>
+        // Load header components
+        Promise.all([
+            fetch('../components/topbar.html').then(response => response.text()),
+            fetch('../components/navbar.html').then(response => response.text()),
+            fetch('../components/auth-modal.html').then(response => response.text()),
+            fetch('../components/footer.html').then(response => response.text())
+        ]).then(([topbarData, navbarData, authModalData, footerData]) => {
+            document.getElementById('topbar-container').innerHTML = topbarData;
+            document.getElementById('navbar-container').innerHTML = navbarData;
+            document.getElementById('auth-modal-container').innerHTML = authModalData;
+            document.getElementById('footer-container').innerHTML = footerData;
+
+            // Initialize header after components are loaded
+            if (typeof initializeHeader === 'function') {
+                initializeHeader();
+            }
+
+            // Auth system will auto-initialize via retry logic in auth.js
+        }).catch(error => {
+            console.error('Error loading components:', error);
+        });
+    </script>
+</body>
+
+</html>

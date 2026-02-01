@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College/School Registration - RONE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .features-section {
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .features-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-system {
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .feature-system:hover {
+            border-color: #4f46e5;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .feature-system.selected {
+            border-color: #4f46e5;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.15);
+        }
+
+        .feature-header {
+            padding: 20px;
+            cursor: pointer;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background-color 0.3s ease;
+        }
+
+        .feature-header:hover {
+            background: #f1f5f9;
+        }
+
+        .feature-header.selected {
+            background: #eef2ff;
+        }
+
+        .feature-header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .feature-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .feature-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #374151;
+        }
+
+        .expand-icon {
+            width: 20px;
+            height: 20px;
+            background: #6b7280;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .expand-icon.expanded {
+            transform: rotate(180deg);
+            background: #4f46e5;
+        }
+
+        .feature-description {
+            font-size: 0.95rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .feature-modules {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: white;
+        }
+
+        .feature-modules.expanded {
+            max-height: 500px;
+        }
+
+        .module-item {
+            padding: 12px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transition: background-color 0.2s ease;
+        }
+
+        .module-item:hover {
+            background: #f9fafb;
+        }
+
+        .module-item:last-child {
+            border-bottom: none;
+        }
+
+        .module-checkbox {
+            width: 16px;
+            height: 16px;
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
+        .module-info {
+            flex: 1;
+        }
+
+        .module-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .module-description {
+            font-size: 0.85rem;
+            color: #6b7280;
+            line-height: 1.3;
+        }
+
+        .selected-count {
+            background: #4f46e5;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .select-all-modules {
+            padding: 8px 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.9rem;
+            color: #4f46e5;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .select-all-modules:hover {
+            background: #eef2ff;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-left: 4px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>College/School Registration</h1>
+            <p>RONE</p>
+        </div>
+
+        <div class="form-container">
+            <div class="alert" id="alert"></div>
+            
+            <form id="registrationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="institution_name">Institution Name *</label>
+                        <input type="text" id="institution_name" name="institution_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="institution_type">Institution Type *</label>
+                        <select id="institution_type" name="institution_type" required>
+                            <option value="">Select Type</option>
+                            <option value="college">College</option>
+                            <option value="school">School</option>
+                            <option value="university">University</option>
+                            <option value="institute">Institute</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="principal_name">Principal/Director Name *</label>
+                        <input type="text" id="principal_name" name="principal_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact_email">Contact Email *</label>
+                        <input type="email" id="contact_email" name="contact_email" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="login_password">Login Password *</label>
+                        <input type="password" id="login_password" name="login_password" required minlength="6" placeholder="Password for superadmin login">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password *</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required minlength="6" placeholder="Confirm password">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contact_phone">Contact Phone *</label>
+                        <input type="tel" id="contact_phone" name="contact_phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="established_year">Established Year</label>
+                        <input type="number" id="established_year" name="established_year" min="1800" max="2025">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Complete Address *</label>
+                    <textarea id="address" name="address" rows="3" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City *</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State *</label>
+                        <input type="text" id="state" name="state" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pincode">PIN Code *</label>
+                        <input type="text" id="pincode" name="pincode" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="website">Website (Optional)</label>
+                        <input type="url" id="website" name="website">
+                    </div>
+                </div>
+
+                <div class="features-section">
+                    <h3 class="features-title">Select Management Features</h3>
+                    <div class="features-grid" id="featuresGrid">
+                        <!-- Features will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Creating your account...</p>
+                </div>
+
+                <button type="submit" class="btn">Create College/School Account</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Hierarchical features configuration
+    
+        const hierarchicalFeatures = {
+            "system_administration": {
+                "name": "System Administration & Settings",
+                "description": "Complete system configuration and management",
+                "icon": "settings",
+                "modules": {
+                    "user_management": {
+                        "name": "User Management",
+                        "description": "Create and manage user accounts"
+                    },
+                    "role_management": {
+                        "name": "Role Management",
+                        "description": "Define user roles and permissions"
+                    },
+                    "session_management": {
+                        "name": "Session Management",
+                        "description": "User session and security settings"
+                    },
+                    "system_settings": {
+                        "name": "System Settings",
+                        "description": "Global system configuration"
+                    },
+                    "backup_management": {
+                        "name": "Backup Management",
+                        "description": "System backup and restore"
+                    },
+                    "audit_logs": {
+                        "name": "Audit Logs",
+                        "description": "System activity monitoring"
+                    },
+                    "notification_settings": {
+                        "name": "Notification Settings",
+                        "description": "System notification configuration"
+                    },
+                    "integration_management": {
+                        "name": "Integration Management",
+                        "description": "Third-party service integrations"
+                    },
+                    "license_management": {
+                        "name": "License Management",
+                        "description": "Software licensing and limits"
+                    },
+                    "database_management": {
+                        "name": "Database Management",
+                        "description": "Database optimization and maintenance"
+                    },
+                    "security_settings": {
+                        "name": "Security Settings",
+                        "description": "System security configuration"
+                    },
+                    "theme_customization": {
+                        "name": "Theme Customization",
+                        "description": "UI theme and branding settings"
+                    },
+                    "email_configuration": {
+                        "name": "Email Configuration",
+                        "description": "SMTP and email server settings"
+                    },
+                    "api_management": {
+                        "name": "API Management",
+                        "description": "API keys and endpoint configuration"
+                    },
+                    "system_monitoring": {
+                        "name": "System Monitoring",
+                        "description": "Server performance monitoring"
+                    }
+                }
+            },
+            "student_management": {
+                "name": "Student Management System",
+                "description": "Complete student lifecycle management",
+                "icon": "users",
+                "modules": {
+                    "student_registration": {
+                        "name": "Student Registration",
+                        "description": "New student admission and enrollment"
+                    },
+                    "attendance_management": {
+                        "name": "Attendance Management",
+                        "description": "Daily attendance tracking and reports"
+                    },
+                    "grade_management": {
+                        "name": "Grade Management",
+                        "description": "Marks entry and grade calculation"
+                    },
+                    "student_reports": {
+                        "name": "Student Reports",
+                        "description": "Academic and behavioral reports"
+                    },
+                    "student_communication": {
+                        "name": "Student Communication",
+                        "description": "SMS/Email to students and parents"
+                    },
+                    "fee_tracking": {
+                        "name": "Fee Tracking",
+                        "description": "Student fee payment tracking"
+                    },
+                    "student_profile": {
+                        "name": "Student Profile Management",
+                        "description": "Comprehensive student information system"
+                    },
+                    "disciplinary_management": {
+                        "name": "Disciplinary Management",
+                        "description": "Student behavior tracking and disciplinary actions"
+                    },
+                    "parent_portal": {
+                        "name": "Parent Portal Access",
+                        "description": "Parent access to student information"
+                    }
+                }
+            },
+            "academic_management": {
+                "name": "Academic Management System",
+                "description": "Complete academic operations management",
+                "icon": "graduation-cap",
+                "modules": {
+                    "curriculum_management": {
+                        "name": "Curriculum Management",
+                        "description": "Course structure and syllabus management"
+                    },
+                    "class_scheduling": {
+                        "name": "Class Scheduling",
+                        "description": "Timetable creation and management"
+                    },
+                    "subject_management": {
+                        "name": "Subject Management",
+                        "description": "Subject allocation and teacher assignment"
+                    },
+                    "assignment_management": {
+                        "name": "Assignment Management",
+                        "description": "Homework and project tracking"
+                    },
+                    "lesson_planning": {
+                        "name": "Lesson Planning",
+                        "description": "Teacher lesson plan management"
+                    },
+                    "academic_calendar": {
+                        "name": "Academic Calendar",
+                        "description": "Academic year and term management"
+                    },
+                    "online_classes": {
+                        "name": "Online Classes Integration",
+                        "description": "Virtual classroom management"
+                    },
+                    "grading_system": {
+                        "name": "Advanced Grading System",
+                        "description": "Multiple grading schemes and rubrics"
+                    }
+                }
+            },
+            "bus_management": {
+                "name": "Bus Management System",
+                "description": "Transportation fleet management",
+                "icon": "truck",
+                "modules": {
+                    "route_management": {
+                        "name": "Route Management",
+                        "description": "Bus routes and stops management"
+                    },
+                    "vehicle_management": {
+                        "name": "Vehicle Management",
+                        "description": "Bus fleet tracking and details"
+                    },
+                    "driver_management": {
+                        "name": "Driver Management",
+                        "description": "Driver profiles and scheduling"
+                    },
+                    "gps_tracking": {
+                        "name": "GPS Tracking",
+                        "description": "Real-time bus location tracking"
+                    },
+                    "maintenance_management": {
+                        "name": "Maintenance Management",
+                        "description": "Vehicle maintenance scheduling"
+                    },
+                    "transport_reports": {
+                        "name": "Transport Reports",
+                        "description": "Transportation analytics and reports"
+                    },
+                    "fuel_management": {
+                        "name": "Fuel Management",
+                        "description": "Fuel consumption tracking and analysis"
+                    },
+                    "transport_fee": {
+                        "name": "Transport Fee Management",
+                        "description": "Bus fee calculation and collection"
+                    },
+                    "emergency_alerts": {
+                        "name": "Emergency Alert System",
+                        "description": "Emergency notifications for transport"
+                    }
+                }
+            },
+            "library_management": {
+                "name": "Library Management System",
+                "description": "Digital library management",
+                "icon": "book-open",
+                "modules": {
+                    "book_management": {
+                        "name": "Book Management",
+                        "description": "Book catalog and inventory"
+                    },
+                    "issue_return": {
+                        "name": "Issue/Return System",
+                        "description": "Book lending and return tracking"
+                    },
+                    "digital_catalog": {
+                        "name": "Digital Catalog",
+                        "description": "Online book search and reservation"
+                    },
+                    "member_management": {
+                        "name": "Member Management",
+                        "description": "Library member registration"
+                    },
+                    "library_reports": {
+                        "name": "Library Reports",
+                        "description": "Usage statistics and reports"
+                    },
+                    "fine_management": {
+                        "name": "Fine Management",
+                        "description": "Late return penalty management"
+                    },
+                    "ebook_management": {
+                        "name": "E-Book Management",
+                        "description": "Digital book library system"
+                    },
+                    "barcode_system": {
+                        "name": "Barcode System",
+                        "description": "Barcode-based book management"
+                    },
+                    "reservation_system": {
+                        "name": "Book Reservation System",
+                        "description": "Online book reservation platform"
+                    }
+                }
+            },
+            "staff_management": {
+                "name": "Staff Management System",
+                "description": "Human resource management",
+                "icon": "briefcase",
+                "modules": {
+                    "employee_registration": {
+                        "name": "Employee Registration",
+                        "description": "Staff onboarding and profiles"
+                    },
+                    "payroll_management": {
+                        "name": "Payroll Management",
+                        "description": "Salary calculation and disbursement"
+                    },
+                    "attendance_tracking": {
+                        "name": "Staff Attendance",
+                        "description": "Employee attendance monitoring"
+                    },
+                    "leave_management": {
+                        "name": "Leave Management",
+                        "description": "Leave application and approval"
+                    },
+                    "performance_evaluation": {
+                        "name": "Performance Evaluation",
+                        "description": "Staff performance assessment"
+                    },
+                    "staff_reports": {
+                        "name": "Staff Reports",
+                        "description": "HR analytics and reports"
+                    },
+                    "recruitment_management": {
+                        "name": "Recruitment Management",
+                        "description": "Hiring process management"
+                    },
+                    "training_management": {
+                        "name": "Training Management",
+                        "description": "Staff development programs"
+                    },
+                    "document_management": {
+                        "name": "Document Management",
+                        "description": "Employee document storage"
+                    },
+                    "biometric_integration": {
+                        "name": "Biometric Integration",
+                        "description": "Biometric attendance system"
+                    }
+                }
+            },
+            "fee_management": {
+                "name": "Fee Management System",
+                "description": "Financial transaction management",
+                "icon": "dollar-sign",
+                "modules": {
+                    "fee_structure": {
+                        "name": "Fee Structure",
+                        "description": "Course and class fee configuration"
+                    },
+                    "payment_collection": {
+                        "name": "Payment Collection",
+                        "description": "Fee payment processing"
+                    },
+                    "receipt_generation": {
+                        "name": "Receipt Generation",
+                        "description": "Payment receipt and invoices"
+                    },
+                    "payment_reminders": {
+                        "name": "Payment Reminders",
+                        "description": "Automated payment notifications"
+                    },
+                    "financial_reports": {
+                        "name": "Financial Reports",
+                        "description": "Revenue and payment analytics"
+                    },
+                    "scholarship_management": {
+                        "name": "Scholarship Management",
+                        "description": "Fee concession and scholarships"
+                    },
+                    "online_payment": {
+                        "name": "Online Payment Gateway",
+                        "description": "Digital payment integration"
+                    },
+                    "installment_management": {
+                        "name": "Installment Management",
+                        "description": "Fee payment in installments"
+                    },
+                    "late_fee_management": {
+                        "name": "Late Fee Management",
+                        "description": "Late payment penalty system"
+                    },
+                    "refund_management": {
+                        "name": "Refund Management",
+                        "description": "Fee refund processing"
+                    }
+                }
+            },
+            "exam_management": {
+                "name": "Exam Management System",
+                "description": "Assessment and evaluation system",
+                "icon": "file-text",
+                "modules": {
+                    "exam_scheduling": {
+                        "name": "Exam Scheduling",
+                        "description": "Exam timetable and hall allocation"
+                    },
+                    "result_processing": {
+                        "name": "Result Processing",
+                        "description": "Mark entry and result calculation"
+                    },
+                    "report_card_generation": {
+                        "name": "Report Card Generation",
+                        "description": "Student report card creation"
+                    },
+                    "question_bank": {
+                        "name": "Question Bank",
+                        "description": "Question paper management"
+                    },
+                    "online_examination": {
+                        "name": "Online Examination",
+                        "description": "Digital exam platform"
+                    },
+                    "exam_analytics": {
+                        "name": "Exam Analytics",
+                        "description": "Performance analysis and insights"
+                    },
+                    "admit_card": {
+                        "name": "Admit Card Generation",
+                        "description": "Automated admit card creation"
+                    },
+                    "hall_ticket": {
+                        "name": "Hall Ticket Management",
+                        "description": "Exam hall ticket system"
+                    },
+                    "invigilation_management": {
+                        "name": "Invigilation Management",
+                        "description": "Exam supervision scheduling"
+                    },
+                    "answer_sheet_evaluation": {
+                        "name": "Answer Sheet Evaluation",
+                        "description": "Digital answer sheet assessment"
+                    }
+                }
+            },
+            "hostel_management": {
+                "name": "Hostel Management System",
+                "description": "Residential facility management",
+                "icon": "home",
+                "modules": {
+                    "room_allocation": {
+                        "name": "Room Allocation",
+                        "description": "Student room assignment"
+                    },
+                    "mess_management": {
+                        "name": "Mess Management",
+                        "description": "Food service and menu planning"
+                    },
+                    "visitor_management": {
+                        "name": "Visitor Management",
+                        "description": "Guest entry and tracking"
+                    },
+                    "maintenance_requests": {
+                        "name": "Maintenance Requests",
+                        "description": "Room and facility maintenance"
+                    },
+                    "hostel_fees": {
+                        "name": "Hostel Fees",
+                        "description": "Accommodation fee management"
+                    },
+                    "security_management": {
+                        "name": "Security Management",
+                        "description": "Hostel security and access control"
+                    },
+                    "warden_management": {
+                        "name": "Warden Management",
+                        "description": "Hostel warden assignment and duties"
+                    },
+                    "complaint_management": {
+                        "name": "Complaint Management",
+                        "description": "Student complaint tracking"
+                    },
+                    "laundry_management": {
+                        "name": "Laundry Management",
+                        "description": "Hostel laundry service tracking"
+                    }
+                }
+            },
+            "inventory_management": {
+                "name": "Inventory Management System",
+                "description": "Asset and resource management",
+                "icon": "package",
+                "modules": {
+                    "asset_tracking": {
+                        "name": "Asset Tracking",
+                        "description": "Institutional asset management"
+                    },
+                    "purchase_orders": {
+                        "name": "Purchase Orders",
+                        "description": "Procurement and ordering system"
+                    },
+                    "stock_management": {
+                        "name": "Stock Management",
+                        "description": "Inventory level monitoring"
+                    },
+                    "vendor_management": {
+                        "name": "Vendor Management",
+                        "description": "Supplier relationship management"
+                    },
+                    "audit_tracking": {
+                        "name": "Audit Tracking",
+                        "description": "Asset verification and auditing"
+                    },
+                    "inventory_reports": {
+                        "name": "Inventory Reports",
+                        "description": "Stock and asset analytics"
+                    },
+                    "depreciation_management": {
+                        "name": "Depreciation Management",
+                        "description": "Asset depreciation tracking"
+                    },
+                    "maintenance_scheduling": {
+                        "name": "Maintenance Scheduling",
+                        "description": "Equipment maintenance planning"
+                    },
+                    "requisition_management": {
+                        "name": "Requisition Management",
+                        "description": "Internal purchase requests"
+                    }
+                }
+            },
+            "communication_system": {
+                "name": "Communication System",
+                "description": "Multi-channel communication platform",
+                "icon": "message-square",
+                "modules": {
+                    "sms_gateway": {
+                        "name": "SMS Gateway",
+                        "description": "Bulk SMS notifications"
+                    },
+                    "email_system": {
+                        "name": "Email System",
+                        "description": "Mass email communications"
+                    },
+                    "notice_board": {
+                        "name": "Digital Notice Board",
+                        "description": "Online announcements"
+                    },
+                    "parent_portal": {
+                        "name": "Parent Portal",
+                        "description": "Parent-school communication"
+                    },
+                    "mobile_app": {
+                        "name": "Mobile App Integration",
+                        "description": "Push notifications via mobile app"
+                    },
+                    "communication_logs": {
+                        "name": "Communication Logs",
+                        "description": "Message delivery tracking"
+                    },
+                    "chat_system": {
+                        "name": "Internal Chat System",
+                        "description": "Real-time messaging platform"
+                    },
+                    "video_calling": {
+                        "name": "Video Calling Integration",
+                        "description": "Video conference capabilities"
+                    },
+                    "newsletter_management": {
+                        "name": "Newsletter Management",
+                        "description": "Periodic newsletter creation"
+                    }
+                }
+            },
+            "event_management": {
+                "name": "Event Management System",
+                "description": "Institutional event planning",
+                "icon": "calendar",
+                "modules": {
+                    "event_planning": {
+                        "name": "Event Planning",
+                        "description": "Event creation and scheduling"
+                    },
+                    "venue_booking": {
+                        "name": "Venue Booking",
+                        "description": "Facility reservation system"
+                    },
+                    "participant_management": {
+                        "name": "Participant Management",
+                        "description": "Event registration and attendance"
+                    },
+                    "resource_allocation": {
+                        "name": "Resource Allocation",
+                        "description": "Equipment and resource planning"
+                    },
+                    "event_promotion": {
+                        "name": "Event Promotion",
+                        "description": "Marketing and publicity"
+                    },
+                    "event_reports": {
+                        "name": "Event Reports",
+                        "description": "Event analytics and feedback"
+                    },
+                    "ticketing_system": {
+                        "name": "Ticketing System",
+                        "description": "Event ticket sales and management"
+                    },
+                    "volunteer_management": {
+                        "name": "Volunteer Management",
+                        "description": "Event volunteer coordination"
+                    },
+                    "budget_management": {
+                        "name": "Event Budget Management",
+                        "description": "Event financial planning"
+                    }
+                }
+            },
+            "alumni_management": {
+                "name": "Alumni Management System",
+                "description": "Graduate relationship management",
+                "icon": "graduation-cap",
+                "modules": {
+                    "alumni_database": {
+                        "name": "Alumni Database",
+                        "description": "Graduate contact management"
+                    },
+                    "networking_platform": {
+                        "name": "Networking Platform",
+                        "description": "Alumni networking portal"
+                    },
+                    "job_portal": {
+                        "name": "Job Portal",
+                        "description": "Career opportunities platform"
+                    },
+                    "donation_management": {
+                        "name": "Donation Management",
+                        "description": "Alumni contribution tracking"
+                    },
+                    "alumni_events": {
+                        "name": "Alumni Events",
+                        "description": "Reunion and meetup planning"
+                    },
+                    "mentorship_program": {
+                        "name": "Mentorship Program",
+                        "description": "Alumni-student mentoring"
+                    },
+                    "success_stories": {
+                        "name": "Success Stories",
+                        "description": "Alumni achievement showcase"
+                    },
+                    "feedback_system": {
+                        "name": "Alumni Feedback System",
+                        "description": "Graduate feedback collection"
+                    }
+                }
+            },
+            "sports_management": {
+                "name": "Sports Management System",
+                "description": "Athletic program management",
+                "icon": "zap",
+                "modules": {
+                    "sports_registration": {
+                        "name": "Sports Registration",
+                        "description": "Athletic program enrollment"
+                    },
+                    "tournament_management": {
+                        "name": "Tournament Management",
+                        "description": "Competition organization"
+                    },
+                    "equipment_tracking": {
+                        "name": "Equipment Tracking",
+                        "description": "Sports equipment management"
+                    },
+                    "facility_booking": {
+                        "name": "Facility Booking",
+                        "description": "Sports facility reservation"
+                    },
+                    "performance_tracking": {
+                        "name": "Performance Tracking",
+                        "description": "Athlete performance monitoring"
+                    },
+                    "sports_reports": {
+                        "name": "Sports Reports",
+                        "description": "Athletic program analytics"
+                    },
+                    "coach_management": {
+                        "name": "Coach Management",
+                        "description": "Sports coach allocation and scheduling"
+                    },
+                    "health_monitoring": {
+                        "name": "Health Monitoring",
+                        "description": "Athlete health and fitness tracking"
+                    },
+                    "award_management": {
+                        "name": "Award Management",
+                        "description": "Sports achievement recognition"
+                    }
+                }
+            },
+            "admission_management": {
+                "name": "Admission Management System",
+                "description": "Complete admission process management",
+                "icon": "user-plus",
+                "modules": {
+                    "online_application": {
+                        "name": "Online Application Portal",
+                        "description": "Digital admission application system"
+                    },
+                    "document_verification": {
+                        "name": "Document Verification",
+                        "description": "Automated document validation"
+                    },
+                    "entrance_exam": {
+                        "name": "Entrance Exam Management",
+                        "description": "Admission test organization"
+                    },
+                    "merit_list": {
+                        "name": "Merit List Generation",
+                        "description": "Automated ranking system"
+                    },
+                    "counseling_management": {
+                        "name": "Counseling Management",
+                        "description": "Admission counseling process"
+                    },
+                    "seat_allocation": {
+                        "name": "Seat Allocation",
+                        "description": "Course and seat assignment"
+                    },
+                    "admission_reports": {
+                        "name": "Admission Reports",
+                        "description": "Admission analytics and statistics"
+                    },
+                    "waitlist_management": {
+                        "name": "Waitlist Management",
+                        "description": "Admission waiting list system"
+                    },
+                    "interview_scheduling": {
+                        "name": "Interview Scheduling",
+                        "description": "Admission interview management"
+                    }
+                }
+            },
+            "placement_management": {
+                "name": "Placement Management System",
+                "description": "Career placement and recruitment",
+                "icon": "briefcase",
+                "modules": {
+                    "company_registration": {
+                        "name": "Company Registration",
+                        "description": "Recruiter company profiles"
+                    },
+                    "job_posting": {
+                        "name": "Job Posting",
+                        "description": "Job opportunity management"
+                    },
+                    "student_placement": {
+                        "name": "Student Placement Tracking",
+                        "description": "Placement status monitoring"
+                    },
+                    "interview_coordination": {
+                        "name": "Interview Coordination",
+                        "description": "Interview scheduling and management"
+                    },
+                    "placement_reports": {
+                        "name": "Placement Reports",
+                        "description": "Placement statistics and analytics"
+                    },
+                    "skill_assessment": {
+                        "name": "Skill Assessment",
+                        "description": "Student skill evaluation"
+                    },
+                    "resume_builder": {
+                        "name": "Resume Builder",
+                        "description": "Student resume creation tool"
+                    },
+                    "placement_preparation": {
+                        "name": "Placement Preparation",
+                        "description": "Interview and aptitude training"
+                    },
+                    "salary_tracking": {
+                        "name": "Salary Package Tracking",
+                        "description": "Placement salary analytics"
+                    }
+                }
+            },
+            "health_management": {
+                "name": "Health Management System",
+                "description": "Student and staff health monitoring",
+                "icon": "heart",
+                "modules": {
+                    "medical_records": {
+                        "name": "Medical Records",
+                        "description": "Health record management"
+                    },
+                    "health_checkups": {
+                        "name": "Health Checkups",
+                        "description": "Regular health examination scheduling"
+                    },
+                    "vaccination_tracking": {
+                        "name": "Vaccination Tracking",
+                        "description": "Immunization record management"
+                    },
+                    "medical_emergency": {
+                        "name": "Medical Emergency System",
+                        "description": "Emergency health response"
+                    },
+                    "pharmacy_management": {
+                        "name": "Pharmacy Management",
+                        "description": "Medical inventory and dispensing"
+                    },
+                    "health_reports": {
+                        "name": "Health Reports",
+                        "description": "Health analytics and insights"
+                    },
+                    "fitness_tracking": {
+                        "name": "Fitness Tracking",
+                        "description": "Physical fitness monitoring"
+                    },
+                    "mental_health": {
+                        "name": "Mental Health Support",
+                        "description": "Counseling and psychological support"
+                    },
+                    "nutrition_management": {
+                        "name": "Nutrition Management",
+                        "description": "Dietary planning and tracking"
+                    }
+                }
+            },
+            "security_management": {
+                "name": "Security Management System",
+                "description": "Campus safety and security",
+                "icon": "shield",
+                "modules": {
+                    "access_control": {
+                        "name": "Access Control System",
+                        "description": "Entry and exit management"
+                    },
+                    "cctv_monitoring": {
+                        "name": "CCTV Monitoring",
+                        "description": "Video surveillance management"
+                    },
+                    "visitor_tracking": {
+                        "name": "Visitor Tracking",
+                        "description": "Guest entry and monitoring"
+                    },
+                    "emergency_alerts": {
+                        "name": "Emergency Alert System",
+                        "description": "Campus emergency notifications"
+                    },
+                    "incident_reporting": {
+                        "name": "Incident Reporting",
+                        "description": "Security incident management"
+                    },
+                    "guard_management": {
+                        "name": "Security Guard Management",
+                        "description": "Security staff scheduling"
+                    },
+                    "lost_found": {
+                        "name": "Lost and Found",
+                        "description": "Lost item tracking system"
+                    },
+                    "fire_safety": {
+                        "name": "Fire Safety Management",
+                        "description": "Fire prevention and response"
+                    },
+                    "evacuation_planning": {
+                        "name": "Evacuation Planning",
+                        "description": "Emergency evacuation procedures"
+                    }
+                }
+            },
+            "research_management": {
+                "name": "Research Management System",
+                "description": "Academic research and project management",
+                "icon": "search",
+                "modules": {
+                    "project_management": {
+                        "name": "Research Project Management",
+                        "description": "Research project tracking"
+                    },
+                    "publication_tracking": {
+                        "name": "Publication Tracking",
+                        "description": "Academic publication management"
+                    },
+                    "grant_management": {
+                        "name": "Grant Management",
+                        "description": "Research funding tracking"
+                    },
+                    "collaboration_platform": {
+                        "name": "Research Collaboration",
+                        "description": "Inter-institutional research cooperation"
+                    },
+                    "ethics_compliance": {
+                        "name": "Ethics Compliance",
+                        "description": "Research ethics management"
+                    },
+                    "research_reports": {
+                        "name": "Research Reports",
+                        "description": "Research analytics and insights"
+                    },
+                    "patent_management": {
+                        "name": "Patent Management",
+                        "description": "Intellectual property tracking"
+                    },
+                    "conference_management": {
+                        "name": "Conference Management",
+                        "description": "Academic conference organization"
+                    },
+                    "peer_review": {
+                        "name": "Peer Review System",
+                        "description": "Research paper review process"
+                    }
+                }
+            },
+            "compliance_management": {
+                "name": "Compliance Management System",
+                "description": "Regulatory compliance and accreditation",
+                "icon": "check-circle",
+                "modules": {
+                    "accreditation_tracking": {
+                        "name": "Accreditation Tracking",
+                        "description": "Institutional accreditation management"
+                    },
+                    "regulatory_compliance": {
+                        "name": "Regulatory Compliance",
+                        "description": "Government regulation adherence"
+                    },
+                    "quality_assurance": {
+                        "name": "Quality Assurance",
+                        "description": "Educational quality management"
+                    },
+                    "audit_management": {
+                        "name": "Audit Management",
+                        "description": "Internal and external audit tracking"
+                    },
+                    "policy_management": {
+                        "name": "Policy Management",
+                        "description": "Institutional policy tracking"
+                    },
+                    "certification_tracking": {
+                        "name": "Certification Tracking",
+                        "description": "Staff and institutional certifications"
+                    },
+                    "compliance_reports": {
+                        "name": "Compliance Reports",
+                        "description": "Regulatory reporting system"
+                    },
+                    "risk_management": {
+                        "name": "Risk Management",
+                        "description": "Institutional risk assessment"
+                    },
+                    "legal_management": {
+                        "name": "Legal Document Management",
+                        "description": "Legal compliance tracking"
+                    }
+                }
+            },
+            "analytics_dashboard": {
+                "name": "Analytics & Dashboard System",
+                "description": "Data analytics and business intelligence",
+                "icon": "bar-chart",
+                "modules": {
+                    "executive_dashboard": {
+                        "name": "Executive Dashboard",
+                        "description": "High-level institutional metrics"
+                    },
+                    "student_analytics": {
+                        "name": "Student Analytics",
+                        "description": "Student performance insights"
+                    },
+                    "financial_analytics": {
+                        "name": "Financial Analytics",
+                        "description": "Revenue and expense analysis"
+                    },
+                    "operational_metrics": {
+                        "name": "Operational Metrics",
+                        "description": "Operational efficiency tracking"
+                    },
+                    "predictive_analytics": {
+                        "name": "Predictive Analytics",
+                        "description": "Trend forecasting and predictions"
+                    },
+                    "custom_reports": {
+                        "name": "Custom Report Builder",
+                        "description": "User-defined report creation"
+                    },
+                    "data_visualization": {
+                        "name": "Data Visualization",
+                        "description": "Interactive charts and graphs"
+                    },
+                    "performance_benchmarking": {
+                        "name": "Performance Benchmarking",
+                        "description": "Comparative performance analysis"
+                    },
+                    "export_tools": {
+                        "name": "Data Export Tools",
+                        "description": "Data export and sharing capabilities"
+                    }
+                }
+            }
+            };
+
+        // API configuration
+        const API_BASE_URL = 'http://rootsofnortheast.com/main_erp/api_v1';
+
+        // Initialize the form
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFeatures();
+            initializeForm();
+        });
+
+        // Initialize features grid
+        function initializeFeatures() {
+            const featuresGrid = document.getElementById('featuresGrid');
+            
+            Object.keys(hierarchicalFeatures).forEach(systemKey => {
+                const system = hierarchicalFeatures[systemKey];
+                const systemDiv = createFeatureSystem(systemKey, system);
+                featuresGrid.appendChild(systemDiv);
+            });
+        }
+
+        // Create feature system with modules
+        function createFeatureSystem(systemKey, system) {
+            const systemDiv = document.createElement('div');
+            systemDiv.className = 'feature-system';
+            systemDiv.dataset.systemKey = systemKey;
+
+            const selectedModulesCount = getSelectedModulesCount(systemKey);
+            const totalModulesCount = Object.keys(system.modules).length;
+
+            systemDiv.innerHTML = `
+                <div class="feature-header" onclick="toggleFeatureSystem('${systemKey}')">
+                    <div class="feature-header-top">
+                        <div class="feature-header-left">
+                            <input type="checkbox" class="feature-checkbox" 
+                                   id="system_${systemKey}" 
+                                   onchange="toggleSystemSelection('${systemKey}')"
+                                   ${selectedModulesCount > 0 ? 'checked' : ''}>
+                            <div class="feature-name">${system.name}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            ${selectedModulesCount > 0 ? `<span class="selected-count">${selectedModulesCount}/${totalModulesCount}</span>` : ''}
+                            <div class="expand-icon" id="expand_${systemKey}">▼</div>
+                        </div>
+                    </div>
+                    <div class="feature-description">${system.description}</div>
+                </div>
+                <div class="feature-modules" id="modules_${systemKey}">
+                    <div class="select-all-modules" onclick="selectAllModules('${systemKey}')">
+                        Select All Modules
+                    </div>
+                    ${createModulesHTML(systemKey, system.modules)}
+                </div>
+            `;
+
+            return systemDiv;
+        }
+
+        // Create modules HTML
+        function createModulesHTML(systemKey, modules) {
+            return Object.keys(modules).map(moduleKey => {
+                const module = modules[moduleKey];
+                return `
+                    <div class="module-item">
+                        <input type="checkbox" 
+                               class="module-checkbox" 
+                               id="module_${systemKey}_${moduleKey}"
+                               value="${systemKey}.${moduleKey}"
+                               onchange="updateSystemSelection('${systemKey}')">
+                        <div class="module-info">
+                            <div class="module-name">${module.name}</div>
+                            <div class="module-description">${module.description}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Toggle feature system expansion
+        function toggleFeatureSystem(systemKey) {
+            const modulesDiv = document.getElementById(`modules_${systemKey}`);
+            const expandIcon = document.getElementById(`expand_${systemKey}`);
+            const isExpanded = modulesDiv.classList.contains('expanded');
+
+            if (isExpanded) {
+                modulesDiv.classList.remove('expanded');
+                expandIcon.classList.remove('expanded');
+            } else {
+                modulesDiv.classList.add('expanded');
+                expandIcon.classList.add('expanded');
+            }
+        }
+
+        // Toggle entire system selection
+        function toggleSystemSelection(systemKey) {
+            const systemCheckbox = document.getElementById(`system_${systemKey}`);
+            const moduleCheckboxes = document.querySelectorAll(`input[value^="${systemKey}."]`);
+            
+            moduleCheckboxes.forEach(checkbox => {
+                checkbox.checked = systemCheckbox.checked;
+            });
+
+            updateSystemUI(systemKey);
+        }
+
+        // Select all modules in a system
+        function selectAllModules(systemKey) {
+            event.stopPropagation();
+            const moduleCheckboxes = document.querySelectorAll(`input[value^="${systemKey}."]`);
+            const systemCheckbox = document.getElementById(`system_${systemKey}`);
+            
+            const allSelected = Array.from(moduleCheckboxes).every(cb => cb.checked);
+            
+            moduleCheckboxes.forEach(checkbox => {
+                checkbox.checked = !allSelected;
+            });
+            
+            systemCheckbox.checked = !allSelected;
+            updateSystemUI(systemKey);
+        }
+
+        // Update system selection based on modules
+        function updateSystemSelection(systemKey) {
+            const moduleCheckboxes = document.querySelectorAll(`input[value^="${systemKey}."]`);
+            const systemCheckbox = document.getElementById(`system_${systemKey}`);
+            const checkedModules = Array.from(moduleCheckboxes).filter(cb => cb.checked);
+            
+            systemCheckbox.checked = checkedModules.length > 0;
+            systemCheckbox.indeterminate = checkedModules.length > 0 && checkedModules.length < moduleCheckboxes.length;
+            
+            updateSystemUI(systemKey);
+        }
+
+        // Update system UI (styling and count)
+        function updateSystemUI(systemKey) {
+            const systemDiv = document.querySelector(`[data-system-key="${systemKey}"]`);
+            const header = systemDiv.querySelector('.feature-header');
+            const selectedCount = getSelectedModulesCount(systemKey);
+            const totalCount = Object.keys(hierarchicalFeatures[systemKey].modules).length;
+            
+            // Update selected state
+            if (selectedCount > 0) {
+                systemDiv.classList.add('selected');
+                header.classList.add('selected');
+            } else {
+                systemDiv.classList.remove('selected');
+                header.classList.remove('selected');
+            }
+            
+            // Update count display
+            const countElement = header.querySelector('.selected-count');
+            if (selectedCount > 0) {
+                if (countElement) {
+                    countElement.textContent = `${selectedCount}/${totalCount}`;
+                } else {
+                    const countSpan = document.createElement('span');
+                    countSpan.className = 'selected-count';
+                    countSpan.textContent = `${selectedCount}/${totalCount}`;
+                    header.querySelector('.feature-header-top > div:last-child').insertBefore(countSpan, header.querySelector('.expand-icon'));
+                }
+            } else if (countElement) {
+                countElement.remove();
+            }
+        }
+
+        // Get selected modules count for a system
+        function getSelectedModulesCount(systemKey) {
+            const moduleCheckboxes = document.querySelectorAll(`input[value^="${systemKey}."]`);
+            return Array.from(moduleCheckboxes).filter(cb => cb.checked).length;
+        }
+
+        // Get all selected features for API submission
+        function getSelectedFeatures() {
+            const selectedFeatures = {};
+            
+            Object.keys(hierarchicalFeatures).forEach(systemKey => {
+                const selectedModules = [];
+                const moduleCheckboxes = document.querySelectorAll(`input[value^="${systemKey}."]`);
+                
+                moduleCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        const moduleKey = checkbox.value.split('.')[1];
+                        const module = hierarchicalFeatures[systemKey].modules[moduleKey];
+                        selectedModules.push({
+                            key: moduleKey,
+                            name: module.name,
+                            description: module.description
+                        });
+                    }
+                });
+                
+                if (selectedModules.length > 0) {
+                    selectedFeatures[systemKey] = {
+                        system_name: hierarchicalFeatures[systemKey].name,
+                        system_description: hierarchicalFeatures[systemKey].description,
+                        system_icon: hierarchicalFeatures[systemKey].icon,
+                        selected_modules: selectedModules
+                    };
+                }
+            });
+            
+            return selectedFeatures;
+        }
+
+        // Initialize form submission
+        function initializeForm() {
+            const form = document.getElementById('registrationForm');
+            form.addEventListener('submit', handleFormSubmission);
+        }
+
+        // Handle form submission
+        async function handleFormSubmission(event) {
+            event.preventDefault();
+            
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            const loading = document.getElementById('loading');
+            
+            // Disable submit button and show loading
+            submitButton.disabled = true;
+            loading.style.display = 'block';
+            hideAlert();
+            
+            try {
+                // Collect form data
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData.entries());
+                
+                // Add confirm_password manually since it might not be collected properly
+                data.confirm_password = document.getElementById('confirm_password').value;
+                
+                console.log('Form data collected:', data); // Debug log
+                
+                // Collect selected features (hierarchical)
+                const selectedFeatures = getSelectedFeatures();
+                
+                // Prepare API payload
+                const payload = {
+                    institution_name: data.institution_name,
+                    institution_type: data.institution_type,
+                    principal_name: data.principal_name,
+                    contact_email: data.contact_email,
+                    contact_phone: data.contact_phone,
+                    login_password: data.login_password,
+                    established_year: data.established_year ? parseInt(data.established_year) : null,
+                    address: data.address,
+                    city: data.city,
+                    state: data.state,
+                    pincode: data.pincode,
+                    website: data.website || null,
+                    selected_features: selectedFeatures
+                };
+                
+                console.log('API payload:', payload); // Debug log
+                
+                // Validate required fields
+                if (!validateForm(data)) {
+                    throw new Error('Please fill all required fields');
+                }
+                
+                // Submit to API
+                const response = await fetch(`${API_BASE_URL}/organizations`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                console.log('API response:', result); // Debug log
+                
+                if (result.success) {
+                    showAlert('success', 'College/School account created successfully! You can now login with your credentials.');
+                    event.target.reset();
+                    
+                    // Reset feature selections
+                    Object.keys(hierarchicalFeatures).forEach(systemKey => {
+                        const systemCheckbox = document.getElementById(`system_${systemKey}`);
+                        const moduleCheckboxes = document.querySelectorAll(`input[value^="${systemKey}."]`);
+                        
+                        if (systemCheckbox) systemCheckbox.checked = false;
+                        if (systemCheckbox) systemCheckbox.indeterminate = false;
+                        
+                        moduleCheckboxes.forEach(checkbox => {
+                            checkbox.checked = false;
+                        });
+                        
+                        updateSystemUI(systemKey);
+                        
+                        // Collapse all expanded systems
+                        const modulesDiv = document.getElementById(`modules_${systemKey}`);
+                        const expandIcon = document.getElementById(`expand_${systemKey}`);
+                        if (modulesDiv) modulesDiv.classList.remove('expanded');
+                        if (expandIcon) expandIcon.classList.remove('expanded');
+                    });
+                } else {
+                    throw new Error(result.message || 'Failed to create account');
+                }
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                showAlert('error', error.message || 'Failed to create account. Please try again.');
+            } finally {
+                // Re-enable submit button and hide loading
+                submitButton.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        // Validate form data
+        function validateForm(data) {
+            console.log('Validating form data:', data); // Debug log
+            
+            const requiredFields = [
+                'institution_name', 'institution_type', 'principal_name', 
+                'contact_email', 'contact_phone', 'address', 'city', 'state', 'pincode',
+                'login_password', 'confirm_password'
+            ];
+            
+            // Check each required field
+            for (const field of requiredFields) {
+                if (!data[field] || data[field].toString().trim() === '') {
+                    console.log(`Missing or empty field: ${field}`, data[field]); // Debug log
+                    throw new Error(`Please fill the ${field.replace('_', ' ')} field`);
+                }
+            }
+            
+            // Validate password confirmation
+            if (data.login_password !== data.confirm_password) {
+                throw new Error('Password and confirm password do not match');
+            }
+            
+            // Validate password length
+            if (data.login_password.length < 6) {
+                throw new Error('Password must be at least 6 characters long');
+            }
+            
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(data.contact_email)) {
+                throw new Error('Please enter a valid email address');
+            }
+            
+            // Validate phone format (basic)
+            const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+            if (!phoneRegex.test(data.contact_phone)) {
+                throw new Error('Please enter a valid phone number');
+            }
+            
+            console.log('Form validation passed!'); // Debug log
+            return true;
+        }
+
+        // Show alert message
+        function showAlert(type, message) {
+            const alert = document.getElementById('alert');
+            alert.className = `alert ${type}`;
+            alert.textContent = message;
+            alert.style.display = 'block';
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    hideAlert();
+                }, 5000);
+            }
+        }
+
+        // Hide alert message
+        function hideAlert() {
+            const alert = document.getElementById('alert');
+            alert.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
