@@ -151,9 +151,11 @@ const BookingState = {
 
     // Location
     location: {
-        method: 'auto', // 'auto' or 'manual'
-        latitude: null,
-        longitude: null,
+        method: null, // null, 'auto' or 'manual' - user must choose
+        lat: null,
+        lng: null,
+        tempLat: null, // For map link parsing
+        tempLng: null,
         address: null,
         zoneId: null,
         zoneName: null,
@@ -255,8 +257,8 @@ const DOM = {
         this.changeLocationBtn = document.getElementById('changeLocationBtn');
         this.tryManualBtn = document.getElementById('tryManualBtn');
         this.manualEntryArea = document.getElementById('manualEntryArea');
-        this.zoneSelect = document.getElementById('zoneSelect');
-        this.manualAddress = document.getElementById('manualAddress');
+        this.manualZoneSelect = document.getElementById('zoneSelect');
+        this.manualAddressInput = document.getElementById('manualAddress');
         this.confirmAddressBtn = document.getElementById('confirmAddressBtn');
 
         // Step 4: Schedule
@@ -298,6 +300,9 @@ const DOM = {
 // API SERVICE
 // ============================================
 const API = {
+    // Base URL for the Main ERP API
+    MAIN_ERP_BASE: 'https://tip-topcarwash.in/main_erp/api_v1',
+
     async request(endpoint, options = {}) {
         const url = `${CONFIG.API_BASE}${endpoint}`;
         const headers = {
@@ -326,27 +331,121 @@ const API = {
         }
     },
 
+    // ===== NEW: Real Brand API =====
+    async getBrands() {
+        console.log('🔄 Fetching brands from API...');
+        try {
+            const response = await fetch(`${this.MAIN_ERP_BASE}/brands`);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+
+            if (data.success && data.data && data.data.brands) {
+                console.log('✅ Loaded', data.data.brands.length, 'brands from API');
+                return data.data.brands;
+            }
+            throw new Error('Invalid API response');
+        } catch (error) {
+            console.error('❌ Failed to load brands:', error);
+            return null; // Will fall back to mock data
+        }
+    },
+
+    // ===== NEW: Real Car Models API =====
+    async getCarsByBrand(brandId) {
+        console.log('🔄 Fetching cars for brand ID:', brandId);
+        try {
+            const response = await fetch(`${this.MAIN_ERP_BASE}/brands/Allcars/${brandId}`);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+
+            if (data.success && data.data) {
+                // Handle both single object and array
+                const cars = Array.isArray(data.data) ? data.data : [data.data];
+                console.log('✅ Loaded', cars.length, 'cars for brand');
+                return cars;
+            }
+            throw new Error('Invalid API response');
+        } catch (error) {
+            console.error('❌ Failed to load cars:', error);
+            return null; // Will fall back to mock data
+        }
+    },
+
+    // ===== NEW: Real Services API =====
+    async getServicesByVehicle(carId) {
+        console.log('🔄 Fetching services for car ID:', carId);
+        try {
+            const response = await fetch(`${this.MAIN_ERP_BASE}/services/vehicle/${carId}`);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+
+            if (data.success && data.data) {
+                // API returns data.services array inside data.data
+                const servicesArray = data.data.services || data.data;
+                const services = Array.isArray(servicesArray) ? servicesArray : [servicesArray];
+                console.log('✅ Loaded', services.length, 'services from API');
+                return services;
+            }
+            throw new Error('Invalid API response');
+        } catch (error) {
+            console.error('❌ Failed to load services:', error);
+            return null; // Will fall back to mock data
+        }
+    },
+
     // Vehicle Categories
     async getVehicleCategories() {
         return this.request('/car-categories/active');
     },
 
-    // Services by Vehicle Type
+    // Legacy Services by Vehicle Type
     async getServices(vehicleId) {
         return this.request(`/services/vehicle/${vehicleId}`);
     },
 
     // Service Zones
     async getZones() {
-        return this.request('/zones_routes/');
+        console.log('🔄 Fetching zones from API...');
+        try {
+            const response = await fetch(`${this.MAIN_ERP_BASE}/zones_routes/`);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+
+            if (data.success && data.data && data.data.zones) {
+                console.log('✅ Loaded', data.data.zones.length, 'zones from API');
+                return data;
+            }
+            throw new Error('Invalid API response');
+        } catch (error) {
+            console.error('❌ Failed to load zones:', error);
+            throw error;
+        }
     },
 
     // Check Location in Zone
     async checkLocation(zoneId, lat, lng) {
-        return this.request(`/zones_routes/${zoneId}/check-location`, {
-            method: 'POST',
-            body: JSON.stringify({ latitude: lat, longitude: lng })
-        });
+        console.log('🔄 Checking location in zone:', zoneId);
+        try {
+            const response = await fetch(`${this.MAIN_ERP_BASE}/zones_routes/${zoneId}/check-location`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ latitude: lat, longitude: lng })
+            });
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+
+            if (data.success && data.data) {
+                console.log('✅ Location check result:', data.data.is_in_zone ? 'Inside zone' : 'Outside zone');
+                return data;
+            }
+            throw new Error('Invalid API response');
+        } catch (error) {
+            console.error('❌ Failed to check location:', error);
+            throw error;
+        }
     },
 
     // Customer Vehicles
@@ -616,16 +715,48 @@ const Navigation = {
 const VehicleSelection = {
     currentView: 'brand', // 'brand', 'model', or 'manual'
     selectedBrand: null,
+    apiBrands: [], // Store API brands
 
     async init() {
-        this.renderBrands();
+        await this.renderBrands();
         this.setupSearch();
         this.setupNavigation();
         this.checkSavedVehicles();
     },
 
-    renderBrands() {
-        const brandsHTML = MOCK_CAR_BRANDS.map(brand => `
+    async renderBrands() {
+        // Show loading state
+        DOM.brandGrid.innerHTML = `
+            <div class="brand-skeleton"></div>
+            <div class="brand-skeleton"></div>
+            <div class="brand-skeleton"></div>
+            <div class="brand-skeleton"></div>
+        `;
+
+        // Try to fetch brands from API
+        const apiBrands = await API.getBrands();
+
+        let brandsToRender = [];
+
+        if (apiBrands && apiBrands.length > 0) {
+            // Use API brands
+            this.apiBrands = apiBrands;
+            brandsToRender = apiBrands.map(b => ({
+                id: b.id,
+                name: b.brand_name,
+                logo: b.icon_url ? `<img src="${b.icon_url}" alt="${b.brand_name}" style="width:40px;height:40px;object-fit:cover;border-radius:8px;">` : '🚗'
+            }));
+        } else {
+            // Fallback to mock data
+            console.log('⚠️ Using mock brand data');
+            brandsToRender = MOCK_CAR_BRANDS.map(b => ({
+                id: b.id,
+                name: b.name,
+                logo: b.logo
+            }));
+        }
+
+        const brandsHTML = brandsToRender.map(brand => `
             <div class="brand-card" data-id="${brand.id}" data-name="${brand.name}">
                 <div class="brand-logo">${brand.logo}</div>
                 <div class="brand-name">${brand.name}</div>
@@ -650,7 +781,7 @@ const VehicleSelection = {
         lucide.createIcons();
     },
 
-    selectBrand(card) {
+    async selectBrand(card) {
         const brandId = card.dataset.id;
 
         if (brandId === 'other') {
@@ -658,7 +789,23 @@ const VehicleSelection = {
             return;
         }
 
-        const brand = MOCK_CAR_BRANDS.find(b => b.id === parseInt(brandId));
+        // Find brand from API brands or mock
+        let brand = this.apiBrands.find(b => b.id === parseInt(brandId));
+        if (brand) {
+            // Convert API brand format
+            brand = {
+                id: brand.id,
+                name: brand.brand_name,
+                logo: brand.icon_url ? `<img src="${brand.icon_url}" style="width:40px;height:40px;object-fit:cover;border-radius:8px;">` : '🚗'
+            };
+        } else {
+            // Fallback to mock
+            brand = MOCK_CAR_BRANDS.find(b => b.id === parseInt(brandId));
+            if (brand) {
+                brand = { id: brand.id, name: brand.name, logo: brand.logo };
+            }
+        }
+
         if (!brand) return;
 
         this.selectedBrand = brand;
@@ -666,10 +813,10 @@ const VehicleSelection = {
         BookingState.vehicle.brandName = brand.name;
 
         // Show models for this brand
-        this.showModelSelection(brand);
+        await this.showModelSelection(brand);
     },
 
-    showModelSelection(brand) {
+    async showModelSelection(brand) {
         this.currentView = 'model';
 
         // Hide brand view, show model view
@@ -678,24 +825,62 @@ const VehicleSelection = {
         DOM.manualEntryView.style.display = 'none';
 
         // Update header
-        DOM.selectedBrandLogo.textContent = brand.logo;
+        DOM.selectedBrandLogo.innerHTML = typeof brand.logo === 'string' && brand.logo.startsWith('<img')
+            ? brand.logo
+            : brand.logo || '🚗';
         DOM.selectedBrandName.textContent = brand.name;
 
         // Update search placeholder
         DOM.carSearchInput.placeholder = `Search ${brand.name} models...`;
         DOM.carSearchInput.value = '';
 
-        // Render models
-        this.renderModels(brand.id);
+        // Render models (with API fetch)
+        await this.renderModels(brand.id);
     },
 
-    renderModels(brandId) {
-        const models = MOCK_CAR_MODELS[brandId] || [];
+    async renderModels(brandId) {
+        // Show loading state
+        DOM.modelGrid.innerHTML = `
+            <div class="brand-skeleton"></div>
+            <div class="brand-skeleton"></div>
+            <div class="brand-skeleton"></div>
+            <div class="brand-skeleton"></div>
+        `;
 
-        const modelsHTML = models.map(model => `
+        // Try to fetch cars from API
+        const apiCars = await API.getCarsByBrand(brandId);
+
+        let modelsToRender = [];
+
+        if (apiCars && apiCars.length > 0) {
+            // Use API cars
+            modelsToRender = apiCars.map(car => ({
+                id: car.id,
+                name: car.car_name,
+                type: car.car_type || 'Hatchback',
+                categoryId: this.getCategoryIdFromType(car.car_type),
+                multiplier: this.getMultiplierFromType(car.car_type),
+                icon_url: car.icon_url
+            }));
+        } else {
+            // Fallback to mock data
+            console.log('⚠️ Using mock model data');
+            const mockModels = MOCK_CAR_MODELS[brandId] || [];
+            modelsToRender = mockModels.map(m => ({
+                id: m.id,
+                name: m.name,
+                type: m.type,
+                categoryId: m.categoryId,
+                multiplier: m.multiplier,
+                icon_url: null
+            }));
+        }
+
+        const modelsHTML = modelsToRender.map(model => `
             <div class="model-card" data-id="${model.id}" data-brand-id="${brandId}" 
                  data-name="${model.name}" data-type="${model.type}" 
                  data-category-id="${model.categoryId}" data-multiplier="${model.multiplier}">
+                ${model.icon_url ? `<img src="${model.icon_url}" alt="${model.name}" style="width:100%;height:80px;object-fit:cover;border-radius:8px;margin-bottom:0.5rem;">` : ''}
                 <div class="model-name">${model.name}</div>
                 <span class="model-type ${model.type.toLowerCase()}">${model.type}</span>
             </div>
@@ -719,7 +904,31 @@ const VehicleSelection = {
         lucide.createIcons();
     },
 
-    selectModel(card) {
+    getCategoryIdFromType(type) {
+        const typeMap = {
+            'Hatchback': 1,
+            'Sedan': 2,
+            'SUV': 3,
+            'Compact SUV': 3,
+            'MUV': 3,
+            'Bike': 4
+        };
+        return typeMap[type] || 1;
+    },
+
+    getMultiplierFromType(type) {
+        const multiplierMap = {
+            'Hatchback': 1.0,
+            'Sedan': 1.2,
+            'SUV': 1.5,
+            'Compact SUV': 1.3,
+            'MUV': 1.5,
+            'Bike': 0.5
+        };
+        return multiplierMap[type] || 1.0;
+    },
+
+    async selectModel(card) {
         if (card.dataset.id === 'other') {
             this.showManualEntry(true); // true = already have brand
             return;
@@ -733,19 +942,26 @@ const VehicleSelection = {
         card.classList.add('selected');
 
         // Update booking state
-        BookingState.vehicle.modelId = parseInt(card.dataset.id);
+        const carId = parseInt(card.dataset.id);
+        BookingState.vehicle.modelId = carId;
         BookingState.vehicle.modelName = card.dataset.name;
         BookingState.vehicle.categoryId = parseInt(card.dataset.categoryId);
         BookingState.vehicle.categoryName = card.dataset.type;
         BookingState.vehicle.multiplier = parseFloat(card.dataset.multiplier);
         BookingState.vehicle.vehicleName = `${BookingState.vehicle.brandName} ${card.dataset.name}`;
         BookingState.vehicle.isCustom = false;
+        BookingState.vehicle.carId = carId; // Store for services API
 
         Utils.showToast(`${BookingState.vehicle.vehicleName} selected!`, 'success');
+
+        // Fetch services from API BEFORE advancing
+        await ServiceSelection.loadServicesFromAPI(carId);
 
         // Auto-advance to next step
         setTimeout(() => Navigation.nextStep(), 400);
     },
+
+    // Old duplicate functions removed - now using async versions above
 
     showManualEntry(hasBrand = false) {
         this.currentView = 'manual';
@@ -1032,6 +1248,13 @@ const ServiceSelection = {
         // Update header
         DOM.selectedVehicleType.textContent = BookingState.vehicle.categoryName;
 
+        // Check if services were already loaded from API (by selectModel)
+        if (BookingState.cache.services && BookingState.cache.services.length > 0) {
+            console.log('✅ Using pre-loaded API services');
+            this.renderServices(BookingState.cache.services);
+            return;
+        }
+
         // Show loading
         DOM.servicesGrid.innerHTML = `
             <div class="service-skeleton"></div>
@@ -1079,8 +1302,46 @@ const ServiceSelection = {
         }
     },
 
+    // ===== NEW: Load services from real API using car ID =====
+    async loadServicesFromAPI(carId) {
+        console.log('🔄 Loading services for car ID:', carId);
+
+        try {
+            const apiServices = await API.getServicesByVehicle(carId);
+
+            if (apiServices && apiServices.length > 0) {
+                // Map API response to our format
+                // API uses: title, price (string), features: [{icon, text}]
+                const services = apiServices.map(s => ({
+                    id: s.id || s.service_id,
+                    name: s.title || s.service_name || s.name || 'Unnamed Service',
+                    base_price: parseFloat(s.price || s.base_price || 0),
+                    description: s.description || '',
+                    // Extract text from feature objects if needed
+                    features: Array.isArray(s.features)
+                        ? s.features.map(f => typeof f === 'object' ? f.text : f).filter(Boolean)
+                        : ['Professional cleaning'],
+                    popular: s.badge === 'Recommended' || s.badge_type === 'featured' || s.popular || false
+                }));
+
+                BookingState.cache.services = services;
+                console.log('✅ Services loaded from API:', services.length);
+                return services;
+            } else {
+                console.log('⚠️ No services from API, will use fallback');
+                return null;
+            }
+        } catch (error) {
+            console.error('❌ Failed to load services from API:', error);
+            return null;
+        }
+    },
+
     renderServices(services) {
-        const multiplier = BookingState.vehicle.multiplier;
+        // For API services, prices are already vehicle-specific
+        // For fallback services, we need to apply multiplier
+        const isAPIService = BookingState.cache.services && BookingState.cache.services.length > 0;
+        const multiplier = isAPIService ? 1 : BookingState.vehicle.multiplier;
 
         DOM.servicesGrid.innerHTML = services.map(service => {
             const price = Math.round(service.base_price * multiplier);
@@ -1153,16 +1414,71 @@ const ServiceSelection = {
 // ============================================
 // STEP 3: LOCATION SELECTION
 // ============================================
+// ============================================
+// LOCATION UTILS
+// ============================================
+const GeometryUtils = {
+    // Ray-casting algorithm to check if point is in polygon
+    isPointInPolygon(point, vs) {
+        // point = [lat, lng], vs = [[lat, lng], ...]
+        var x = point[0], y = point[1];
+        var inside = false;
+        for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+            var xi = vs[i][0], yi = vs[i][1];
+            var xj = vs[j][0], yj = vs[j][1];
+
+            var intersect = ((yi > y) != (yj > y))
+                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+            if (intersect) inside = !inside;
+        }
+        return inside;
+    },
+
+    // Parse coordinates from Google Maps/WhatsApp links
+    parseMapLink(url) {
+        if (!url) return null;
+
+        // Pattern 1: @lat,lng (e.g., google.com/maps/@26.4168,90.2649,15z)
+        const atPattern = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
+        const atMatch = url.match(atPattern);
+        if (atMatch) return { lat: parseFloat(atMatch[1]), lng: parseFloat(atMatch[2]) };
+
+        // Pattern 2: q=lat,lng (e.g., maps.google.com/?q=26.4168,90.2649)
+        const qPattern = /[?&]q=(-?\d+\.\d+),(-?\d+\.\d+)/;
+        const qMatch = url.match(qPattern);
+        if (qMatch) return { lat: parseFloat(qMatch[1]), lng: parseFloat(qMatch[2]) };
+
+        // Pattern 3: ll=lat,lng (sometimes in embed links)
+        const llPattern = /[?&]ll=(-?\d+\.\d+),(-?\d+\.\d+)/;
+        const llMatch = url.match(llPattern);
+        if (llMatch) return { lat: parseFloat(llMatch[1]), lng: parseFloat(llMatch[2]) };
+
+        return null;
+    }
+};
+
+// ============================================
+// STEP 3: LOCATION SELECTION
+// ============================================
 const LocationSelection = {
-    init() {
+    apiZones: [], // Cache loaded zones
+
+    async init() {
         this.setupLocationOptions();
-        this.loadZones();
+
+        // Load zones in background immediately
+        await this.loadZones();
+
+        // Reset state (don't auto-select 'auto')
+        BookingState.location.method = null;
+        this.resetLocation();
     },
 
     setupLocationOptions() {
         // Auto detect option
         DOM.detectLocationBtn.addEventListener('click', () => {
             this.setLocationMethod('auto');
+            this.detectLocation();
         });
 
         // Manual entry option
@@ -1170,15 +1486,14 @@ const LocationSelection = {
             this.setLocationMethod('manual');
         });
 
-        // Detect status click
+        // Detect status click (retry)
         DOM.detectStatus.addEventListener('click', () => {
-            if (BookingState.location.method === 'auto') {
-                this.detectLocation();
-            }
+            this.detectLocation();
         });
 
         // Change location button
         DOM.changeLocationBtn.addEventListener('click', () => {
+            this.setLocationMethod(null); // Go back to selection
             this.resetLocation();
         });
 
@@ -1187,26 +1502,39 @@ const LocationSelection = {
             this.setLocationMethod('manual');
         });
 
-        // Confirm address button
+        // Confirm manual address button
         DOM.confirmAddressBtn.addEventListener('click', () => {
             this.confirmManualAddress();
         });
+
+        // Map Link Parsing
+        const mapLinkInput = document.getElementById('mapLinkInput');
+        if (mapLinkInput) {
+            mapLinkInput.addEventListener('input', (e) => this.handleMapLink(e.target.value));
+            mapLinkInput.addEventListener('paste', (e) => {
+                // Small delay to ensure value is pasted
+                setTimeout(() => this.handleMapLink(e.target.value), 100);
+            });
+        }
     },
 
     setLocationMethod(method) {
         BookingState.location.method = method;
 
-        // Update UI
+        // Update UI Tabs
         DOM.detectLocationBtn.classList.toggle('active', method === 'auto');
         DOM.manualLocationBtn.classList.toggle('active', method === 'manual');
 
         if (method === 'auto') {
             DOM.locationDetectArea.style.display = 'block';
             DOM.manualEntryArea.style.display = 'none';
-            this.resetLocation();
-        } else {
+        } else if (method === 'manual') {
             DOM.locationDetectArea.style.display = 'none';
             DOM.manualEntryArea.style.display = 'block';
+        } else {
+            // Reset view (show both options but active class removed)
+            DOM.locationDetectArea.style.display = 'none';
+            DOM.manualEntryArea.style.display = 'none';
         }
     },
 
@@ -1214,181 +1542,230 @@ const LocationSelection = {
         DOM.locationSuccess.style.display = 'none';
         DOM.locationError.style.display = 'none';
         DOM.detectStatus.style.display = 'block';
+        // Hide "Change" button in detect status when resetting
+        DOM.changeLocationBtn.style.display = 'none';
+
+        // Reset manual form inputs
+        const mapInput = document.getElementById('mapLinkInput');
+        if (mapInput) mapInput.value = '';
+        DOM.manualAddressInput.value = '';
+        DOM.manualZoneSelect.value = '';
+
         BookingState.location.isValid = false;
+        BookingState.location.lat = null;
+        BookingState.location.lng = null;
+        BookingState.location.zoneId = null;
     },
 
     async loadZones() {
         try {
+            console.log('🔄 Loading zones...');
             const response = await API.getZones();
-
-            // Parse response structure: {success: true, data: {zones: []}}
-            let zones = [];
             if (response && response.success && response.data && response.data.zones) {
-                zones = response.data.zones.map(z => ({
-                    id: z.id,
-                    name: z.zone_name
-                }));
-            } else if (Array.isArray(response)) {
-                // Fallback if API returns array directly
-                zones = response;
+                this.apiZones = response.data.zones;
+                this.populateZoneDropdown(this.apiZones);
+                console.log('✅ Zones loaded:', this.apiZones.length);
             }
-
-            BookingState.cache.zones = zones;
-            this.populateZoneDropdown(zones);
         } catch (error) {
-            console.error('Failed to load zones:', error);
-            // Fallback zones
-            const fallbackZones = [
-                { id: 1, name: 'Kokrajhar' },
-                { id: 2, name: 'Gossaigaon' },
-                { id: 3, name: 'Dotma' }
-            ];
-            BookingState.cache.zones = fallbackZones;
-            this.populateZoneDropdown(fallbackZones);
+            console.error('❌ Failed to load zones:', error);
+            Utils.showToast('Failed to load service zones', 'error');
         }
     },
 
     populateZoneDropdown(zones) {
-        DOM.zoneSelect.innerHTML = `
-            <option value="">Select your area</option>
-            ${zones.map(z => `<option value="${z.id}">${z.name}</option>`).join('')}
-        `;
+        DOM.manualZoneSelect.innerHTML = '<option value="">Select a Service Zone</option>';
+        zones.forEach(zone => {
+            const option = document.createElement('option');
+            option.value = zone.id;
+            option.textContent = zone.zone_name;
+            DOM.manualZoneSelect.appendChild(option);
+        });
     },
 
-    async detectLocation() {
+    // ============================================
+    // Logic: Auto Detect
+    // ============================================
+    detectLocation() {
         if (!navigator.geolocation) {
-            Utils.showToast('Geolocation not supported', 'error');
+            Utils.showToast('Geolocation is not supported by your browser', 'error');
             return;
         }
 
-        DOM.detectStatus.classList.add('loading');
-        DOM.detectStatus.querySelector('.detect-text').textContent = 'Detecting location...';
+        // Show Animation
+        DOM.detectStatus.innerHTML = `
+            <div class="detect-animation">
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring"></div>
+                <i data-lucide="loader-2" class="spin"></i>
+            </div>
+            <p class="detect-text">Detecting precise location...</p>
+        `;
+        lucide.createIcons();
 
         navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                const { latitude, longitude } = position.coords;
-                BookingState.location.latitude = latitude;
-                BookingState.location.longitude = longitude;
-
-                // Get address from coordinates
-                await this.reverseGeocode(latitude, longitude);
-
-                // Check if in service zone
-                await this.checkServiceZone(latitude, longitude);
-            },
-            (error) => {
-                DOM.detectStatus.classList.remove('loading');
-                DOM.detectStatus.querySelector('.detect-text').textContent = 'Click to detect your location';
-                Utils.showToast('Unable to detect location. Please enter manually.', 'error');
-            },
-            { enableHighAccuracy: true, timeout: 10000 }
+            (position) => this.handlePositionSuccess(position.coords.latitude, position.coords.longitude),
+            (error) => this.handlePositionError(error),
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
         );
     },
 
-    async reverseGeocode(lat, lng) {
-        try {
-            const response = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
-            );
-            const data = await response.json();
-            BookingState.location.address = data.display_name || 'Location detected';
-        } catch (error) {
-            BookingState.location.address = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-        }
-    },
+    async handlePositionSuccess(lat, lng) {
+        console.log('📍 Location detected:', lat, lng);
 
-    async checkServiceZone(lat, lng) {
-        const zones = BookingState.cache.zones;
-        let foundZone = null;
+        // Check matching zone locally first (fast)
+        const matchedZone = this.findMatchingZone(lat, lng);
 
-        // Check each zone
-        for (const zone of zones) {
+        if (matchedZone) {
+            console.log('✅ Point inside zone:', matchedZone.zone_name);
+
+            // Validate with Server API (Double Check)
             try {
-                const response = await API.checkLocation(zone.id, lat, lng);
-
-                // Check if response indicates location is in zone
-                if (response && response.success && response.data && response.data.is_in_zone) {
-                    foundZone = {
-                        id: response.data.zone_id,
-                        name: response.data.zone_name
-                    };
-                    break;
+                const check = await API.checkLocation(matchedZone.id, lat, lng);
+                if (check.success && check.data.is_in_zone) {
+                    this.onLocationValid(lat, lng, matchedZone.id, matchedZone.zone_name, 'Auto-detected');
+                    return;
                 }
-            } catch (error) {
-                console.log(`Zone ${zone.id} check failed:`, error);
-                continue;
+            } catch (e) {
+                console.warn('API Check failed, trusting local check:', e);
+                // Trust local check if API fails but polygon matched
+                this.onLocationValid(lat, lng, matchedZone.id, matchedZone.zone_name, 'Auto-detected');
+                return;
             }
         }
 
-        DOM.detectStatus.classList.remove('loading');
+        // If no match found or API rejected
+        this.onLocationInvalid();
+    },
 
-        if (foundZone) {
-            // Success - location is in service zone
-            BookingState.location.zoneId = foundZone.id;
-            BookingState.location.zoneName = foundZone.name;
-            BookingState.location.isValid = true;
+    handlePositionError(error) {
+        console.error('Geolocation error:', error);
+        DOM.detectStatus.innerHTML = `
+            <div class="detect-animation error">
+                <i data-lucide="map-pin-off"></i>
+            </div>
+            <p class="detect-text">Location access denied.<br>Please enter manually.</p>
+        `;
+        lucide.createIcons();
 
-            this.showLocationSuccess();
-        } else {
-            // Error - outside service area
-            this.showLocationError();
+        setTimeout(() => {
+            this.setLocationMethod('manual');
+            Utils.showToast('Please enter location manually', 'warning');
+        }, 1500);
+    },
 
-            // Show alert to user
-            setTimeout(() => {
-                alert('⚠️ Out of Service Area\n\nYour current location is outside our service area. Please enter your address manually to check if we can serve your location.');
+    findMatchingZone(lat, lng) {
+        // Prepare point [lat, lng]
+        const point = [lat, lng];
 
-                // Automatically switch to manual entry
-                this.setLocationMethod('manual');
-            }, 500);
+        return this.apiZones.find(zone => {
+            if (!zone.coordinates) return false;
+            // Convert zone coordinates to array of [lat, lng]
+            const polygon = zone.coordinates.map(c => [c.lat, c.lng]);
+            return GeometryUtils.isPointInPolygon(point, polygon);
+        });
+    },
+
+    onLocationValid(lat, lng, zoneId, zoneName, addressText) {
+        // Update State
+        BookingState.location.isValid = true;
+        BookingState.location.lat = lat;
+        BookingState.location.lng = lng;
+        BookingState.location.zoneId = zoneId;
+        BookingState.location.address = addressText;
+        BookingState.location.zoneName = zoneName;
+
+        // Calculate travel fee (mock logic or from API if available)
+        // For now assuming free or included
+        BookingState.payment.travelFee = 0;
+
+        Utils.showToast(`Zone: ${zoneName} confirmed!`, 'success');
+
+        // Auto-advance
+        setTimeout(() => Navigation.nextStep(), 500);
+    },
+
+    onLocationInvalid() {
+        console.log('❌ Location outside service area');
+        Utils.showToast('You are outside our service area', 'warning');
+
+        DOM.locationError.style.display = 'block';
+        DOM.detectStatus.style.display = 'none';
+
+        // Auto switch to manual after short delay
+        setTimeout(() => {
+            this.setLocationMethod('manual');
+            const mapLinkInput = document.getElementById('mapLinkInput');
+            if (mapLinkInput) mapLinkInput.focus();
+        }, 1500);
+    },
+
+    // ============================================
+    // Logic: Manual Entry & Map Link
+    // ============================================
+
+    handleMapLink(url) {
+        const coords = GeometryUtils.parseMapLink(url);
+        if (coords) {
+            console.log('🔗 Link parsed:', coords);
+
+            // Check if these coords are in a zone
+            const matchedZone = this.findMatchingZone(coords.lat, coords.lng);
+
+            if (matchedZone) {
+                // Auto-fill form
+                DOM.manualZoneSelect.value = matchedZone.id;
+                DOM.manualAddressInput.value = `Location from Link: ${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`;
+
+                // Highlight success
+                DOM.manualZoneSelect.style.borderColor = 'var(--success-500)';
+                Utils.showToast(`Found Zone: ${matchedZone.zone_name}`, 'success');
+
+                // Store coords
+                BookingState.location.tempLat = coords.lat;
+                BookingState.location.tempLng = coords.lng;
+            } else {
+                Utils.showToast('Link location is outside service areas', 'error');
+                DOM.manualZoneSelect.value = '';
+                DOM.manualZoneSelect.style.borderColor = 'var(--error-500)';
+            }
         }
     },
 
-    showLocationSuccess() {
-        DOM.detectStatus.style.display = 'none';
-        DOM.locationError.style.display = 'none';
-        DOM.locationSuccess.style.display = 'flex';
-
-        DOM.detectedAddress.textContent = BookingState.location.address;
-        DOM.zoneName.textContent = BookingState.location.zoneName;
-
-        Utils.showToast('Location confirmed!', 'success');
-    },
-
-    showLocationError() {
-        DOM.detectStatus.style.display = 'none';
-        DOM.locationSuccess.style.display = 'none';
-        DOM.locationError.style.display = 'block';
-
-        BookingState.location.isValid = false;
-    },
-
     confirmManualAddress() {
-        const zoneId = DOM.zoneSelect.value;
-        const address = DOM.manualAddress.value.trim();
+        const zoneId = DOM.manualZoneSelect.value;
+        const address = DOM.manualAddressInput.value.trim();
 
         if (!zoneId) {
             Utils.showToast('Please select a service zone', 'error');
             return;
         }
 
-        if (!address) {
-            Utils.showToast('Please enter your address', 'error');
+        if (address.length < 5) {
+            Utils.showToast('Please enter a complete address', 'error');
             return;
         }
 
-        const zone = BookingState.cache.zones.find(z => z.id == zoneId);
+        const selectedZone = this.apiZones.find(z => z.id == zoneId);
 
-        BookingState.location.zoneId = parseInt(zoneId);
-        BookingState.location.zoneName = zone ? zone.name : 'Selected Zone';
-        BookingState.location.address = address;
+        // Update State
         BookingState.location.isValid = true;
+        BookingState.location.zoneId = parseInt(zoneId);
+        BookingState.location.zoneName = selectedZone ? selectedZone.zone_name : 'Selected Zone';
+        BookingState.location.address = address;
 
-        Utils.showToast('Address confirmed!', 'success');
+        // Use temp coords from link if available, otherwise null (will rely on address text)
+        BookingState.location.lat = BookingState.location.tempLat || null;
+        BookingState.location.lng = BookingState.location.tempLng || null;
 
-        // Auto advance to next step
-        setTimeout(() => Navigation.nextStep(), 500);
+        Utils.showToast('Location confirmed!', 'success');
+        Navigation.nextStep();
     }
 };
+
+
+
+
 
 // ============================================
 // STEP 4: SCHEDULE SELECTION

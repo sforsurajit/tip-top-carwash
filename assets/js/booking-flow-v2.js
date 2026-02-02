@@ -114,6 +114,10 @@ let carData = [];
 // Available services from API
 let availableServices = [];
 
+// Brand data from API
+let brandData = [];
+let selectedBrand = null;
+
 // ========================================
 // INITIALIZATION
 // ========================================
@@ -127,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize components
     initializeBookingFlow();
     loadCarData();
+    loadBrands();
     loadServiceZones();
     setDateLabels();
 
@@ -400,7 +405,9 @@ function displaySavedVehicles(vehicles) {
 
 function initializeBookingFlow() {
     // Vehicle Selection
-    initializeVehicleCards();
+    initializeBrandSelection();
+    initializeModelSelection();
+    initializeManualEntry();
     initializeSearch();
 
     // Service Selection
@@ -606,9 +613,493 @@ async function confirmQuickRebook() {
 }
 
 // ========================================
-// VEHICLE SELECTION
+// BRAND & MODEL SELECTION
 // ========================================
 
+/**
+ * Fetch brands from API
+ */
+async function loadBrands() {
+    try {
+        console.log('🔄 Fetching brands from API...');
+        const response = await fetch('https://tip-topcarwash.in/main_erp/api_v1/brands');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.success && data.data && data.data.brands) {
+            brandData = data.data.brands;
+            console.log('✅ Loaded', brandData.length, 'brands from API');
+            displayBrands(brandData);
+        } else {
+            throw new Error('Invalid API response format');
+        }
+    } catch (error) {
+        console.error('❌ Failed to load brands:', error);
+        // Fallback to mock data
+        brandData = [
+            { id: 1, brand_name: 'Maruti Suzuki', icon_url: null },
+            { id: 2, brand_name: 'Hyundai', icon_url: null },
+            { id: 3, brand_name: 'Tata', icon_url: null },
+            { id: 4, brand_name: 'Honda', icon_url: null },
+            { id: 5, brand_name: 'Toyota', icon_url: null },
+            { id: 6, brand_name: 'Mahindra', icon_url: null },
+            { id: 7, brand_name: 'Kia', icon_url: null }
+        ];
+        console.log('⚠️ Using fallback brand data');
+        displayBrands(brandData);
+    }
+}
+
+/**
+ * Display brands in the grid
+ */
+function displayBrands(brands) {
+    const brandGrid = document.getElementById('brandGrid');
+    if (!brandGrid) return;
+
+    // Clear skeleton loaders
+    brandGrid.innerHTML = '';
+
+    // Add brand cards
+    brands.forEach(brand => {
+        const brandCard = document.createElement('div');
+        brandCard.className = 'brand-card';
+        brandCard.dataset.brandId = brand.id;
+        brandCard.dataset.brandName = brand.brand_name;
+
+        // Use icon_url if available, otherwise use emoji
+        const brandIcon = brand.icon_url
+            ? `<img src="${brand.icon_url}" alt="${brand.brand_name}" style="width: 60px; height: 60px; object-fit: contain;">`
+            : `<div class="brand-logo">🚗</div>`;
+
+        brandCard.innerHTML = `
+            ${brandIcon}
+            <div class="brand-name">${brand.brand_name}</div>
+        `;
+
+        brandGrid.appendChild(brandCard);
+    });
+
+    // Add "Other Brand" option
+    const otherCard = document.createElement('div');
+    otherCard.className = 'brand-card other-brand';
+    otherCard.dataset.brandName = 'Other';
+    otherCard.innerHTML = `
+        <div class="brand-logo">➕</div>
+        <div class="brand-name">Other Brand</div>
+    `;
+    brandGrid.appendChild(otherCard);
+
+    console.log('✅ Displayed', brands.length, 'brands');
+}
+
+/**
+ * Initialize brand selection handlers
+ */
+function initializeBrandSelection() {
+    // Use event delegation for dynamically created brand cards
+    const brandGrid = document.getElementById('brandGrid');
+    if (brandGrid) {
+        brandGrid.addEventListener('click', function (e) {
+            const brandCard = e.target.closest('.brand-card');
+            if (!brandCard) return;
+
+            const brandName = brandCard.dataset.brandName;
+
+            if (brandName === 'Other') {
+                // Show manual entry view
+                showManualEntryView();
+            } else {
+                // Select brand and show models
+                selectBrand(brandName);
+            }
+        });
+    }
+}
+
+/**
+ * Select a brand and fetch its models from API
+ */
+async function selectBrand(brandName) {
+    selectedBrand = brandName;
+    console.log('🎯 Selected brand:', brandName);
+
+    // Find the brand ID from brandData
+    const brand = brandData.find(b => b.brand_name === brandName);
+    if (!brand) {
+        console.error('❌ Brand not found in brandData:', brandName);
+        showManualEntryView();
+        return;
+    }
+
+    const brandId = brand.id;
+    console.log('🔄 Fetching models for brand ID:', brandId);
+
+    // Hide brand view, show model view
+    const brandView = document.getElementById('brandSelectionView');
+    const modelView = document.getElementById('modelSelectionView');
+    const modelGrid = document.getElementById('modelGrid');
+
+    if (brandView) brandView.style.display = 'none';
+    if (modelView) {
+        modelView.style.display = 'block';
+
+        // Update selected brand header
+        const brandLogo = document.getElementById('selectedBrandLogo');
+        const brandNameEl = document.getElementById('selectedBrandName');
+
+        if (brandLogo) brandLogo.textContent = '🚗';
+        if (brandNameEl) brandNameEl.textContent = brandName;
+    }
+
+    // Show loading state
+    if (modelGrid) {
+        modelGrid.innerHTML = `
+            <div class="brand-skeleton"></div>
+            <div class="brand-skeleton"></div>
+            <div class="brand-skeleton"></div>
+            <div class="brand-skeleton"></div>
+        `;
+    }
+
+    try {
+        // Fetch models from API
+        const response = await fetch(`https://tip-topcarwash.in/main_erp/api_v1/brands/Allcars/${brandId}`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.success && data.data) {
+            // API returns single car object or array - handle both cases
+            const cars = Array.isArray(data.data) ? data.data : [data.data];
+
+            console.log('✅ Loaded', cars.length, 'models for', brandName);
+
+            // Convert API format to our format
+            const models = cars.map(car => ({
+                id: car.id,  // Store car ID for services API
+                model: car.car_name,
+                category: car.car_type || 'Hatchback',
+                brand: car.brand_name || brandName,
+                icon_url: car.icon_url
+            }));
+
+            displayModels(models);
+        } else {
+            throw new Error('Invalid API response format');
+        }
+    } catch (error) {
+        console.error('❌ Failed to load models from API:', error);
+
+        // Fallback to car.json data
+        console.log('⚠️ Falling back to local car.json data');
+        const models = carData.filter(car => car.brand === brandName);
+
+        if (models.length === 0) {
+            console.warn('⚠️ No models found for brand:', brandName);
+            // Show manual entry as fallback
+            if (modelGrid) {
+                modelGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+                        <p style="color: var(--neutral-600); margin-bottom: 1rem;">
+                            No models found for ${brandName}
+                        </p>
+                        <button class="btn-back-to-brands" onclick="document.getElementById('brandSelectionView').style.display='block'; document.getElementById('modelSelectionView').style.display='none';">
+                            ← Back to Brands
+                        </button>
+                    </div>
+                `;
+            }
+            return;
+        }
+
+        displayModels(models);
+    }
+}
+
+/**
+ * Display models for selected brand
+ */
+function displayModels(models) {
+    const modelGrid = document.getElementById('modelGrid');
+    if (!modelGrid) return;
+
+    modelGrid.innerHTML = '';
+
+    // Display models
+    models.forEach(model => {
+        const modelCard = document.createElement('div');
+        modelCard.className = 'model-card';
+        modelCard.dataset.model = model.model;
+        modelCard.dataset.category = model.category;
+        modelCard.dataset.carId = model.id || ''; // Store car ID for services API
+
+        // Get category class for styling
+        const categoryClass = model.category.toLowerCase().replace(/\s+/g, '-');
+
+        // Build car image or icon
+        let carImage = '';
+        if (model.icon_url) {
+            carImage = `<img src="${model.icon_url}" alt="${model.model}" class="model-image" style="width: 100%; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 0.75rem;">`;
+        } else {
+            carImage = `<div class="model-icon" style="font-size: 2.5rem; margin-bottom: 0.75rem;">🚗</div>`;
+        }
+
+        modelCard.innerHTML = `
+            ${carImage}
+            <div class="model-name">${model.model}</div>
+            <span class="model-type ${categoryClass}">${model.category}</span>
+        `;
+
+        modelGrid.appendChild(modelCard);
+    });
+
+    // Add "Other Model" option
+    const otherCard = document.createElement('div');
+    otherCard.className = 'model-card other-model';
+    otherCard.dataset.model = 'Other';
+    otherCard.innerHTML = `
+        <div class="model-icon" style="font-size: 2.5rem; margin-bottom: 0.75rem;">➕</div>
+        <div class="model-name">Other Model</div>
+        <span class="model-type">Manual Entry</span>
+    `;
+    modelGrid.appendChild(otherCard);
+
+    console.log('✅ Displayed', models.length, 'models for', selectedBrand);
+}
+
+/**
+ * Initialize model selection handlers
+ */
+function initializeModelSelection() {
+    // Back to brands button
+    const backBtn = document.getElementById('backToBrandsBtn');
+    if (backBtn) {
+        backBtn.addEventListener('click', function () {
+            const brandView = document.getElementById('brandSelectionView');
+            const modelView = document.getElementById('modelSelectionView');
+
+            if (brandView) brandView.style.display = 'block';
+            if (modelView) modelView.style.display = 'none';
+
+            selectedBrand = null;
+        });
+    }
+
+    // Use event delegation for model cards
+    const modelGrid = document.getElementById('modelGrid');
+    if (modelGrid) {
+        modelGrid.addEventListener('click', function (e) {
+            const modelCard = e.target.closest('.model-card');
+            if (!modelCard) return;
+
+            const modelName = modelCard.dataset.model;
+            const category = modelCard.dataset.category;
+            const carId = modelCard.dataset.carId; // Get car ID for services API
+
+            if (modelName === 'Other') {
+                // Show manual entry view
+                showManualEntryView();
+            } else {
+                // Select model and proceed
+                selectModel(modelName, category, carId);
+            }
+        });
+    }
+}
+
+/**
+ * Select a model, fetch services from API, and proceed to next step
+ */
+async function selectModel(modelName, category, carId) {
+    console.log('🎯 Selected model:', modelName, 'Category:', category, 'Car ID:', carId);
+
+    // Map category to vehicle type
+    const categoryToType = {
+        'Hatchback': 'hatchback',
+        'Sedan': 'sedan',
+        'Compact SUV': 'compact-suv',
+        'SUV': 'suv',
+        'MUV': 'suv',
+        'Bike': 'bike',
+        'Scooter': 'bike'
+    };
+
+    const vehicleType = categoryToType[category] || 'hatchback';
+    const multiplier = VEHICLE_CONFIG[vehicleType]?.multiplier || 1.0;
+    const fullVehicleName = `${selectedBrand} ${modelName}`;
+
+    // Update booking state
+    BookingState.vehicleType = vehicleType;
+    BookingState.vehicleMultiplier = multiplier;
+    BookingState.vehicleName = fullVehicleName;
+    BookingState.vehicleBrand = selectedBrand;
+    BookingState.vehicleModel = modelName;
+    BookingState.carId = carId; // Store car ID for services API
+
+    console.log('✅ Vehicle selected:', fullVehicleName, 'Type:', vehicleType, 'Multiplier:', multiplier);
+
+    // Fetch services from API if car ID is available
+    if (carId) {
+        console.log('🔄 Fetching services for car ID:', carId);
+
+        try {
+            const response = await fetch(`https://tip-topcarwash.in/main_erp/api_v1/services/vehicle/${carId}`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success && data.data) {
+                // Store services in global variable
+                availableServices = Array.isArray(data.data) ? data.data : [data.data];
+                console.log('✅ Loaded', availableServices.length, 'services from API');
+
+                // Display services dynamically
+                displayServicesFromAPI(availableServices);
+            } else {
+                throw new Error('Invalid API response format');
+            }
+        } catch (error) {
+            console.error('❌ Failed to load services from API:', error);
+            console.log('⚠️ Using default service cards');
+            // Fall back to existing static service cards
+            updateServicePrices();
+        }
+    } else {
+        console.log('⚠️ No car ID available, using default services');
+        // Update service prices for static cards
+        updateServicePrices();
+    }
+
+    // Auto-advance to next step
+    setTimeout(() => goToStep(2), 300);
+}
+
+/**
+ * Display services from API dynamically
+ */
+function displayServicesFromAPI(services) {
+    const servicesGrid = document.getElementById('servicesGrid');
+    if (!servicesGrid) {
+        console.warn('⚠️ Services grid not found');
+        return;
+    }
+
+    // Clear existing content (skeleton loaders or old services)
+    servicesGrid.innerHTML = '';
+
+    services.forEach((service, index) => {
+        const serviceCard = document.createElement('div');
+        serviceCard.className = 'service-card';
+        if (index === 0) serviceCard.classList.add('selected'); // Pre-select first service
+
+        serviceCard.dataset.service = service.id || service.service_id;
+        serviceCard.dataset.basePrice = service.price || service.base_price || 0;
+
+        // Build service card HTML
+        serviceCard.innerHTML = `
+            <div class="service-icon">${service.icon || '🚗'}</div>
+            <h3 class="service-name">${service.service_name || service.name}</h3>
+            <p class="service-description">${service.description || ''}</p>
+            <div class="service-price">
+                <span class="price-label">₹</span>
+                <span class="price-value">${service.price || service.base_price || 0}</span>
+            </div>
+            ${service.popular ? '<div class="service-badge">Most Popular</div>' : ''}
+        `;
+
+        servicesGrid.appendChild(serviceCard);
+    });
+
+    console.log('✅ Displayed', services.length, 'services from API');
+
+    // Re-initialize service card click handlers
+    initializeServiceCards();
+}
+
+
+/**
+ * Show manual entry view
+ */
+function showManualEntryView() {
+    const brandView = document.getElementById('brandSelectionView');
+    const modelView = document.getElementById('modelSelectionView');
+    const manualView = document.getElementById('manualEntryView');
+
+    if (brandView) brandView.style.display = 'none';
+    if (modelView) modelView.style.display = 'none';
+    if (manualView) manualView.style.display = 'block';
+}
+
+/**
+ * Initialize manual entry handlers
+ */
+function initializeManualEntry() {
+    // Back from manual entry
+    const backBtn = document.getElementById('backFromManualBtn');
+    if (backBtn) {
+        backBtn.addEventListener('click', function () {
+            const brandView = document.getElementById('brandSelectionView');
+            const manualView = document.getElementById('manualEntryView');
+
+            if (brandView) brandView.style.display = 'block';
+            if (manualView) manualView.style.display = 'none';
+
+            selectedBrand = null;
+        });
+    }
+
+    // Confirm manual entry
+    const confirmBtn = document.getElementById('confirmManualEntry');
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', function () {
+            const brandInput = document.getElementById('manualBrand');
+            const modelInput = document.getElementById('manualModel');
+            const typeSelect = document.getElementById('manualVehicleType');
+
+            if (!brandInput || !modelInput || !typeSelect) return;
+
+            const brand = brandInput.value.trim();
+            const model = modelInput.value.trim();
+            const vehicleType = typeSelect.value;
+
+            if (!brand || !model || !vehicleType) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const multiplier = VEHICLE_CONFIG[vehicleType]?.multiplier || 1.0;
+            const fullVehicleName = `${brand} ${model}`;
+
+            // Update booking state
+            BookingState.vehicleType = vehicleType;
+            BookingState.vehicleMultiplier = multiplier;
+            BookingState.vehicleName = fullVehicleName;
+            BookingState.vehicleBrand = brand;
+            BookingState.vehicleModel = model;
+
+            // Update service prices
+            updateServicePrices();
+
+            console.log('✅ Manual vehicle entry:', fullVehicleName, 'Type:', vehicleType);
+
+            // Auto-advance to next step
+            setTimeout(() => goToStep(2), 300);
+        });
+    }
+}
+
+// Keep old function for compatibility
 function initializeVehicleCards() {
     document.querySelectorAll('.vehicle-card').forEach(card => {
         card.addEventListener('click', function () {
@@ -656,6 +1147,7 @@ function updateServicePrices() {
         if (priceEl) {
             priceEl.textContent = finalPrice;
         }
+
     });
 }
 
@@ -664,37 +1156,43 @@ function updateServicePrices() {
 // ========================================
 
 function initializeSearch() {
-    const searchInput = document.getElementById('carSearch');
+    // Try both possible input IDs for compatibility
+    const searchInput = document.getElementById('carSearchInput') || document.getElementById('carSearch');
     const searchClear = document.getElementById('searchClear');
     const searchResults = document.getElementById('searchResults');
 
-    if (!searchInput) return;
+    if (!searchInput) {
+        console.warn('⚠️ Search input not found');
+        return;
+    }
 
     searchInput.addEventListener('input', function () {
         const query = this.value.trim();
 
-        if (query.length >= 2) {
-            const results = searchCars(query);
+        if (query.length >= 1) {
+            const results = searchBrandsAndModels(query);
             displaySearchResults(results);
-            searchClear.style.display = 'block';
+            if (searchClear) searchClear.style.display = 'block';
         } else {
             hideSearchResults();
-            searchClear.style.display = 'none';
+            if (searchClear) searchClear.style.display = 'none';
         }
     });
 
     searchInput.addEventListener('focus', function () {
-        if (this.value.trim().length >= 2) {
-            searchResults.classList.add('active');
+        if (this.value.trim().length >= 1) {
+            if (searchResults) searchResults.classList.add('active');
         }
     });
 
-    searchClear.addEventListener('click', function () {
-        searchInput.value = '';
-        hideSearchResults();
-        this.style.display = 'none';
-        searchInput.focus();
-    });
+    if (searchClear) {
+        searchClear.addEventListener('click', function () {
+            searchInput.value = '';
+            hideSearchResults();
+            this.style.display = 'none';
+            searchInput.focus();
+        });
+    }
 
     // Hide results when clicking outside
     document.addEventListener('click', function (e) {
@@ -708,31 +1206,83 @@ async function loadCarData() {
     try {
         const response = await fetch('../car.json');
         if (response.ok) {
-            carData = await response.json();
-            console.log('Car data loaded:', carData.length, 'models');
+            const data = await response.json();
+            // Extract cars array from the JSON structure
+            carData = data.cars || [];
+            console.log('✅ Car data loaded:', carData.length, 'models');
         }
     } catch (e) {
-        console.log('Using fallback car data');
+        console.error('❌ Failed to load car data:', e);
+        console.log('⚠️ Using fallback car data');
         carData = [
-            { model: 'Maruti Swift', category: 'Hatchback' },
-            { model: 'Maruti Alto', category: 'Hatchback' },
-            { model: 'Hyundai i20', category: 'Hatchback' },
-            { model: 'Honda City', category: 'Sedan' },
-            { model: 'Maruti Dzire', category: 'Sedan' },
-            { model: 'Hyundai Creta', category: 'Compact SUV' },
-            { model: 'Tata Nexon', category: 'Compact SUV' },
-            { model: 'Mahindra XUV700', category: 'SUV' },
-            { model: 'Toyota Fortuner', category: 'SUV' },
-            { model: 'Honda Activa', category: 'Bike' }
+            { brand: 'Maruti Suzuki', model: 'Swift', category: 'Hatchback' },
+            { brand: 'Maruti Suzuki', model: 'Alto', category: 'Hatchback' },
+            { brand: 'Hyundai', model: 'i20', category: 'Hatchback' },
+            { brand: 'Honda', model: 'City', category: 'Sedan' },
+            { brand: 'Maruti Suzuki', model: 'Dzire', category: 'Sedan' },
+            { brand: 'Hyundai', model: 'Creta', category: 'Compact SUV' },
+            { brand: 'Tata', model: 'Nexon', category: 'Compact SUV' },
+            { brand: 'Mahindra', model: 'XUV700', category: 'SUV' },
+            { brand: 'Toyota', model: 'Fortuner', category: 'SUV' },
+            { brand: 'Honda', model: 'Activa', category: 'Bike' }
         ];
     }
 }
 
+/**
+ * Search through brands and models
+ * Prioritizes brand matches over model matches
+ */
+function searchBrandsAndModels(query) {
+    const q = query.toLowerCase();
+    const results = [];
+
+    // First, search brands
+    const matchingBrands = brandData.filter(brand =>
+        brand.brand_name.toLowerCase().includes(q)
+    );
+
+    // Add brand results (limit to 5)
+    matchingBrands.slice(0, 5).forEach(brand => {
+        results.push({
+            type: 'brand',
+            name: brand.brand_name,
+            subtitle: 'Brand',
+            brand: brand.brand_name,
+            id: brand.id
+        });
+    });
+
+    // Then, search models (only if we have less than 8 results)
+    if (results.length < 8) {
+        const matchingModels = carData.filter(car =>
+            car.model?.toLowerCase().includes(q) ||
+            car.brand?.toLowerCase().includes(q)
+        );
+
+        // Add model results
+        matchingModels.slice(0, 8 - results.length).forEach(car => {
+            results.push({
+                type: 'model',
+                name: `${car.brand} ${car.model}`,
+                subtitle: car.category,
+                brand: car.brand,
+                model: car.model,
+                category: car.category
+            });
+        });
+    }
+
+    return results;
+}
+
+// Keep old function for backward compatibility
 function searchCars(query) {
     const q = query.toLowerCase();
     return carData.filter(car =>
         car.model?.toLowerCase().includes(q) ||
-        car.category?.toLowerCase().includes(q)
+        car.category?.toLowerCase().includes(q) ||
+        car.brand?.toLowerCase().includes(q)
     ).slice(0, 8);
 }
 
@@ -744,24 +1294,44 @@ function displaySearchResults(results) {
         container.innerHTML = `
             <div class="search-result-item">
                 <span class="result-name">No results found</span>
-                <span class="result-type">Select vehicle type below</span>
+                <span class="result-type">Try searching by brand or model</span>
             </div>
         `;
     } else {
-        container.innerHTML = results.map(car => `
-            <div class="search-result-item" data-model="${car.model}" data-category="${car.category}">
-                <span class="result-name">${car.model}</span>
-                <span class="result-type">${car.category}</span>
-            </div>
-        `).join('');
+        container.innerHTML = results.map(result => {
+            // Handle both new format (with type) and old format (without type)
+            const resultType = result.type || 'model';
+            const name = result.name || result.model;
+            const subtitle = result.subtitle || result.category;
+
+            return `
+                <div class="search-result-item" 
+                     data-type="${resultType}"
+                     data-brand="${result.brand || ''}"
+                     data-model="${result.model || ''}"
+                     data-category="${result.category || ''}">
+                    <span class="result-name">${name}</span>
+                    <span class="result-type">${subtitle}</span>
+                </div>
+            `;
+        }).join('');
 
         container.querySelectorAll('.search-result-item').forEach(item => {
             item.addEventListener('click', function () {
+                const type = this.dataset.type;
+                const brand = this.dataset.brand;
                 const model = this.dataset.model;
                 const category = this.dataset.category;
 
-                selectCarFromSearch(model, category);
-                hideSearchResults();
+                if (type === 'brand') {
+                    // User clicked on a brand - show models for that brand
+                    selectBrand(brand);
+                    hideSearchResults();
+                } else {
+                    // User clicked on a model - select it directly
+                    selectModel(model, category);
+                    hideSearchResults();
+                }
             });
         });
     }
@@ -2576,6 +3146,62 @@ window.BookingDebug = {
         location.reload();
     }
 };
+
+// ========================================
+// STEP NAVIGATION
+// ========================================
+
+/**
+ * Navigate to a specific step
+ */
+function goToStep(stepNumber) {
+    console.log('📍 Navigating to step:', stepNumber);
+
+    // Hide all step panels
+    document.querySelectorAll('.step-panel').forEach(panel => {
+        panel.classList.remove('active');
+    });
+
+    // Show target step
+    const targetStep = document.getElementById(`step${stepNumber}`);
+    if (targetStep) {
+        targetStep.classList.add('active');
+    } else {
+        console.error('❌ Step not found:', `step${stepNumber}`);
+        return;
+    }
+
+    // Update stepper indicators
+    document.querySelectorAll('.step-item').forEach((item, index) => {
+        const itemStep = index + 1;
+        item.classList.remove('active', 'completed');
+
+        if (itemStep < stepNumber) {
+            item.classList.add('completed');
+        } else if (itemStep === stepNumber) {
+            item.classList.add('active');
+        }
+    });
+
+    // Update mobile step counter
+    const currentStepEl = document.querySelector('.current-step');
+    if (currentStepEl) {
+        currentStepEl.textContent = stepNumber;
+    }
+
+    // Scroll to top of booking container
+    const bookingContainer = document.querySelector('.booking-container');
+    if (bookingContainer) {
+        bookingContainer.scrollTop = 0;
+    }
+
+    // Reinitialize Lucide icons for new step
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+
+    console.log('✅ Navigated to step', stepNumber);
+}
 
 console.log('✅ Booking Flow V2 Ready');
 console.log('💡 Debug: Use BookingDebug.simulateReturningCustomer() to test quick rebook');
