@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Manage your car wash bookings, vehicles, and locations with Tip-Top Car Wash premium dashboard">
+    <title>TIP.TOP - Premium Dashboard</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Premium Dashboard CSS -->
+    <link rel="stylesheet" href="../assets/css/dashboard-premium-v2.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">TIP.TOP</div>
+        <div class="header-right">
+            <button class="book-btn" onclick="window.location.href='book-service-v2.html'">
+                📅 Book Now
+            </button>
+            <div class="notification-btn">
+                <span>🔔</span>
+                <span class="notification-badge" id="notification-count">0</span>
+            </div>
+            <div class="profile-avatar" id="profile-avatar">
+                <img src="https://ui-avatars.com/api/?name=Guest&background=ff6b35&color=fff&size=128" alt="Profile"
+                    id="profile-image">
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-label">Menu</div>
+                <div class="sidebar-menu">
+                    <a href="#overview" class="menu-item active" data-section="overview">
+                        <span>📊</span> Overview
+                    </a>
+                    <a href="#bookings" class="menu-item" data-section="bookings">
+                        <span>📅</span> Booking History
+                    </a>
+                    <a href="#vehicles" class="menu-item" data-section="vehicles">
+                        <span>🅿️</span> My Garage
+                    </a>
+                    <a href="#locations" class="menu-item" data-section="locations">
+                        <span>📍</span> Saved Locations
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- Overview Section -->
+            <section id="section-overview" class="content-section active">
+                <!-- CONTENT HEADER -->
+                <div class="content-header">
+                    <div class="content-title">Dashboard</div>
+                    <div class="content-subtitle">Manage your account</div>
+                </div>
+
+                <!-- WELCOME SECTION -->
+                <section class="welcome-section">
+                    <div class="greeting" id="greeting-time">Good Morning</div>
+                    <div class="welcome-title">Welcome back, <span class="highlight" id="greeting-name">Guest</span>!
+                    </div>
+                    <div class="welcome-subtitle">Here's what's happening with your car wash services</div>
+                </section>
+
+                <!-- LAST BOOKING CARD -->
+                <div id="quick-rebook-container" class="hidden"></div>
+                <div id="live-status-container" class="hidden"></div>
+
+                <!-- FINANCIAL OVERVIEW -->
+                <div>
+                    <div class="section-title">
+                        <div class="section-icon">💰</div>
+                        Financial Overview
+                    </div>
+                    <div class="financial-cards" id="stats-container">
+                        <!-- Stats will be rendered here -->
+                        <div class="skeleton skeleton-card"></div>
+                        <div class="skeleton skeleton-card"></div>
+                        <div class="skeleton skeleton-card"></div>
+                    </div>
+                </div>
+
+                <!-- RECENT BOOKINGS -->
+                <div style="margin-top: 2.5rem;">
+                    <div class="bookings-header">
+                        <div class="section-title" style="margin-bottom: 0;">
+                            <div class="section-icon">📅</div>
+                            Recent Bookings
+                        </div>
+                        <a href="#bookings" class="view-all-link" data-section="bookings">View All →</a>
+                    </div>
+
+                    <div id="recent-bookings-container">
+                        <!-- Recent bookings will be rendered here -->
+                        <div class="skeleton skeleton-card"></div>
+                        <div class="skeleton skeleton-card"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Booking History Section -->
+            <section id="section-bookings" class="content-section hidden">
+                <div class="content-header">
+                    <div class="content-title">Booking History</div>
+                    <div class="content-subtitle">View all your past and upcoming bookings</div>
+                </div>
+
+                <div id="all-bookings-container">
+                    <!-- All bookings will be rendered here -->
+                    <div class="skeleton skeleton-card"></div>
+                    <div class="skeleton skeleton-card"></div>
+                    <div class="skeleton skeleton-card"></div>
+                </div>
+            </section>
+
+            <!-- My Garage Section -->
+            <section id="section-vehicles" class="content-section hidden">
+                <div class="content-header">
+                    <div class="content-title">My Garage</div>
+                    <div class="content-subtitle">Manage your vehicles</div>
+                </div>
+
+                <div class="vehicles-grid" id="vehicles-container">
+                    <!-- Vehicles will be rendered here -->
+                    <div class="skeleton skeleton-card"></div>
+                    <div class="skeleton skeleton-card"></div>
+                </div>
+            </section>
+
+            <!-- Saved Locations Section -->
+            <section id="section-locations" class="content-section hidden">
+                <div class="content-header">
+                    <div class="content-title">Saved Locations</div>
+                    <div class="content-subtitle">Manage your frequently used locations</div>
+                </div>
+
+                <button class="add-location-btn" id="btn-add-location">
+                    <span>+</span> Add New Location
+                </button>
+
+                <div class="locations-grid" id="locations-container">
+                    <!-- Locations will be rendered here -->
+                    <div class="skeleton skeleton-card"></div>
+                    <div class="skeleton skeleton-card"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Cancel Booking Modal -->
+    <div class="dashboard-modal" id="cancel-booking-modal">
+        <div class="dashboard-modal-content">
+            <div class="dashboard-modal-header">
+                <h3 class="dashboard-modal-title">Cancel Booking</h3>
+                <button class="dashboard-modal-close" onclick="DashboardCore.closeCancelModal()">×</button>
+            </div>
+            <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                Are you sure you want to cancel this booking? This action cannot be undone.
+            </p>
+            <div style="display: flex; gap: 1rem;">
+                <button class="modal-btn modal-btn-secondary" onclick="DashboardCore.closeCancelModal()"
+                    style="flex: 1;">
+                    No, Keep It
+                </button>
+                <button class="modal-btn modal-btn-danger" id="confirm-cancel-btn" style="flex: 1;">
+                    Yes, Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Location Modal -->
+    <div class="dashboard-modal" id="add-location-modal">
+        <div class="dashboard-modal-content">
+            <div class="dashboard-modal-header">
+                <h3 class="dashboard-modal-title">Add New Location</h3>
+                <button class="dashboard-modal-close" onclick="DashboardCore.closeAddLocationModal()">×</button>
+            </div>
+            <form id="add-location-form">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        Location Name
+                    </label>
+                    <input type="text" id="location-name" placeholder="e.g., Home, Office" required
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        Address
+                    </label>
+                    <textarea id="location-address" rows="3" placeholder="Enter full address" required
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="location-default" style="width: 18px; height: 18px;">
+                        <span style="font-weight: 500; color: var(--text-secondary);">Set as default location</span>
+                    </label>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button type="button" class="modal-btn modal-btn-secondary"
+                        onclick="DashboardCore.closeAddLocationModal()" style="flex: 1;">
+                        Cancel
+                    </button>
+                    <button type="submit" class="modal-btn modal-btn-primary" style="flex: 1;">
+                        Add Location
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="new-config.js"></script>
+    <script src="../assets/js/dashboard-core.js"></script>
+    <script src="../assets/js/dashboard-premium-v2.js"></script>
+</body>
+
+</html>

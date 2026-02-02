@@ -31,7 +31,11 @@ const API_CONFIG = {
         // Bookings
         CREATE_BOOKING: '/bookings/',
         CUSTOMER_BOOKINGS: '/bookings/customer-bookings',
-        UPDATE_BOOKING_STATUS: '/bookings' // + /{id}/status
+        UPDATE_BOOKING_STATUS: '/bookings', // + /{id}/status
+
+        // Customer Locations
+        CUSTOMER_LOCATIONS: '/customer-locations', // + /{customer_id}
+        CREATE_LOCATION: '/customer-locations/'
     },
 
     // Request timeout in milliseconds

@@ -130,6 +130,8 @@ const AuthSystem = (function () {
     function updateAuthUI() {
         const loginBtn = document.getElementById('login-btn');
         const mobileLoginBtn = document.getElementById('mobile-login-btn');
+        const dashboardLinkDesktop = document.getElementById('dashboard-link-desktop');
+        const dashboardLinkMobile = document.getElementById('dashboard-link-mobile');
 
         if (isLoggedIn && customerData) {
             // Show customer name or phone
@@ -151,6 +153,14 @@ const AuthSystem = (function () {
                     span.textContent = displayName;
                 }
             }
+
+            // Show dashboard links
+            if (dashboardLinkDesktop) {
+                dashboardLinkDesktop.style.display = 'inline';
+            }
+            if (dashboardLinkMobile) {
+                dashboardLinkMobile.style.display = 'block';
+            }
         } else {
             // Show "Login / Register"
             if (loginBtn) {
@@ -161,6 +171,14 @@ const AuthSystem = (function () {
                 if (span) {
                     span.textContent = 'Login / Register';
                 }
+            }
+
+            // Hide dashboard links
+            if (dashboardLinkDesktop) {
+                dashboardLinkDesktop.style.display = 'none';
+            }
+            if (dashboardLinkMobile) {
+                dashboardLinkMobile.style.display = 'none';
             }
         }
     }
@@ -508,6 +526,17 @@ const AuthSystem = (function () {
                 // Show welcome screen for new users
                 showWelcomeNew();
 
+                // Auto-redirect to booking page after 2 seconds
+                setTimeout(() => {
+                    closeAuthModal();
+                    const currentPath = window.location.pathname;
+                    if (currentPath.includes('/pages/')) {
+                        window.location.href = 'book-service-v2.html';
+                    } else {
+                        window.location.href = 'pages/book-service-v2.html';
+                    }
+                }, 2000);
+
             } else if (data.data.user) {
                 // Existing user - login successful
                 console.log('✅ Login successful:', data.data.user);
@@ -528,6 +557,17 @@ const AuthSystem = (function () {
 
                 // Show welcome back screen
                 showWelcomeBack(customerData);
+
+                // Auto-redirect to dashboard after 2 seconds
+                setTimeout(() => {
+                    closeAuthModal();
+                    const currentPath = window.location.pathname;
+                    if (currentPath.includes('/pages/')) {
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        window.location.href = 'pages/dashboard.html';
+                    }
+                }, 2000);
             } else {
                 // Fallback - show welcome for new user
                 showWelcomeNew();

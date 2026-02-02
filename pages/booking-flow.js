@@ -2483,12 +2483,16 @@ const BookingFlow = {
     },
 
     showSuccess(booking) {
-        const bookingId = booking?.id || Math.random().toString(36).substr(2, 8).toUpperCase();
-        DOM.bookingIdDisplay.textContent = `#TTC-${bookingId}`;
-        DOM.successModal.classList.add('active');
+        // Prepare booking data for the success modal
+        const bookingData = {
+            service_name: BookingState.service.name || 'Car Wash Service',
+            vehicle_name: BookingState.vehicle.vehicleName || BookingState.vehicle.modelName || 'Your Vehicle',
+            date_time: `${BookingState.schedule.displayDate || ''} at ${BookingState.schedule.displayTime || ''}`.trim() || 'Scheduled',
+            total_amount: BookingState.payment.finalAmount || BookingState.payment.totalPrice || 0
+        };
 
-        // Reinitialize icons in modal
-        lucide.createIcons();
+        // Show the new success modal with countdown
+        BookingSuccess.showSuccessModal(bookingData);
     }
 };
 
@@ -2535,7 +2539,134 @@ function checkUserSession() {
     }
 }
 
+// ============================================
+// BOOKING SUCCESS MODULE
+// ============================================
+const BookingSuccess = (function () {
+    'use strict';
+
+    let countdownTimer = null;
+    let secondsRemaining = 5;
+
+    /**
+     * Show booking success modal with countdown
+     */
+    function showSuccessModal(bookingData) {
+        const modal = document.getElementById('booking-success-modal');
+        if (!modal) {
+            console.error('Booking success modal not found');
+            return;
+        }
+
+        // Populate booking summary
+        populateBookingSummary(bookingData);
+
+        // Show modal
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+
+        // Start countdown
+        startCountdown();
+    }
+
+    /**
+     * Populate booking summary
+     */
+    function populateBookingSummary(bookingData) {
+        const summaryContainer = document.getElementById('booking-summary');
+        if (!summaryContainer) return;
+
+        summaryContainer.innerHTML = `
+            <div style="display: grid; gap: 0.75rem;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--neutral-600);">Service:</span>
+                    <span style="font-weight: 600; color: var(--neutral-900);">${bookingData.service_name || 'Car Wash'}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--neutral-600);">Vehicle:</span>
+                    <span style="font-weight: 600; color: var(--neutral-900);">${bookingData.vehicle_name || 'Your Vehicle'}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--neutral-600);">Date & Time:</span>
+                    <span style="font-weight: 600; color: var(--neutral-900);">${bookingData.date_time || 'Scheduled'}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding-top: 0.75rem; 
+                            border-top: 1px solid var(--neutral-200);">
+                    <span style="color: var(--neutral-600);">Total Amount:</span>
+                    <span style="font-weight: 700; color: var(--primary-500); font-size: 1.125rem;">
+                        ₹${bookingData.total_amount || 0}
+                    </span>
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * Start countdown timer
+     */
+    function startCountdown() {
+        secondsRemaining = 5;
+        updateCountdownDisplay();
+
+        countdownTimer = setInterval(() => {
+            secondsRemaining--;
+            updateCountdownDisplay();
+
+            if (secondsRemaining <= 0) {
+                clearInterval(countdownTimer);
+                redirectToDashboard();
+            }
+        }, 1000);
+    }
+
+    /**
+     * Update countdown display
+     */
+    function updateCountdownDisplay() {
+        const countdownEl = document.getElementById('redirect-countdown');
+        if (countdownEl) {
+            countdownEl.textContent = secondsRemaining;
+        }
+    }
+
+    /**
+     * Redirect to home page
+     */
+    function redirectToHome() {
+        clearInterval(countdownTimer);
+        window.location.href = '../index.html';
+    }
+
+    /**
+     * Redirect to dashboard
+     */
+    function redirectToDashboard() {
+        clearInterval(countdownTimer);
+        window.location.href = 'dashboard.html';
+    }
+
+    /**
+     * Close modal (if needed)
+     */
+    function closeModal() {
+        clearInterval(countdownTimer);
+        const modal = document.getElementById('booking-success-modal');
+        if (modal) {
+            modal.classList.remove('active');
+            modal.style.display = 'none';
+        }
+    }
+
+    return {
+        showSuccessModal,
+        redirectToHome,
+        redirectToDashboard,
+        closeModal
+    };
+})();
+
 // Export for external access
 window.BookingState = BookingState;
 window.Navigation = Navigation;
 window.Utils = Utils;
+window.BookingSuccess = BookingSuccess;
