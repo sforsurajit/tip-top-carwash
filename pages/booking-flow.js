@@ -457,10 +457,48 @@ const API = {
 
     // Create Vehicle
     async createVehicle(data) {
-        return this.request('/vehicles/', {
-            method: 'POST',
-            body: JSON.stringify(data)
-        });
+        console.log('🚗 Creating vehicle:', data);
+        try {
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('tiptop_token');
+            const headers = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            };
+
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            const response = await fetch(`${this.MAIN_ERP_BASE}/vehicles/`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: headers,
+                body: JSON.stringify(data)
+            });
+
+            console.log('📥 Vehicle creation response status:', response.status);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('❌ Vehicle creation error:', errorText);
+                throw new Error(`HTTP ${response.status}: ${errorText}`);
+            }
+
+            const result = await response.json();
+            console.log('📥 Vehicle creation response:', result);
+
+            if (result.success && result.data) {
+                // Return the vehicle data with ID
+                return {
+                    id: result.data.vehicle_id || result.data.vehicle?.id,
+                    ...result.data.vehicle
+                };
+            }
+            throw new Error(result.message || 'Vehicle creation failed');
+        } catch (error) {
+            console.error('❌ Failed to create vehicle:', error);
+            throw error;
+        }
     },
 
     // Create Booking
@@ -483,20 +521,25 @@ const API = {
                 console.warn('⚠️ No auth token found in localStorage!');
             }
 
+
             const url = `${this.MAIN_ERP_BASE}/bookings/`;
             console.log('📡 Sending request to:', url);
             console.log('📋 Request headers:', JSON.stringify(headers, null, 2));
             console.log('📦 Request body:', JSON.stringify(data, null, 2));
 
-            const response = await fetch(url, {
-                method: 'POST',
-                mode: 'cors',
-                credentials: 'include',
-                headers: headers,
-                body: JSON.stringify(data)
-            });
-
-            console.log('📥 Response status:', response.status);
+            let response;
+            try {
+                response = await fetch(url, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: headers,
+                    body: JSON.stringify(data)
+                });
+                console.log('📥 Response status:', response.status);
+            } catch (fetchError) {
+                console.error('❌ Network error - fetch failed:', fetchError);
+                throw new Error(`Network error: ${fetchError.message}. Check if server is accessible.`);
+            }
 
             if (!response.ok) {
                 const errorText = await response.text();
@@ -1031,6 +1074,38 @@ const VehicleSelection = {
         BookingState.vehicle.carId = carId; // Store for services API
 
         Utils.showToast(`${BookingState.vehicle.vehicleName} selected!`, 'success');
+
+        // Create vehicle record in database
+        try {
+            const customerId = BookingState.user.id || JSON.parse(localStorage.getItem('customer_data') || '{}').id;
+
+            if (customerId) {
+                console.log('🚗 Creating vehicle record for customer:', customerId);
+
+                const vehicleData = {
+                    customer_id: customerId,
+                    make: BookingState.vehicle.brandName || 'Unknown',
+                    model: card.dataset.name,
+                    type: card.dataset.type || 'sedan',
+                    license_plate: null, // Optional
+                    year: null, // Optional
+                    color: null // Optional
+                };
+
+                const createdVehicle = await API.createVehicle(vehicleData);
+
+                if (createdVehicle && createdVehicle.id) {
+                    BookingState.vehicle.vehicleId = parseInt(createdVehicle.id);
+                    console.log('✅ Vehicle created with ID:', BookingState.vehicle.vehicleId);
+                }
+            } else {
+                console.warn('⚠️ No customer ID found, skipping vehicle creation');
+            }
+        } catch (error) {
+            console.error('❌ Vehicle creation failed:', error);
+            // Don't block the flow - continue even if vehicle creation fails
+            // The booking will try to create vehicle again if needed
+        }
 
         // Fetch services from API BEFORE advancing
         await ServiceSelection.loadServicesFromAPI(carId);
@@ -2309,11 +2384,34 @@ const BookingFlow = {
                 }
             }
 
+            // Validate customer_id exists - CRITICAL: Don't allow booking without valid customer
+            if (!customerId) {
+                console.error('❌ No customer_id found! User must be logged in to book.');
+                Utils.hideLoading();
+                Utils.showToast('Please log in to continue booking', 'error');
+
+                // Redirect to login or open auth modal
+                if (typeof AuthSystem !== 'undefined') {
+                    AuthSystem.openAuthModal();
+                }
+                return;
+            }
+
+            console.log('✅ Customer ID validated:', customerId);
+            console.log('🚗 Vehicle state:', {
+                vehicleId: BookingState.vehicle.vehicleId,
+                carId: BookingState.vehicle.carId,
+                modelId: BookingState.vehicle.modelId,
+                categoryId: BookingState.vehicle.categoryId
+            });
+
             // Build booking payload matching API requirements
             const bookingData = {
-                customer_id: customerId || 1,
-                vehicle: BookingState.vehicle.carId || BookingState.vehicle.modelId || BookingState.vehicle.categoryId,
-                service_ids: [BookingState.service.id],
+                customer_id: customerId, // No fallback - must be valid
+                vehicle_id: BookingState.vehicle.vehicleId || BookingState.vehicle.carId || BookingState.vehicle.modelId,
+                service_ids: Array.isArray(BookingState.service.id)
+                    ? BookingState.service.id
+                    : [BookingState.service.id], // Ensure it's always an array
                 booking_date: BookingState.schedule.date,
                 start_time: BookingState.schedule.time,
                 end_time: this.calculateEndTime(BookingState.schedule.time),
@@ -2329,8 +2427,8 @@ const BookingFlow = {
             }
 
             // Validate required fields before sending
-            console.log('� Validating booking data...');
-            const requiredFields = ['customer_id', 'vehicle', 'service_ids', 'booking_date', 'start_time', 'end_time', 'address', 'latitude', 'longitude', 'total_price'];
+            console.log('📋 Validating booking data...');
+            const requiredFields = ['customer_id', 'vehicle_id', 'service_ids', 'booking_date', 'start_time', 'end_time', 'address', 'latitude', 'longitude', 'total_price'];
             const missingFields = requiredFields.filter(field => !bookingData[field] || (Array.isArray(bookingData[field]) && bookingData[field].length === 0));
 
             if (missingFields.length > 0) {
@@ -2340,16 +2438,20 @@ const BookingFlow = {
                 return;
             }
 
-            console.log('�📦 Booking data to send:', bookingData);
+            console.log('📦 Booking data to send:', bookingData);
             console.log('📋 Field types:', {
                 customer_id: typeof bookingData.customer_id,
-                vehicle: typeof bookingData.vehicle,
+                vehicle_id: typeof bookingData.vehicle_id,
                 service_ids: Array.isArray(bookingData.service_ids) ? 'array' : typeof bookingData.service_ids,
                 booking_date: typeof bookingData.booking_date,
                 latitude: typeof bookingData.latitude,
                 longitude: typeof bookingData.longitude,
                 total_price: typeof bookingData.total_price
             });
+
+            // Log the exact JSON string that will be sent
+            console.log('📤 Exact JSON payload:');
+            console.log(JSON.stringify(bookingData, null, 2));
 
             const booking = await API.createBooking(bookingData);
 
@@ -2358,8 +2460,19 @@ const BookingFlow = {
 
         } catch (error) {
             Utils.hideLoading();
-            Utils.showToast('Failed to create booking. Please try again.', 'error');
-            console.error('Booking error:', error);
+
+            // Show detailed error message
+            let errorMessage = 'Failed to create booking. ';
+            if (error.message) {
+                errorMessage += error.message;
+            }
+
+            Utils.showToast(errorMessage, 'error');
+            console.error('❌ Booking error details:', {
+                message: error.message,
+                stack: error.stack,
+                error: error
+            });
         }
     },
 
