@@ -469,6 +469,12 @@ const AuthSystem = (function () {
                 console.log('✅ Auth token saved');
             }
 
+            // Save customer_id if available
+            if (data.data.customer_id) {
+                localStorage.setItem('customer_id', data.data.customer_id);
+                console.log('✅ Customer ID saved:', data.data.customer_id);
+            }
+
             // Check next step
             if (data.data.next_step === 'complete_registration') {
                 // New user - skip immediate registration, let them book first
@@ -478,8 +484,9 @@ const AuthSystem = (function () {
                 localStorage.setItem('registration_incomplete', 'true');
                 localStorage.setItem('customer_phone', authPhone);
 
-                // Create minimal customer data
+                // Create minimal customer data with customer_id
                 customerData = {
+                    id: data.data.customer_id || null,
                     phone: authPhone,
                     registration_incomplete: true
                 };
@@ -504,7 +511,23 @@ const AuthSystem = (function () {
             } else if (data.data.user) {
                 // Existing user - login successful
                 console.log('✅ Login successful:', data.data.user);
-                handleLoginSuccess(data.data);
+
+                // Save complete user data
+                customerData = {
+                    id: data.data.customer_id || data.data.user.id,
+                    phone: authPhone,
+                    name: data.data.user.name,
+                    email: data.data.user.email,
+                    ...data.data.user
+                };
+                localStorage.setItem('customer_data', JSON.stringify(customerData));
+                localStorage.setItem('customer_phone', authPhone);
+
+                isLoggedIn = true;
+                updateAuthUI();
+
+                // Show welcome back screen
+                showWelcomeBack(customerData);
             } else {
                 // Fallback - show welcome for new user
                 showWelcomeNew();

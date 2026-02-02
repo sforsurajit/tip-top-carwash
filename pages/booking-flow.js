@@ -359,8 +359,10 @@ const API = {
             const data = await response.json();
 
             if (data.success && data.data) {
+                // Check if cars are in data.data.cars (new API structure)
+                let cars = data.data.cars || data.data;
                 // Handle both single object and array
-                const cars = Array.isArray(data.data) ? data.data : [data.data];
+                cars = Array.isArray(cars) ? cars : [cars];
                 console.log('✅ Loaded', cars.length, 'cars for brand');
                 return cars;
             }
@@ -463,10 +465,57 @@ const API = {
 
     // Create Booking
     async createBooking(data) {
-        return this.request('/bookings/', {
-            method: 'POST',
-            body: JSON.stringify(data)
-        });
+        console.log('🔄 Creating booking with data:', data);
+        try {
+            // Get auth token from localStorage
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('tiptop_token');
+            console.log('🔑 Auth token from localStorage:', token ? token : 'NOT FOUND');
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            };
+
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+                console.log('✅ Authorization header set');
+            } else {
+                console.warn('⚠️ No auth token found in localStorage!');
+            }
+
+            const url = `${this.MAIN_ERP_BASE}/bookings/`;
+            console.log('📡 Sending request to:', url);
+            console.log('📋 Request headers:', JSON.stringify(headers, null, 2));
+            console.log('📦 Request body:', JSON.stringify(data, null, 2));
+
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'include',
+                headers: headers,
+                body: JSON.stringify(data)
+            });
+
+            console.log('📥 Response status:', response.status);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('❌ Response error:', errorText);
+                throw new Error(`HTTP ${response.status}: ${errorText}`);
+            }
+
+            const result = await response.json();
+            console.log('📥 Response data:', result);
+
+            if (result.success) {
+                console.log('✅ Booking created successfully:', result.data);
+                return result.data;
+            }
+            throw new Error(result.message || 'Booking failed');
+        } catch (error) {
+            console.error('❌ Failed to create booking:', error);
+            throw error;
+        }
     },
 
     // Complete Registration
@@ -736,25 +785,38 @@ const VehicleSelection = {
         // Try to fetch brands from API
         const apiBrands = await API.getBrands();
 
-        let brandsToRender = [];
-
-        if (apiBrands && apiBrands.length > 0) {
-            // Use API brands
-            this.apiBrands = apiBrands;
-            brandsToRender = apiBrands.map(b => ({
-                id: b.id,
-                name: b.brand_name,
-                logo: b.icon_url ? `<img src="${b.icon_url}" alt="${b.brand_name}" style="width:40px;height:40px;object-fit:cover;border-radius:8px;">` : '🚗'
-            }));
-        } else {
-            // Fallback to mock data
-            console.log('⚠️ Using mock brand data');
-            brandsToRender = MOCK_CAR_BRANDS.map(b => ({
-                id: b.id,
-                name: b.name,
-                logo: b.logo
-            }));
+        // Check if API returned data
+        if (apiBrands === null) {
+            // API failed, show error message
+            DOM.brandGrid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                    <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">Unable to Load Brands</h3>
+                    <p style="color: var(--text-secondary);">Please check your connection and try again</p>
+                </div>
+            `;
+            return;
         }
+
+        if (apiBrands.length === 0) {
+            // API returned empty array
+            DOM.brandGrid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🚗</div>
+                    <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">No Brands Available</h3>
+                    <p style="color: var(--text-secondary);">Please check back later or contact support</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Use API brands
+        this.apiBrands = apiBrands;
+        const brandsToRender = apiBrands.map(b => ({
+            id: b.id,
+            name: b.brand_name,
+            logo: b.icon_url ? `<img src="${b.icon_url}" alt="${b.brand_name}" style="width:40px;height:40px;object-fit:cover;border-radius:8px;">` : '🚗'
+        }));
 
         const brandsHTML = brandsToRender.map(brand => `
             <div class="brand-card" data-id="${brand.id}" data-name="${brand.name}">
@@ -850,31 +912,47 @@ const VehicleSelection = {
         // Try to fetch cars from API
         const apiCars = await API.getCarsByBrand(brandId);
 
-        let modelsToRender = [];
-
-        if (apiCars && apiCars.length > 0) {
-            // Use API cars
-            modelsToRender = apiCars.map(car => ({
-                id: car.id,
-                name: car.car_name,
-                type: car.car_type || 'Hatchback',
-                categoryId: this.getCategoryIdFromType(car.car_type),
-                multiplier: this.getMultiplierFromType(car.car_type),
-                icon_url: car.icon_url
-            }));
-        } else {
-            // Fallback to mock data
-            console.log('⚠️ Using mock model data');
-            const mockModels = MOCK_CAR_MODELS[brandId] || [];
-            modelsToRender = mockModels.map(m => ({
-                id: m.id,
-                name: m.name,
-                type: m.type,
-                categoryId: m.categoryId,
-                multiplier: m.multiplier,
-                icon_url: null
-            }));
+        // Check if API returned data
+        if (apiCars === null) {
+            // API failed, show error message
+            DOM.modelGrid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                    <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">Unable to Load Models</h3>
+                    <p style="color: var(--text-secondary);">Please check your connection and try again</p>
+                    <button onclick="VehicleSelection.renderModels(${brandId})" style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer;">Retry</button>
+                </div>
+            `;
+            return;
         }
+
+        if (apiCars.length === 0) {
+            // API returned empty array - show no models message with Other option
+            DOM.modelGrid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🚗</div>
+                    <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">No Models Available</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">We don't have models for this brand yet. You can add your vehicle manually.</p>
+                </div>
+                <div class="model-card other-model" data-id="other" style="grid-column: 1/-1; max-width: 300px; margin: 0 auto;">
+                    <div class="model-name">Add Your Model</div>
+                    <span class="model-type">Custom Entry</span>
+                </div>
+            `;
+            // Add click handler for the Other option
+            DOM.modelGrid.querySelector('.other-model').addEventListener('click', () => this.selectModel(DOM.modelGrid.querySelector('.other-model')));
+            return;
+        }
+
+        // Use API cars
+        const modelsToRender = apiCars.map(car => ({
+            id: car.id,
+            name: car.car_name,
+            type: car.car_type || 'Hatchback',
+            categoryId: this.getCategoryIdFromType(car.car_type),
+            multiplier: this.getMultiplierFromType(car.car_type),
+            icon_url: car.icon_url
+        }));
 
         const modelsHTML = modelsToRender.map(model => `
             <div class="model-card" data-id="${model.id}" data-brand-id="${brandId}" 
@@ -1255,6 +1333,13 @@ const ServiceSelection = {
             return;
         }
 
+        // If cache is empty array (no services available)
+        if (BookingState.cache.services && BookingState.cache.services.length === 0) {
+            console.log('⚠️ No services available for selected vehicle');
+            this.showNoServicesMessage();
+            return;
+        }
+
         // Show loading
         DOM.servicesGrid.innerHTML = `
             <div class="service-skeleton"></div>
@@ -1271,35 +1356,22 @@ const ServiceSelection = {
             BookingState.cache.services = services;
             this.renderServices(services);
         } catch (error) {
-            // Fallback services
-            const fallbackServices = [
-                {
-                    id: 1,
-                    name: 'Quick Wash',
-                    base_price: 199,
-                    description: 'Exterior wash with foam and rinse',
-                    features: ['Exterior Wash', 'Foam Treatment', 'Tire Shine'],
-                    popular: false
-                },
-                {
-                    id: 2,
-                    name: 'Full Wash',
-                    base_price: 349,
-                    description: 'Complete interior and exterior cleaning',
-                    features: ['Exterior Wash', 'Interior Vacuum', 'Dashboard Polish', 'Tire Shine'],
-                    popular: true
-                },
-                {
-                    id: 3,
-                    name: 'Premium Detailing',
-                    base_price: 599,
-                    description: 'Deep cleaning with premium products',
-                    features: ['Full Wash', 'Engine Cleaning', 'Leather Treatment', 'Ceramic Coat'],
-                    popular: false
-                }
-            ];
-            this.renderServices(fallbackServices);
+            console.error('❌ Failed to load services:', error);
+            this.showNoServicesMessage();
         }
+    },
+
+    showNoServicesMessage() {
+        DOM.servicesGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 3rem 1rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🚗</div>
+                <h3 style="color: var(--text-primary); margin-bottom: 0.5rem; font-size: 1.5rem;">No Services Available</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">We don't have services available for this vehicle at the moment.</p>
+                <button onclick="Navigation.prevStep()" style="padding: 0.75rem 1.5rem; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 500;">
+                    ← Choose Different Vehicle
+                </button>
+            </div>
+        `;
     },
 
     // ===== NEW: Load services from real API using car ID =====
@@ -1328,16 +1400,25 @@ const ServiceSelection = {
                 console.log('✅ Services loaded from API:', services.length);
                 return services;
             } else {
-                console.log('⚠️ No services from API, will use fallback');
-                return null;
+                // No services available for this vehicle
+                console.log('⚠️ No services available for this vehicle');
+                BookingState.cache.services = [];
+                return [];
             }
         } catch (error) {
             console.error('❌ Failed to load services from API:', error);
-            return null;
+            BookingState.cache.services = [];
+            return [];
         }
     },
 
     renderServices(services) {
+        // Check if services array is empty
+        if (!services || services.length === 0) {
+            this.showNoServicesMessage();
+            return;
+        }
+
         // For API services, prices are already vehicle-specific
         // For fallback services, we need to apply multiplier
         const isAPIService = BookingState.cache.services && BookingState.cache.services.length > 0;
@@ -1613,6 +1694,20 @@ const LocationSelection = {
     async handlePositionSuccess(lat, lng) {
         console.log('📍 Location detected:', lat, lng);
 
+        // Get actual address using reverse geocoding
+        let actualAddress = 'Auto-detected location';
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+            const data = await response.json();
+            if (data && data.display_name) {
+                actualAddress = data.display_name;
+                console.log('📍 Address:', actualAddress);
+            }
+        } catch (e) {
+            console.warn('Failed to get address, using coordinates');
+            actualAddress = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+        }
+
         // Check matching zone locally first (fast)
         const matchedZone = this.findMatchingZone(lat, lng);
 
@@ -1623,13 +1718,13 @@ const LocationSelection = {
             try {
                 const check = await API.checkLocation(matchedZone.id, lat, lng);
                 if (check.success && check.data.is_in_zone) {
-                    this.onLocationValid(lat, lng, matchedZone.id, matchedZone.zone_name, 'Auto-detected');
+                    this.onLocationValid(lat, lng, matchedZone.id, matchedZone.zone_name, actualAddress);
                     return;
                 }
             } catch (e) {
                 console.warn('API Check failed, trusting local check:', e);
                 // Trust local check if API fails but polygon matched
-                this.onLocationValid(lat, lng, matchedZone.id, matchedZone.zone_name, 'Auto-detected');
+                this.onLocationValid(lat, lng, matchedZone.id, matchedZone.zone_name, actualAddress);
                 return;
             }
         }
@@ -2200,21 +2295,61 @@ const BookingFlow = {
             }
 
             // Step 4: Create booking
+            // Get customer_id from localStorage or BookingState
+            let customerId = BookingState.user.id;
+            if (!customerId) {
+                const userData = localStorage.getItem('customer_data');
+                if (userData) {
+                    try {
+                        const customer = JSON.parse(userData);
+                        customerId = customer.id || customer.customer_id;
+                    } catch (e) {
+                        console.error('Failed to parse customer data');
+                    }
+                }
+            }
+
+            // Build booking payload matching API requirements
             const bookingData = {
-                customer_id: BookingState.user.id || 1,
-                vehicle_id: BookingState.vehicle.vehicleId || BookingState.vehicle.categoryId,
+                customer_id: customerId || 1,
+                vehicle: BookingState.vehicle.carId || BookingState.vehicle.modelId || BookingState.vehicle.categoryId,
                 service_ids: [BookingState.service.id],
                 booking_date: BookingState.schedule.date,
                 start_time: BookingState.schedule.time,
                 end_time: this.calculateEndTime(BookingState.schedule.time),
                 address: fullAddress,
-                latitude: BookingState.location.latitude,
-                longitude: BookingState.location.longitude,
-                zone_id: BookingState.location.zoneId,
-                total_price: BookingState.payment.finalAmount,
-                payment_method: BookingState.payment.method,
-                notes: BookingState.landmark.name ? `Landmark: ${BookingState.landmark.name}` : null
+                latitude: BookingState.location.lat || BookingState.location.latitude,
+                longitude: BookingState.location.lng || BookingState.location.longitude,
+                total_price: BookingState.payment.finalAmount
             };
+
+            // Add zone_id only if it exists (optional field)
+            if (BookingState.location.zoneId) {
+                bookingData.zone_id = BookingState.location.zoneId;
+            }
+
+            // Validate required fields before sending
+            console.log('� Validating booking data...');
+            const requiredFields = ['customer_id', 'vehicle', 'service_ids', 'booking_date', 'start_time', 'end_time', 'address', 'latitude', 'longitude', 'total_price'];
+            const missingFields = requiredFields.filter(field => !bookingData[field] || (Array.isArray(bookingData[field]) && bookingData[field].length === 0));
+
+            if (missingFields.length > 0) {
+                console.error('❌ Missing required fields:', missingFields);
+                Utils.hideLoading();
+                Utils.showToast(`Missing required data: ${missingFields.join(', ')}`, 'error');
+                return;
+            }
+
+            console.log('�📦 Booking data to send:', bookingData);
+            console.log('📋 Field types:', {
+                customer_id: typeof bookingData.customer_id,
+                vehicle: typeof bookingData.vehicle,
+                service_ids: Array.isArray(bookingData.service_ids) ? 'array' : typeof bookingData.service_ids,
+                booking_date: typeof bookingData.booking_date,
+                latitude: typeof bookingData.latitude,
+                longitude: typeof bookingData.longitude,
+                total_price: typeof bookingData.total_price
+            });
 
             const booking = await API.createBooking(bookingData);
 

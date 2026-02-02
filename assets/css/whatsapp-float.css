@@ -12,11 +12,11 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-    z-index: 997;
-    /* Below mobile menu (999) and overlay (998) */
+    z-index: 9998;
+    /* High z-index to ensure visibility on all pages */
     transition: all 0.3s ease;
     text-decoration: none;
-    animation: pulse 2s infinite;
+    animation: whatsappPulse 2s infinite;
 }
 
 .whatsapp-float svg {
@@ -33,7 +33,7 @@
 }
 
 /* Pulse Animation */
-@keyframes pulse {
+@keyframes whatsappPulse {
 
     0%,
     100% {
