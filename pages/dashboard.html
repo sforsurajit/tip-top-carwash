@@ -32,9 +32,44 @@
                 <span>🔔</span>
                 <span class="notification-badge" id="notification-count">0</span>
             </div>
-            <div class="profile-avatar" id="profile-avatar">
-                <img src="https://ui-avatars.com/api/?name=Guest&background=ff6b35&color=fff&size=128" alt="Profile"
-                    id="profile-image">
+            <div class="user-dropdown-container">
+                <div class="user-profile">
+                    <div class="user-avatar" id="user-avatar">
+                        <span id="user-avatar-letter">G</span>
+                    </div>
+                    <span class="user-name" id="header-user-name">Guest</span>
+                    <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+
+                <!-- Dropdown Menu -->
+                <div class="user-dropdown-menu">
+                    <div class="dropdown-header">
+                        <span class="dropdown-user-name" id="dropdown-user-name">Guest</span>
+                        <span class="dropdown-user-role" id="dropdown-user-phone">Not logged in</span>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" id="btn-edit-profile">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Edit Profile
+                    </button>
+                    <button class="dropdown-item text-danger" id="btn-logout">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Logout
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -66,11 +101,7 @@
         <main class="main-content">
             <!-- Overview Section -->
             <section id="section-overview" class="content-section active">
-                <!-- CONTENT HEADER -->
-                <div class="content-header">
-                    <div class="content-title">Dashboard</div>
-                    <div class="content-subtitle">Manage your account</div>
-                </div>
+
 
                 <!-- WELCOME SECTION -->
                 <section class="welcome-section">
@@ -209,6 +240,48 @@
                     <textarea id="location-address" rows="3" placeholder="Enter full address" required
                         style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
                 </div>
+
+                <!-- GPS Coordinates Section -->
+                <div style="margin-bottom: 1rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <label style="font-weight: 600; color: var(--text-primary);">
+                            GPS Coordinates
+                        </label>
+                        <button type="button" id="btn-detect-location" class="modal-btn modal-btn-secondary"
+                            style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                            📍 Detect Location
+                        </button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <div>
+                            <input type="text" id="location-latitude" placeholder="Latitude" required
+                                style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                        </div>
+                        <div>
+                            <input type="text" id="location-longitude" placeholder="Longitude" required
+                                style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                        </div>
+                    </div>
+                    <small
+                        style="display: block; margin-top: 0.25rem; color: var(--text-secondary); font-size: 0.85rem;">
+                        Click "Detect Location" to auto-fill coordinates
+                    </small>
+                </div>
+
+                <!-- Zone Selection Section -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        Service Zone
+                    </label>
+                    <select id="location-zone" required
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; background: white; cursor: pointer;">
+                        <option value="">Select Zone</option>
+                        <!-- Populated dynamically -->
+                    </select>
+                    <div id="zone-validation-message" style="margin-top: 0.5rem;"></div>
+                </div>
+
                 <div style="margin-bottom: 1.5rem;">
                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
                         <input type="checkbox" id="location-default" style="width: 18px; height: 18px;">
@@ -222,6 +295,53 @@
                     </button>
                     <button type="submit" class="modal-btn modal-btn-primary" style="flex: 1;">
                         Add Location
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Edit Profile Modal -->
+    <div class="dashboard-modal" id="edit-profile-modal">
+        <div class="dashboard-modal-content">
+            <div class="dashboard-modal-header">
+                <h3 class="dashboard-modal-title">Edit Profile</h3>
+                <button class="dashboard-modal-close" onclick="DashboardCore.closeEditProfileModal()">×</button>
+            </div>
+            <form id="edit-profile-form">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        Name
+                    </label>
+                    <input type="text" id="profile-name" placeholder="Enter your name" required
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        Email
+                    </label>
+                    <input type="email" id="profile-email" placeholder="Enter your email"
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        Phone Number
+                    </label>
+                    <input type="tel" id="profile-phone" placeholder="Phone number" disabled
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; background: var(--lighter-bg); cursor: not-allowed;">
+                    <small
+                        style="display: block; margin-top: 0.25rem; color: var(--text-secondary); font-size: 0.85rem;">
+                        Phone number cannot be changed as it's used for login
+                    </small>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button type="button" class="modal-btn modal-btn-secondary"
+                        onclick="DashboardCore.closeEditProfileModal()" style="flex: 1;">
+                        Cancel
+                    </button>
+                    <button type="submit" class="modal-btn modal-btn-primary" style="flex: 1;">
+                        Save Changes
                     </button>
                 </div>
             </form>

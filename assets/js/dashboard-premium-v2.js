@@ -80,20 +80,28 @@
     }
 
     /**
-     * Initialize profile avatar
+     * Initialize profile avatar and dropdown
      */
     function initProfile() {
         const customerData = localStorage.getItem('customer_data');
         if (customerData) {
             try {
                 const customer = JSON.parse(customerData);
-                const profileImage = document.getElementById('profile-image');
+
+                // Update header user name
+                const headerUserName = document.getElementById('header-user-name');
+                const avatarLetter = document.getElementById('user-avatar-letter');
                 const greetingName = document.getElementById('greeting-name');
 
                 if (customer.name) {
-                    // Update profile image
-                    if (profileImage) {
-                        profileImage.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(customer.name)}&background=ff6b35&color=fff&size=128`;
+                    // Update avatar with first letter
+                    if (avatarLetter) {
+                        avatarLetter.textContent = customer.name.charAt(0).toUpperCase();
+                    }
+
+                    // Update header name (first name only)
+                    if (headerUserName) {
+                        headerUserName.textContent = customer.name.split(' ')[0];
                     }
 
                     // Update greeting name
@@ -101,10 +109,28 @@
                         greetingName.textContent = customer.name.split(' ')[0] || customer.name;
                     }
                 } else if (customer.phone) {
-                    // Use phone number
+                    // Use phone number if no name
+                    if (avatarLetter) {
+                        avatarLetter.textContent = '?';
+                    }
+                    if (headerUserName) {
+                        headerUserName.textContent = formatPhoneDisplay(customer.phone);
+                    }
                     if (greetingName) {
                         greetingName.textContent = formatPhoneDisplay(customer.phone);
                     }
+                }
+
+                // Update dropdown header
+                const dropdownUserName = document.getElementById('dropdown-user-name');
+                const dropdownUserPhone = document.getElementById('dropdown-user-phone');
+
+                if (dropdownUserName) {
+                    dropdownUserName.textContent = customer.name || 'Guest';
+                }
+
+                if (dropdownUserPhone && customer.phone) {
+                    dropdownUserPhone.textContent = formatPhoneDisplay(customer.phone);
                 }
             } catch (e) {
                 console.error('Error parsing customer data:', e);
@@ -130,11 +156,7 @@
      */
     function formatPhoneDisplay(phone) {
         if (!phone) return 'Guest';
-        const cleaned = phone.replace(/\D/g, '');
-        if (cleaned.length === 10) {
-            return `${cleaned.slice(0, 5)}...${cleaned.slice(-2)}`;
-        }
-        return phone;
+        return `+91 ${phone}`;
     }
 
     // Expose functions globally if needed

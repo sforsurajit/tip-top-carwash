@@ -558,14 +558,31 @@ const AuthSystem = (function () {
                 // Show welcome back screen
                 showWelcomeBack(customerData);
 
-                // Auto-redirect to dashboard after 2 seconds
+                // Check if customer has any bookings before redirecting
+                const authToken = localStorage.getItem('auth_token');
+                const hasBookings = await checkCustomerBookings(customerData.id, authToken);
+
+                // Auto-redirect based on booking status after 2 seconds
                 setTimeout(() => {
                     closeAuthModal();
                     const currentPath = window.location.pathname;
-                    if (currentPath.includes('/pages/')) {
-                        window.location.href = 'dashboard.html';
+
+                    if (hasBookings) {
+                        // Has bookings → Go to dashboard
+                        console.log('🏠 Redirecting to dashboard (has bookings)');
+                        if (currentPath.includes('/pages/')) {
+                            window.location.href = 'dashboard.html';
+                        } else {
+                            window.location.href = 'pages/dashboard.html';
+                        }
                     } else {
-                        window.location.href = 'pages/dashboard.html';
+                        // No bookings → Go to booking page
+                        console.log('📝 Redirecting to booking page (no bookings)');
+                        if (currentPath.includes('/pages/')) {
+                            window.location.href = 'book-service-v2.html';
+                        } else {
+                            window.location.href = 'pages/book-service-v2.html';
+                        }
                     }
                 }, 2000);
             } else {
@@ -681,6 +698,47 @@ const AuthSystem = (function () {
         // Clear OTP timer
         if (authOTPTimer) {
             clearInterval(authOTPTimer);
+        }
+    }
+
+    // ================================
+    // BOOKING CHECK
+    // ================================
+
+    /**
+     * Check if customer has any previous bookings
+     * @param {number} customerId - Customer ID
+     * @param {string} authToken - JWT auth token
+     * @returns {Promise<boolean>} - true if has bookings, false otherwise
+     */
+    async function checkCustomerBookings(customerId, authToken) {
+        try {
+            const url = `${API_CONFIG.BASE_URL}/bookings/customer-bookings`;
+
+            console.log('📋 Checking customer bookings for ID:', customerId);
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: JSON.stringify({ customer_id: customerId })
+            });
+
+            const data = await response.json();
+
+            if (data.success && data.data.bookings && data.data.bookings.length > 0) {
+                console.log('✅ Customer has', data.data.bookings.length, 'bookings');
+                return true;
+            } else {
+                console.log('ℹ️ Customer has no bookings');
+                return false;
+            }
+        } catch (error) {
+            console.error('❌ Error checking bookings:', error);
+            // On error, default to dashboard (safer option)
+            return true;
         }
     }
 

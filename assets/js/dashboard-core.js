@@ -29,7 +29,9 @@ const DashboardCore = (function () {
             locations: false
         },
         currentSection: 'overview',
-        cancelBookingId: null
+        cancelBookingId: null,
+        zones: [],
+        selectedZone: null
     };
 
     // ================================
@@ -115,7 +117,8 @@ const DashboardCore = (function () {
         await Promise.all([
             fetchBookings(state.user.id),
             fetchVehicles(state.user.id),
-            fetchLocations(state.user.id)
+            fetchLocations(state.user.id),
+            fetchZones()
         ]);
     }
 
@@ -283,8 +286,15 @@ const DashboardCore = (function () {
             console.log('📥 Locations response:', data);
 
             if (data.success && data.data) {
-                // Handle both array and object with locations property
-                state.locations = Array.isArray(data.data) ? data.data : (data.data.locations || []);
+                // API returns a single location object, convert to array
+                if (Array.isArray(data.data)) {
+                    state.locations = data.data;
+                } else if (typeof data.data === 'object') {
+                    // Single location object, wrap in array
+                    state.locations = [data.data];
+                } else {
+                    state.locations = [];
+                }
                 renderLocations();
             } else {
                 console.warn('⚠️ No locations found');
@@ -333,6 +343,150 @@ const DashboardCore = (function () {
         } catch (error) {
             console.error('❌ Error adding location:', error);
             showError(error.message || 'Failed to add location. Please try again.');
+        }
+    }
+
+    /**
+     * Fetch available service zones
+     */
+    async function fetchZones() {
+        try {
+            const url = `https://tip-topcarwash.in/main_erp/api_v1/zones_routes/`;
+            console.log('📤 Fetching zones...');
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: getAuthHeaders()
+            });
+
+            const data = await response.json();
+            console.log('📥 Zones response:', data);
+
+            if (data.success && data.data && data.data.zones) {
+                state.zones = data.data.zones.filter(zone => zone.status === 'active');
+                console.log(`✅ Loaded ${state.zones.length} active zones`);
+            } else {
+                console.warn('⚠️ No zones found');
+                state.zones = [];
+            }
+        } catch (error) {
+            console.error('❌ Error fetching zones:', error);
+            state.zones = [];
+        }
+    }
+
+    /**
+     * Check if location coordinates are within a specific zone
+     */
+    async function checkLocationInZone(zoneId, latitude, longitude) {
+        try {
+            const url = `https://tip-topcarwash.in/main_erp/api_v1/zones_routes/${zoneId}/check-location`;
+            console.log(`📤 Checking location in zone ${zoneId}:`, { latitude, longitude });
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ latitude, longitude })
+            });
+
+            const data = await response.json();
+            console.log('📥 Zone check response:', data);
+
+            return data;
+        } catch (error) {
+            console.error('❌ Error checking zone:', error);
+            return { success: false, message: 'Failed to check zone' };
+        }
+    }
+
+    /**
+     * Auto-detect which zone the coordinates belong to
+     */
+    async function autoDetectZone(latitude, longitude) {
+        if (state.zones.length === 0) {
+            console.warn('⚠️ No zones available for detection');
+            return null;
+        }
+
+        console.log('🔍 Auto-detecting zone for coordinates:', { latitude, longitude });
+
+        // Check each zone
+        for (const zone of state.zones) {
+            const result = await checkLocationInZone(zone.id, latitude, longitude);
+
+            if (result.success && result.data && result.data.is_in_zone) {
+                console.log(`✅ Location found in zone: ${zone.zone_name}`);
+                return {
+                    zone_id: zone.id,
+                    zone_name: zone.zone_name,
+                    is_in_zone: true
+                };
+            }
+        }
+
+        console.log('⚠️ Location not found in any serviceable zone');
+        return {
+            zone_id: null,
+            zone_name: null,
+            is_in_zone: false
+        };
+    }
+
+    /**
+     * Populate zone dropdown
+     */
+    function populateZoneDropdown() {
+        const zoneSelect = document.getElementById('location-zone');
+        if (!zoneSelect) return;
+
+        // Clear existing options except the first one
+        zoneSelect.innerHTML = '<option value="">Select Zone</option>';
+
+        // Add zones
+        state.zones.forEach(zone => {
+            const option = document.createElement('option');
+            option.value = zone.id;
+            option.textContent = zone.zone_name;
+            zoneSelect.appendChild(option);
+        });
+    }
+
+    /**
+     * Display zone validation message
+     */
+    function displayZoneValidation(message, type = 'info') {
+        const messageDiv = document.getElementById('zone-validation-message');
+        if (!messageDiv) return;
+
+        const icons = {
+            success: '✅',
+            warning: '⚠️',
+            error: '❌',
+            info: 'ℹ️'
+        };
+
+        const colors = {
+            success: '#16a34a',
+            warning: '#d97706',
+            error: '#dc2626',
+            info: '#0ea5e9'
+        };
+
+        messageDiv.innerHTML = `
+            <div style="padding: 0.75rem; background: ${colors[type]}15; border: 1px solid ${colors[type]}40; border-radius: 8px; color: ${colors[type]}; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span>${icons[type]}</span>
+                <span>${message}</span>
+            </div>
+        `;
+    }
+
+    /**
+     * Clear zone validation message
+     */
+    function clearZoneValidation() {
+        const messageDiv = document.getElementById('zone-validation-message');
+        if (messageDiv) {
+            messageDiv.innerHTML = '';
         }
     }
 
@@ -648,8 +802,7 @@ const DashboardCore = (function () {
      * Render a single location card
      */
     function renderLocationCard(location) {
-        const isDefault = location.is_default || false;
-        const locationName = location.name || location.label || 'Location';
+        const isDefault = location.flag === 1 || location.is_default || false;
         const address = location.address || 'No address provided';
 
         return `
@@ -661,7 +814,6 @@ const DashboardCore = (function () {
                 </div>
                 <div class="location-card-content">
                     <div class="location-card-header">
-                        <h3 class="location-card-name">${escapeHtml(locationName)}</h3>
                         ${isDefault ? '<span class="location-default-badge">⭐ Default</span>' : ''}
                     </div>
                     <p class="location-card-address">${escapeHtml(address)}</p>
@@ -730,6 +882,30 @@ const DashboardCore = (function () {
         const addLocationForm = document.getElementById('add-location-form');
         if (addLocationForm) {
             addLocationForm.addEventListener('submit', handleAddLocationSubmit);
+        }
+
+        // Edit profile button
+        const editProfileBtn = document.getElementById('btn-edit-profile');
+        if (editProfileBtn) {
+            editProfileBtn.addEventListener('click', openEditProfileModal);
+        }
+
+        // Logout button
+        const logoutBtn = document.getElementById('btn-logout');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', handleLogout);
+        }
+
+        // Edit profile form
+        const editProfileForm = document.getElementById('edit-profile-form');
+        if (editProfileForm) {
+            editProfileForm.addEventListener('submit', handleEditProfileSubmit);
+        }
+
+        // GPS detection button
+        const detectLocationBtn = document.getElementById('btn-detect-location');
+        if (detectLocationBtn) {
+            detectLocationBtn.addEventListener('click', detectGPSLocation);
         }
     }
 
@@ -822,6 +998,12 @@ const DashboardCore = (function () {
             // Clear form
             const form = document.getElementById('add-location-form');
             if (form) form.reset();
+
+            // Populate zone dropdown
+            populateZoneDropdown();
+
+            // Clear validation messages
+            clearZoneValidation();
         }
     }
 
@@ -838,31 +1020,297 @@ const DashboardCore = (function () {
     /**
      * Handle add location form submit
      */
-    function handleAddLocationSubmit(e) {
+    async function handleAddLocationSubmit(e) {
         e.preventDefault();
 
-        const name = document.getElementById('location-name').value.trim();
         const address = document.getElementById('location-address').value.trim();
+        const latitude = document.getElementById('location-latitude').value.trim();
+        const longitude = document.getElementById('location-longitude').value.trim();
+        const zoneId = document.getElementById('location-zone').value;
         const isDefault = document.getElementById('location-default').checked;
 
-        if (!name || !address) {
+        if (!address) {
             showError('Please fill in all required fields');
             return;
         }
 
-        // For now, we'll add without coordinates
-        // In a real implementation, you'd use geocoding or location detection
+        if (!latitude || !longitude) {
+            showError('Please provide GPS coordinates or click "Detect Location"');
+            return;
+        }
+
+        // Validate coordinates
+        const lat = parseFloat(latitude);
+        const lng = parseFloat(longitude);
+
+        if (isNaN(lat) || isNaN(lng)) {
+            showError('Invalid GPS coordinates');
+            return;
+        }
+
+        if (!zoneId) {
+            showError('Please select a service zone');
+            return;
+        }
+
+        // Validate location is in selected zone
+        displayZoneValidation('Validating location...', 'info');
+
+        const validation = await checkLocationInZone(zoneId, lat, lng);
+
+        if (!validation.success || !validation.data || !validation.data.is_in_zone) {
+            displayZoneValidation('Location is not in the selected service zone. Please check your coordinates or select a different zone.', 'error');
+            return;
+        }
+
+        // Clear validation message
+        clearZoneValidation();
+
         const locationData = {
             customer_id: state.user.id,
-            name: name,
+            latitude: lat,
+            longitude: lng,
             address: address,
-            is_default: isDefault,
-            latitude: 0, // Would be populated by geocoding
-            longitude: 0, // Would be populated by geocoding
-            zone_id: 1 // Would be determined by location
+            flag: isDefault ? 1 : 0,
+            zone_id: parseInt(zoneId)
         };
 
         addLocation(locationData);
+    }
+
+    /**
+     * Detect current GPS location
+     */
+    async function detectGPSLocation() {
+        if (!navigator.geolocation) {
+            showError('Geolocation is not supported by your browser');
+            return;
+        }
+
+        const latInput = document.getElementById('location-latitude');
+        const lngInput = document.getElementById('location-longitude');
+        const zoneSelect = document.getElementById('location-zone');
+        const detectBtn = document.getElementById('btn-detect-location');
+
+        // Show loading state
+        if (detectBtn) {
+            detectBtn.textContent = '🔄 Detecting...';
+            detectBtn.disabled = true;
+        }
+
+        clearZoneValidation();
+
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const lat = position.coords.latitude.toFixed(8);
+                const lng = position.coords.longitude.toFixed(8);
+
+                if (latInput) latInput.value = lat;
+                if (lngInput) lngInput.value = lng;
+
+                // Auto-detect zone
+                displayZoneValidation('Checking service zone...', 'info');
+                const zoneResult = await autoDetectZone(parseFloat(lat), parseFloat(lng));
+
+                if (zoneResult && zoneResult.is_in_zone) {
+                    // Auto-select zone in dropdown
+                    if (zoneSelect) {
+                        zoneSelect.value = zoneResult.zone_id;
+                    }
+                    displayZoneValidation(`Location is in ${zoneResult.zone_name} service area`, 'success');
+                } else {
+                    displayZoneValidation('Location not in any serviceable area. Please select a zone manually or choose a different location.', 'warning');
+                }
+
+                // Reset button
+                if (detectBtn) {
+                    detectBtn.textContent = '✅ Location Detected';
+                    setTimeout(() => {
+                        detectBtn.textContent = '📍 Detect Location';
+                        detectBtn.disabled = false;
+                    }, 2000);
+                }
+            },
+            (error) => {
+                console.error('Geolocation error:', error);
+                let errorMessage = 'Failed to detect location';
+
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        errorMessage = 'Location permission denied. Please enable location access.';
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        errorMessage = 'Location information unavailable';
+                        break;
+                    case error.TIMEOUT:
+                        errorMessage = 'Location request timed out';
+                        break;
+                }
+
+                showError(errorMessage);
+
+                // Reset button
+                if (detectBtn) {
+                    detectBtn.textContent = '📍 Detect Location';
+                    detectBtn.disabled = false;
+                }
+            }
+        );
+    }
+
+    /**
+     * Open edit profile modal
+     */
+    function openEditProfileModal() {
+        const modal = document.getElementById('edit-profile-modal');
+        if (modal && state.user) {
+            modal.classList.add('active');
+
+            // Populate form with current data
+            const nameInput = document.getElementById('profile-name');
+            const emailInput = document.getElementById('profile-email');
+            const phoneInput = document.getElementById('profile-phone');
+
+            if (nameInput) nameInput.value = state.user.name || '';
+            if (emailInput) emailInput.value = state.user.email || '';
+            if (phoneInput) phoneInput.value = state.user.phone || '';
+        }
+    }
+
+    /**
+     * Close edit profile modal
+     */
+    function closeEditProfileModal() {
+        const modal = document.getElementById('edit-profile-modal');
+        if (modal) {
+            modal.classList.remove('active');
+        }
+    }
+
+    /**
+     * Handle edit profile form submit
+     */
+    function handleEditProfileSubmit(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('profile-name').value.trim();
+        const email = document.getElementById('profile-email').value.trim();
+
+        if (!name) {
+            showError('Please enter your name');
+            return;
+        }
+
+        // Email validation (optional field)
+        if (email && !isValidEmail(email)) {
+            showError('Please enter a valid email address');
+            return;
+        }
+
+        const profileData = {
+            id: state.user.id,
+            name: name,
+            email: email || null
+        };
+
+        updateProfile(profileData);
+    }
+
+    /**
+     * Update customer profile
+     */
+    async function updateProfile(profileData) {
+        try {
+            const url = `https://tip-topcarwash.in/main_erp/api_v1/customers/${profileData.id}`;
+            console.log('📤 Updating profile:', profileData);
+
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: getAuthHeaders(),
+                body: JSON.stringify(profileData)
+            });
+
+            const data = await response.json();
+            console.log('📥 Update profile response:', data);
+
+            if (data.success) {
+                // Update local state and localStorage
+                state.user.name = profileData.name;
+                state.user.email = profileData.email;
+                localStorage.setItem('customer_data', JSON.stringify(state.user));
+
+                // Update UI
+                updateProfileDisplay();
+
+                // Close modal
+                closeEditProfileModal();
+
+                // Show success message
+                showSuccess('Profile updated successfully');
+            } else {
+                throw new Error(data.message || 'Failed to update profile');
+            }
+        } catch (error) {
+            console.error('❌ Error updating profile:', error);
+            showError(error.message || 'Failed to update profile. Please try again.');
+        }
+    }
+
+    /**
+     * Update profile display across dashboard
+     */
+    function updateProfileDisplay() {
+        if (!state.user) return;
+
+        // Update greeting
+        updateGreeting();
+
+        // Update header user name
+        const headerUserName = document.getElementById('header-user-name');
+        if (headerUserName && state.user.name) {
+            headerUserName.textContent = state.user.name.split(' ')[0];
+        }
+
+        // Update avatar letter
+        const avatarLetter = document.getElementById('user-avatar-letter');
+        if (avatarLetter && state.user.name) {
+            avatarLetter.textContent = state.user.name.charAt(0).toUpperCase();
+        }
+
+        // Update dropdown header
+        const dropdownUserName = document.getElementById('dropdown-user-name');
+        if (dropdownUserName && state.user.name) {
+            dropdownUserName.textContent = state.user.name;
+        }
+
+        const dropdownUserPhone = document.getElementById('dropdown-user-phone');
+        if (dropdownUserPhone && state.user.phone) {
+            dropdownUserPhone.textContent = formatPhoneDisplay(state.user.phone);
+        }
+    }
+
+    /**
+     * Handle logout
+     */
+    function handleLogout() {
+        if (confirm('Are you sure you want to logout?')) {
+            console.log('🚪 Logging out...');
+
+            // Clear localStorage
+            localStorage.removeItem('customer_data');
+            localStorage.removeItem('auth_token');
+
+            // Redirect to homepage
+            window.location.href = '../index.html';
+        }
+    }
+
+    /**
+     * Validate email format
+     */
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     }
 
     // ================================
@@ -967,7 +1415,10 @@ const DashboardCore = (function () {
         openCancelModal,
         closeCancelModal,
         openAddLocationModal,
-        closeAddLocationModal
+        closeAddLocationModal,
+        openEditProfileModal,
+        closeEditProfileModal,
+        handleLogout
     };
 })();
 
