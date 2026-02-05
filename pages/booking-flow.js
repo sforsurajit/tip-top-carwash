@@ -1620,6 +1620,7 @@ const LocationSelection = {
     apiZones: [], // Cache loaded zones
 
     async init() {
+        this.setupModalHandlers();
         this.setupLocationOptions();
 
         // Load zones in background immediately
@@ -1628,40 +1629,131 @@ const LocationSelection = {
         // Reset state (don't auto-select 'auto')
         BookingState.location.method = null;
         this.resetLocation();
+
+        // Show modal when step is entered
+        this.showLocationModal();
+    },
+
+    // ============================================
+    // Modal Management
+    // ============================================
+    showLocationModal() {
+        const modal = document.getElementById('locationModal');
+        if (modal) {
+            modal.style.display = 'flex';
+            // Re-initialize icons for modal
+            setTimeout(() => lucide.createIcons(), 50);
+        }
+    },
+
+    hideLocationModal() {
+        const modal = document.getElementById('locationModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    },
+
+    setupModalHandlers() {
+        const chooseLocationBtn = document.getElementById('chooseLocationBtn');
+        const closeModalBtn = document.getElementById('closeLocationModal');
+        const modalBackdrop = document.querySelector('.location-modal-backdrop');
+        const chooseAutoDetect = document.getElementById('chooseAutoDetect');
+        const chooseManualEntry = document.getElementById('chooseManualEntry');
+
+        // Open modal
+        if (chooseLocationBtn) {
+            chooseLocationBtn.addEventListener('click', () => {
+                this.showLocationModal();
+            });
+        }
+
+        // Close modal
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => {
+                this.hideLocationModal();
+            });
+        }
+
+        // Close on backdrop click
+        if (modalBackdrop) {
+            modalBackdrop.addEventListener('click', () => {
+                this.hideLocationModal();
+            });
+        }
+
+        // Close on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('locationModal');
+                if (modal && modal.style.display === 'flex') {
+                    this.hideLocationModal();
+                }
+            }
+        });
+
+        // Auto-detect choice
+        if (chooseAutoDetect) {
+            chooseAutoDetect.addEventListener('click', () => {
+                this.hideLocationModal();
+                this.setLocationMethod('auto');
+                this.detectLocation();
+            });
+        }
+
+        // Manual entry choice
+        if (chooseManualEntry) {
+            chooseManualEntry.addEventListener('click', () => {
+                this.hideLocationModal();
+                this.setLocationMethod('manual');
+            });
+        }
     },
 
     setupLocationOptions() {
-        // Auto detect option
-        DOM.detectLocationBtn.addEventListener('click', () => {
-            this.setLocationMethod('auto');
-            this.detectLocation();
-        });
+        // Auto detect option (legacy support)
+        if (DOM.detectLocationBtn) {
+            DOM.detectLocationBtn.addEventListener('click', () => {
+                this.setLocationMethod('auto');
+                this.detectLocation();
+            });
+        }
 
-        // Manual entry option
-        DOM.manualLocationBtn.addEventListener('click', () => {
-            this.setLocationMethod('manual');
-        });
+        // Manual entry option (legacy support)
+        if (DOM.manualLocationBtn) {
+            DOM.manualLocationBtn.addEventListener('click', () => {
+                this.setLocationMethod('manual');
+            });
+        }
 
         // Detect status click (retry)
-        DOM.detectStatus.addEventListener('click', () => {
-            this.detectLocation();
-        });
+        if (DOM.detectStatus) {
+            DOM.detectStatus.addEventListener('click', () => {
+                this.detectLocation();
+            });
+        }
 
         // Change location button
-        DOM.changeLocationBtn.addEventListener('click', () => {
-            this.setLocationMethod(null); // Go back to selection
-            this.resetLocation();
-        });
+        if (DOM.changeLocationBtn) {
+            DOM.changeLocationBtn.addEventListener('click', () => {
+                this.setLocationMethod(null); // Go back to selection
+                this.resetLocation();
+                this.showLocationModal(); // Show modal again
+            });
+        }
 
         // Try manual button (from error state)
-        DOM.tryManualBtn.addEventListener('click', () => {
-            this.setLocationMethod('manual');
-        });
+        if (DOM.tryManualBtn) {
+            DOM.tryManualBtn.addEventListener('click', () => {
+                this.setLocationMethod('manual');
+            });
+        }
 
         // Confirm manual address button
-        DOM.confirmAddressBtn.addEventListener('click', () => {
-            this.confirmManualAddress();
-        });
+        if (DOM.confirmAddressBtn) {
+            DOM.confirmAddressBtn.addEventListener('click', () => {
+                this.confirmManualAddress();
+            });
+        }
 
         // Map Link Parsing
         const mapLinkInput = document.getElementById('mapLinkInput');

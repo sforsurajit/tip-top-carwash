@@ -13,11 +13,17 @@ const DashboardCore = (function () {
     // STATE MANAGEMENT
     // ================================
 
-    let state = {
+    const state = {
         user: null,
         bookings: [],
-        vehicles: [],
         locations: [],
+        vehicles: [],
+        zones: [],
+        brands: [],
+        models: [],
+        selectedBrand: null,
+        selectedModel: null,
+        selectedVehicleType: null,
         stats: {
             totalSpend: 0,
             totalBookings: 0,
@@ -803,7 +809,21 @@ const DashboardCore = (function () {
      */
     function renderLocationCard(location) {
         const isDefault = location.flag === 1 || location.is_default || false;
-        const address = location.address || 'No address provided';
+        const fullAddress = location.address || 'No address provided';
+
+        // Split address into name and location (if it contains " - ")
+        let locationName = fullAddress;
+        let locationAddress = '';
+
+        if (fullAddress.includes(' - ')) {
+            const parts = fullAddress.split(' - ');
+            locationName = parts[0];
+            locationAddress = parts.slice(1).join(' - ');
+        }
+
+        // Get zone name if available
+        const zone = state.zones.find(z => z.id === location.zone_id);
+        const zoneName = zone ? zone.name : '';
 
         return `
             <div class="location-card">
@@ -816,7 +836,9 @@ const DashboardCore = (function () {
                     <div class="location-card-header">
                         ${isDefault ? '<span class="location-default-badge">⭐ Default</span>' : ''}
                     </div>
-                    <p class="location-card-address">${escapeHtml(address)}</p>
+                    <h4 style="margin: 0.5rem 0; color: var(--text-primary); font-size: 1rem; font-weight: 600;">${escapeHtml(locationName)}</h4>
+                    ${locationAddress ? `<p style="margin: 0.25rem 0; color: var(--text-secondary); font-size: 0.875rem; line-height: 1.4;">${escapeHtml(locationAddress)}</p>` : ''}
+                    ${zoneName ? `<p class="location-card-address" style="margin: 0.25rem 0; color: var(--text-secondary); font-size: 0.875rem;">📌 ${escapeHtml(zoneName)}</p>` : ''}
                 </div>
             </div>
         `;
@@ -907,6 +929,15 @@ const DashboardCore = (function () {
         if (detectLocationBtn) {
             detectLocationBtn.addEventListener('click', detectGPSLocation);
         }
+
+        // Add vehicle button
+        const addVehicleBtn = document.getElementById('btn-add-vehicle');
+        if (addVehicleBtn) {
+            addVehicleBtn.addEventListener('click', openAddVehicleModal);
+        }
+
+        // Setup vehicle search handlers
+        setupVehicleSearchHandlers();
     }
 
     /**
@@ -995,15 +1026,17 @@ const DashboardCore = (function () {
         if (modal) {
             modal.classList.add('active');
 
-            // Clear form
-            const form = document.getElementById('add-location-form');
-            if (form) form.reset();
+            // Show choice container, hide forms
+            showLocationChoice();
 
-            // Populate zone dropdown
+            // Populate zone dropdown for manual form
             populateZoneDropdown();
 
             // Clear validation messages
             clearZoneValidation();
+
+            // Setup choice handlers
+            setupLocationChoiceHandlers();
         }
     }
 
@@ -1014,7 +1047,212 @@ const DashboardCore = (function () {
         const modal = document.getElementById('add-location-modal');
         if (modal) {
             modal.classList.remove('active');
+            // Reset to choice view
+            showLocationChoice();
         }
+    }
+
+    /**
+     * Show location choice container
+     */
+    function showLocationChoice() {
+        const choiceContainer = document.getElementById('location-choice-container');
+        const autoForm = document.getElementById('add-location-form-auto');
+        const manualForm = document.getElementById('add-location-form-manual');
+
+        if (choiceContainer) choiceContainer.style.display = 'block';
+        if (autoForm) autoForm.style.display = 'none';
+        if (manualForm) manualForm.style.display = 'none';
+    }
+
+    /**
+     * Reset to location choice
+     */
+    function resetLocationChoice() {
+        showLocationChoice();
+
+        // Reset auto-detect form
+        const autoDetectStatus = document.getElementById('auto-detect-status');
+        const autoDetectSuccess = document.getElementById('auto-detect-success');
+        const autoDetectError = document.getElementById('auto-detect-error');
+
+        if (autoDetectStatus) autoDetectStatus.style.display = 'block';
+        if (autoDetectSuccess) autoDetectSuccess.style.display = 'none';
+        if (autoDetectError) autoDetectError.style.display = 'none';
+
+        // Clear forms
+        const autoForm = document.getElementById('add-location-form-auto');
+        const manualForm = document.getElementById('add-location-form-manual');
+        if (autoForm) autoForm.reset();
+        if (manualForm) manualForm.reset();
+
+        clearZoneValidation();
+    }
+
+    /**
+     * Switch to manual entry
+     */
+    function switchToManualEntry() {
+        const choiceContainer = document.getElementById('location-choice-container');
+        const autoForm = document.getElementById('add-location-form-auto');
+        const manualForm = document.getElementById('add-location-form-manual');
+
+        if (choiceContainer) choiceContainer.style.display = 'none';
+        if (autoForm) autoForm.style.display = 'none';
+        if (manualForm) manualForm.style.display = 'block';
+    }
+
+    /**
+     * Setup location choice handlers
+     */
+    function setupLocationChoiceHandlers() {
+        const autoDetectBtn = document.getElementById('dashboard-choose-auto-detect');
+        const manualEntryBtn = document.getElementById('dashboard-choose-manual-entry');
+
+        if (autoDetectBtn) {
+            autoDetectBtn.onclick = () => {
+                startAutoDetect();
+            };
+        }
+
+        if (manualEntryBtn) {
+            manualEntryBtn.onclick = () => {
+                switchToManualEntry();
+            };
+        }
+
+        // Setup form submissions
+        const autoForm = document.getElementById('add-location-form-auto');
+        const manualForm = document.getElementById('add-location-form-manual');
+
+        if (autoForm) {
+            autoForm.onsubmit = handleAutoDetectSubmit;
+        }
+
+        if (manualForm) {
+            manualForm.onsubmit = handleAddLocationSubmit;
+        }
+    }
+
+    /**
+     * Start auto-detect location flow
+     */
+    async function startAutoDetect() {
+        const choiceContainer = document.getElementById('location-choice-container');
+        const autoForm = document.getElementById('add-location-form-auto');
+        const autoDetectStatus = document.getElementById('auto-detect-status');
+        const autoDetectSuccess = document.getElementById('auto-detect-success');
+        const autoDetectError = document.getElementById('auto-detect-error');
+
+        // Hide choice, show auto form with loading
+        if (choiceContainer) choiceContainer.style.display = 'none';
+        if (autoForm) autoForm.style.display = 'block';
+        if (autoDetectStatus) autoDetectStatus.style.display = 'block';
+        if (autoDetectSuccess) autoDetectSuccess.style.display = 'none';
+        if (autoDetectError) autoDetectError.style.display = 'none';
+
+        // Check geolocation support
+        if (!navigator.geolocation) {
+            showAutoDetectError();
+            return;
+        }
+
+        // Get current position
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const lat = position.coords.latitude.toFixed(8);
+                const lng = position.coords.longitude.toFixed(8);
+
+                // Auto-detect zone
+                const zoneResult = await autoDetectZone(parseFloat(lat), parseFloat(lng));
+
+                if (zoneResult && zoneResult.is_in_zone) {
+                    // Fetch actual address using reverse geocoding
+                    let fetchedAddress = `Detected in ${zoneResult.zone_name} zone`;
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+                        const data = await response.json();
+                        if (data && data.display_name) {
+                            fetchedAddress = data.display_name;
+                        }
+                    } catch (error) {
+                        console.error('Reverse geocoding failed:', error);
+                        // Fallback to zone name if geocoding fails
+                    }
+
+                    // Success - show form with detected data
+                    const latInput = document.getElementById('location-latitude-auto');
+                    const lngInput = document.getElementById('location-longitude-auto');
+                    const zoneInput = document.getElementById('location-zone-auto');
+                    const zoneIdInput = document.getElementById('location-zone-id-auto');
+                    const addressInput = document.getElementById('location-address-auto');
+
+                    if (latInput) latInput.value = lat;
+                    if (lngInput) lngInput.value = lng;
+                    if (zoneInput) zoneInput.value = zoneResult.zone_name;
+                    if (zoneIdInput) zoneIdInput.value = zoneResult.zone_id;
+                    // Show fetched address
+                    if (addressInput) addressInput.value = fetchedAddress;
+
+                    // Show success form
+                    if (autoDetectStatus) autoDetectStatus.style.display = 'none';
+                    if (autoDetectSuccess) autoDetectSuccess.style.display = 'block';
+                } else {
+                    // Error - not in service area
+                    showAutoDetectError();
+                }
+            },
+            (error) => {
+                console.error('Geolocation error:', error);
+                showAutoDetectError();
+            }
+        );
+    }
+
+    /**
+     * Show auto-detect error
+     */
+    function showAutoDetectError() {
+        const autoDetectStatus = document.getElementById('auto-detect-status');
+        const autoDetectSuccess = document.getElementById('auto-detect-success');
+        const autoDetectError = document.getElementById('auto-detect-error');
+
+        if (autoDetectStatus) autoDetectStatus.style.display = 'none';
+        if (autoDetectSuccess) autoDetectSuccess.style.display = 'none';
+        if (autoDetectError) autoDetectError.style.display = 'block';
+    }
+
+    /**
+     * Handle auto-detect form submit
+     */
+    async function handleAutoDetectSubmit(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('location-name-auto').value.trim();
+        const fetchedAddress = document.getElementById('location-address-auto').value.trim();
+        const latitude = document.getElementById('location-latitude-auto').value.trim();
+        const longitude = document.getElementById('location-longitude-auto').value.trim();
+        const zoneId = document.getElementById('location-zone-id-auto').value;
+        const isDefault = document.getElementById('location-default-auto').checked;
+
+        if (!name) {
+            showError('Please enter a location name');
+            return;
+        }
+
+        // Combine location name and fetched address
+        const fullAddress = `${name} - ${fetchedAddress}`;
+
+        const locationData = {
+            customer_id: state.user.id,
+            latitude: parseFloat(latitude),
+            longitude: parseFloat(longitude),
+            address: fullAddress,
+            flag: isDefault ? 1 : 0,
+            zone_id: parseInt(zoneId)
+        };
+
+        addLocation(locationData);
     }
 
     /**
@@ -1023,28 +1261,18 @@ const DashboardCore = (function () {
     async function handleAddLocationSubmit(e) {
         e.preventDefault();
 
-        const address = document.getElementById('location-address').value.trim();
-        const latitude = document.getElementById('location-latitude').value.trim();
-        const longitude = document.getElementById('location-longitude').value.trim();
-        const zoneId = document.getElementById('location-zone').value;
-        const isDefault = document.getElementById('location-default').checked;
+        // Collect structured address fields
+        const locationName = document.getElementById('location-name')?.value.trim();
+        const zoneId = document.getElementById('location-zone')?.value;
+        const houseNumber = document.getElementById('location-house-number')?.value.trim();
+        const streetName = document.getElementById('location-street')?.value.trim();
+        const landmark = document.getElementById('location-landmark')?.value.trim();
+        const areaLocality = document.getElementById('location-area')?.value.trim();
+        const isDefault = document.getElementById('location-default')?.checked;
 
-        if (!address) {
-            showError('Please fill in all required fields');
-            return;
-        }
-
-        if (!latitude || !longitude) {
-            showError('Please provide GPS coordinates or click "Detect Location"');
-            return;
-        }
-
-        // Validate coordinates
-        const lat = parseFloat(latitude);
-        const lng = parseFloat(longitude);
-
-        if (isNaN(lat) || isNaN(lng)) {
-            showError('Invalid GPS coordinates');
+        // Validate required fields
+        if (!locationName) {
+            showError('Please enter a location name');
             return;
         }
 
@@ -1053,24 +1281,42 @@ const DashboardCore = (function () {
             return;
         }
 
-        // Validate location is in selected zone
-        displayZoneValidation('Validating location...', 'info');
-
-        const validation = await checkLocationInZone(zoneId, lat, lng);
-
-        if (!validation.success || !validation.data || !validation.data.is_in_zone) {
-            displayZoneValidation('Location is not in the selected service zone. Please check your coordinates or select a different zone.', 'error');
+        if (!houseNumber || !streetName || !areaLocality) {
+            showError('Please fill in all required address fields');
             return;
         }
 
-        // Clear validation message
-        clearZoneValidation();
+        // Combine all address fields into a single address string
+        const addressParts = [houseNumber, streetName];
+        if (landmark) {
+            addressParts.push(landmark);
+        }
+        addressParts.push(areaLocality);
+
+        const fullAddress = addressParts.join(', ');
+
+        // Get zone details to extract coordinates from zone center
+        const selectedZone = state.zones.find(z => z.id == zoneId);
+        if (!selectedZone || !selectedZone.coordinates || selectedZone.coordinates.length === 0) {
+            showError('Invalid zone selected');
+            return;
+        }
+
+        // Calculate zone center coordinates
+        let totalLat = 0;
+        let totalLng = 0;
+        selectedZone.coordinates.forEach(coord => {
+            totalLat += coord.lat;
+            totalLng += coord.lng;
+        });
+        const lat = totalLat / selectedZone.coordinates.length;
+        const lng = totalLng / selectedZone.coordinates.length;
 
         const locationData = {
             customer_id: state.user.id,
-            latitude: lat,
-            longitude: lng,
-            address: address,
+            latitude: null,
+            longitude: null,
+            address: fullAddress,
             flag: isDefault ? 1 : 0,
             zone_id: parseInt(zoneId)
         };
@@ -1406,18 +1652,363 @@ const DashboardCore = (function () {
     }
 
     // ================================
+    // UTILITY FUNCTIONS
+    // ================================
+
+    /**
+     * Escape HTML to prevent XSS
+     */
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // ================================
+    // VEHICLE MANAGEMENT
+    // ================================
+
+    /**
+     * Open add vehicle modal
+     */
+    function openAddVehicleModal() {
+        const modal = document.getElementById('add-vehicle-modal');
+        if (!modal) return;
+
+        // Reset state
+        state.selectedBrand = null;
+        state.selectedModel = null;
+        state.selectedVehicleType = null;
+
+        // Show brand selection view
+        showBrandSelection();
+
+        // Fetch and display brands
+        fetchBrands();
+
+        // Show modal
+        modal.style.display = 'flex';
+    }
+
+    /**
+     * Close add vehicle modal
+     */
+    function closeAddVehicleModal() {
+        const modal = document.getElementById('add-vehicle-modal');
+        if (!modal) return;
+
+        modal.style.display = 'none';
+
+        // Reset state
+        state.selectedBrand = null;
+        state.selectedModel = null;
+        state.selectedVehicleType = null;
+    }
+
+    /**
+     * Show brand selection view
+     */
+    function showBrandSelection() {
+        document.getElementById('brand-selection-view').style.display = 'block';
+        document.getElementById('model-selection-view').style.display = 'none';
+        document.getElementById('vehicle-type-view').style.display = 'none';
+    }
+
+    /**
+     * Show model selection view
+     */
+    function showModelSelection() {
+        document.getElementById('brand-selection-view').style.display = 'none';
+        document.getElementById('model-selection-view').style.display = 'block';
+        document.getElementById('vehicle-type-view').style.display = 'none';
+    }
+
+    /**
+     * Show vehicle type selection view
+     */
+    function showVehicleTypeView() {
+        document.getElementById('brand-selection-view').style.display = 'none';
+        document.getElementById('model-selection-view').style.display = 'none';
+        document.getElementById('vehicle-type-view').style.display = 'block';
+    }
+
+    /**
+     * Fetch brands from API
+     */
+    async function fetchBrands() {
+        try {
+            const response = await fetch('https://tip-topcarwash.in/main_erp/api_v1/brands', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+                }
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch brands');
+
+            const result = await response.json();
+            console.log('✅ Brands API response:', result);
+
+            // Brands are in result.data.brands, not result.data
+            state.brands = result.data?.brands || [];
+            console.log('✅ Brands stored in state:', state.brands);
+
+            renderBrands(state.brands);
+        } catch (error) {
+            console.error('❌ Error fetching brands:', error);
+            document.getElementById('brand-grid').innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: var(--text-secondary); grid-column: 1 / -1;">
+                    Failed to load brands. Please try again.
+                </div>
+            `;
+        }
+    }
+
+    async function fetchModels(brandId) {
+        try {
+            // Correct endpoint: /brands/Allcars/{brand_id}
+            let response = await fetch(`https://tip-topcarwash.in/main_erp/api_v1/brands/Allcars/${brandId}`);
+
+
+            if (!response.ok) throw new Error('Failed to fetch models');
+
+            const result = await response.json();
+            console.log('✅ Models API response:', result);
+
+            // Models are in result.data.cars (API returns {cars: Array, total: number, brand_id: string})
+            state.models = result.data?.cars || result.data?.models || result.data || [];
+            console.log('✅ Models stored in state:', state.models);
+
+            renderModels(state.models);
+        } catch (error) {
+            console.error('❌ Error fetching models:', error);
+            document.getElementById('model-grid').innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: var(--text-secondary); grid-column: 1 / -1;">
+                    Failed to load models. Please try again.
+                </div>
+            `;
+        }
+    }
+
+    /**
+     * Render brands
+     */
+    function renderBrands(brands, searchTerm = '') {
+        const brandGrid = document.getElementById('brand-grid');
+        console.log('🎨 renderBrands called with:', brands);
+        console.log('🎨 brandGrid element:', brandGrid);
+
+        if (!brandGrid) {
+            console.error('❌ brand-grid element not found!');
+            return;
+        }
+
+        const filtered = brands.filter(brand =>
+            brand.brand_name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        console.log('🎨 Filtered brands:', filtered);
+
+        if (filtered.length === 0) {
+            brandGrid.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: var(--text-secondary); grid-column: 1 / -1;">
+                    No brands found
+                </div>
+            `;
+            return;
+        }
+
+        const html = filtered.map(brand => `
+            <div class="brand-card" onclick="DashboardCore.handleBrandSelect(${brand.id}, '${escapeHtml(brand.brand_name)}')">
+                <div class="brand-card-logo">🚗</div>
+                <div class="brand-card-name">${escapeHtml(brand.brand_name)}</div>
+            </div>
+        `).join('');
+
+        console.log('🎨 Generated HTML length:', html.length);
+        brandGrid.innerHTML = html;
+        console.log('✅ Brands rendered successfully');
+    }
+
+    function renderModels(models, searchTerm = '') {
+        const modelGrid = document.getElementById('model-grid');
+        console.log('🎨 renderModels called with:', models);
+
+        if (!modelGrid) {
+            console.error('❌ model-grid element not found!');
+            return;
+        }
+
+        const filtered = models.filter(model => {
+            // API returns car_name field
+            const name = model.car_name || model.model_name || model.name || '';
+            return name.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+
+        console.log('🎨 Filtered models:', filtered);
+
+        if (filtered.length === 0) {
+            modelGrid.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: var(--text-secondary); grid-column: 1 / -1;">
+                    No models found
+                </div>
+            `;
+            return;
+        }
+
+        const html = filtered.map(model => {
+            // API returns car_name field
+            const modelName = model.car_name || model.model_name || model.name || 'Unknown';
+            return `
+                <div class="model-card" onclick="DashboardCore.handleModelSelect(${model.id}, '${escapeHtml(modelName)}')">
+                    <div class="model-card-name">${escapeHtml(modelName)}</div>
+                </div>
+            `;
+        }).join('');
+
+        console.log('🎨 Generated models HTML length:', html.length);
+        modelGrid.innerHTML = html;
+        console.log('✅ Models rendered successfully');
+    }
+
+    /**
+     * Handle brand selection
+     */
+    function handleBrandSelect(brandId, brandName) {
+        state.selectedBrand = { id: brandId, name: brandName };
+
+        // Update selected brand display
+        const selectedBrandName = document.getElementById('selected-brand-name');
+        if (selectedBrandName) {
+            selectedBrandName.textContent = brandName;
+        }
+
+        // Fetch models for this brand
+        fetchModels(brandId);
+
+        // Show model selection view
+        showModelSelection();
+    }
+
+    /**
+     * Handle model selection
+     */
+    function handleModelSelect(modelId, modelName) {
+        // Find the full model object to get car_type
+        const selectedModelObj = state.models.find(m => m.id === modelId);
+
+        if (!selectedModelObj) {
+            showError('Model not found');
+            return;
+        }
+
+        state.selectedModel = {
+            id: modelId,
+            name: modelName,
+            car_type: selectedModelObj.car_type
+        };
+
+        // Map car_type to category_id
+        const categoryMap = {
+            'Hatchback': 1,
+            'Sedan': 2,
+            'SUV': 3,
+            'Bike': 4
+        };
+
+        const categoryId = categoryMap[selectedModelObj.car_type];
+
+        if (!categoryId) {
+            showError('Invalid vehicle type. Please contact support.');
+            return;
+        }
+
+        // Auto-submit with the detected category
+        const vehicleData = {
+            customer_id: state.user.id,
+            brand_id: state.selectedBrand.id,
+            model_id: state.selectedModel.id,
+            category_id: categoryId
+        };
+
+        console.log('🚗 Auto-submitting vehicle with type:', selectedModelObj.car_type);
+        addVehicle(vehicleData);
+    }
+
+    /**
+     * Add vehicle via API
+     */
+    async function addVehicle(vehicleData) {
+        try {
+            showLoading('Adding vehicle...');
+
+            const response = await fetch(`https://tip-topcarwash.in/main_erp/api_v1/bookings/customer-vehicles/${state.user.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+                },
+                body: JSON.stringify(vehicleData)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || 'Failed to add vehicle');
+            }
+
+            showSuccess('Vehicle added successfully!');
+            closeAddVehicleModal();
+
+            // Refresh vehicles list
+            await fetchVehicles();
+
+        } catch (error) {
+            console.error('Error adding vehicle:', error);
+            showError(error.message || 'Failed to add vehicle');
+        } finally {
+            hideLoading();
+        }
+    }
+
+    /**
+     * Setup vehicle search handlers
+     */
+    function setupVehicleSearchHandlers() {
+        const brandSearch = document.getElementById('brand-search');
+        const modelSearch = document.getElementById('model-search');
+
+        if (brandSearch) {
+            brandSearch.addEventListener('input', (e) => {
+                renderBrands(state.brands, e.target.value);
+            });
+        }
+
+        if (modelSearch) {
+            modelSearch.addEventListener('input', (e) => {
+                renderModels(state.models, e.target.value);
+            });
+        }
+    }
+
+    // ================================
     // PUBLIC API
     // ================================
 
     return {
         init,
         handleRebook,
-        openCancelModal,
-        closeCancelModal,
-        openAddLocationModal,
-        closeAddLocationModal,
         openEditProfileModal,
         closeEditProfileModal,
+        openAddLocationModal,
+        closeAddLocationModal,
+        resetLocationChoice,
+        switchToManualEntry,
+        openAddVehicleModal,
+        closeAddVehicleModal,
+        showBrandSelection,
+        showModelSelection,
+        handleBrandSelect,
+        handleModelSelect,
         handleLogout
     };
 })();

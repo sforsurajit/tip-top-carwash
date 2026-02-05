@@ -1611,6 +1611,429 @@
         /* ============================================
    STEP 3: LOCATION
    ============================================ */
+
+        /* Location Modal Trigger */
+        .location-modal-trigger-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-choose-location {
+            width: 100%;
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-choose-location::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .btn-choose-location:hover {
+            border-color: var(--primary-400);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.15);
+        }
+
+        .btn-choose-location:hover::before {
+            opacity: 0.05;
+        }
+
+        .btn-icon-wrapper {
+            width: 56px;
+            height: 56px;
+            background: var(--primary-50);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-600);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            transition: all var(--transition-base);
+        }
+
+        .btn-choose-location:hover .btn-icon-wrapper {
+            background: var(--primary-500);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .btn-icon-wrapper svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .btn-content {
+            flex: 1;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-content h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .btn-content p {
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+        }
+
+        .btn-arrow {
+            width: 24px;
+            height: 24px;
+            color: var(--neutral-400);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            transition: all var(--transition-base);
+        }
+
+        .btn-choose-location:hover .btn-arrow {
+            color: var(--primary-600);
+            transform: translateX(4px);
+        }
+
+        /* Location Modal Overlay */
+        .location-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .location-modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .location-modal-content {
+            position: relative;
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--neutral-100);
+            border-radius: var(--radius-full);
+            color: var(--neutral-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+            z-index: 10;
+        }
+
+        .modal-close-btn:hover {
+            background: var(--neutral-200);
+            color: var(--neutral-800);
+            transform: rotate(90deg);
+        }
+
+        .modal-close-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header p {
+            font-size: 1rem;
+            color: var(--neutral-500);
+        }
+
+        /* Location Choice Cards */
+        .location-choices {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .location-choice-card {
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .location-choice-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .location-choice-card:hover {
+            border-color: var(--primary-400);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(249, 115, 22, 0.2);
+        }
+
+        .location-choice-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .location-choice-card:active {
+            transform: translateY(-2px);
+        }
+
+        .choice-badge {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            z-index: 1;
+        }
+
+        .choice-badge.recommended {
+            background: var(--success-500);
+            color: white;
+        }
+
+        .choice-icon-wrapper {
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+
+        .choice-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            transition: all var(--transition-base);
+        }
+
+        .choice-icon.auto-detect {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+
+        .choice-icon.manual-entry {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+        }
+
+        .location-choice-card:hover .choice-icon {
+            transform: scale(1.1);
+        }
+
+        .choice-icon svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        .choice-pulse {
+            position: absolute;
+            inset: -8px;
+            border: 3px solid var(--success-400);
+            border-radius: var(--radius-full);
+            opacity: 0.6;
+            animation: choicePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes choicePulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: scale(1.15);
+                opacity: 0;
+            }
+        }
+
+        .choice-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .choice-content h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .choice-content p {
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+            line-height: 1.5;
+        }
+
+        .choice-features {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--neutral-100);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--neutral-600);
+            transition: all var(--transition-base);
+        }
+
+        .location-choice-card:hover .feature-item {
+            background: var(--primary-50);
+            color: var(--primary-700);
+        }
+
+        .feature-item svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .location-choices {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .location-modal-content {
+                padding: 1.5rem;
+            }
+
+            .modal-header h3 {
+                font-size: 1.5rem;
+            }
+
+            .choice-icon {
+                width: 64px;
+                height: 64px;
+            }
+
+            .choice-icon svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            .btn-choose-location {
+                padding: 1.25rem;
+            }
+
+            .btn-icon-wrapper {
+                width: 48px;
+                height: 48px;
+            }
+
+            .btn-icon-wrapper svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .btn-content h4 {
+                font-size: 1rem;
+            }
+
+            .btn-content p {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Legacy styles for existing elements */
         .location-options {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -3350,23 +3773,70 @@
                         wash</p>
                 </div>
                 <div class="step-body">
-                    <div class="location-options"><button class="location-option-card" id="detectLocationBtn">
-                            <div class="option-icon"><i data-lucide="locate-fixed"></i></div>
-                            <div class="option-content">
-                                <h4>Use Current Location</h4>
-                                <p>We'll detect your location automatically</p>
+                    <!-- Location Selection Modal Trigger -->
+                    <div class="location-modal-trigger-container">
+                        <button class="btn-choose-location" id="chooseLocationBtn">
+                            <div class="btn-icon-wrapper">
+                                <i data-lucide="map-pin"></i>
                             </div>
-                            <div class="option-check"><i data-lucide="check"></i>
+                            <div class="btn-content">
+                                <h4>Choose How to Set Location</h4>
+                                <p>Select auto-detect or enter manually</p>
                             </div>
-                        </button><button class="location-option-card" id="manualLocationBtn">
-                            <div class="option-icon"><i data-lucide="pencil-line"></i></div>
-                            <div class="option-content">
-                                <h4>Enter Manually</h4>
-                                <p>Type your address and select zone</p>
+                            <i data-lucide="chevron-right" class="btn-arrow"></i>
+                        </button>
+                    </div>
+
+                    <!-- Location Selection Modal -->
+                    <div class="location-modal-overlay" id="locationModal" style="display: none;">
+                        <div class="location-modal-backdrop"></div>
+                        <div class="location-modal-content">
+                            <button class="modal-close-btn" id="closeLocationModal" aria-label="Close">
+                                <i data-lucide="x"></i>
+                            </button>
+
+                            <div class="modal-header">
+                                <h3>Set Your Location</h3>
+                                <p>Choose how you'd like to provide your service location</p>
                             </div>
-                            <div class="option-check"><i data-lucide="check"></i>
+
+                            <div class="location-choices">
+                                <button class="location-choice-card" id="chooseAutoDetect">
+                                    <div class="choice-badge recommended">Recommended</div>
+                                    <div class="choice-icon-wrapper">
+                                        <div class="choice-icon auto-detect">
+                                            <i data-lucide="locate-fixed"></i>
+                                        </div>
+                                        <div class="choice-pulse"></div>
+                                    </div>
+                                    <div class="choice-content">
+                                        <h4>Auto-Detect Location</h4>
+                                        <p>We'll automatically detect your current location using GPS</p>
+                                    </div>
+                                    <div class="choice-features">
+                                        <span class="feature-item"><i data-lucide="zap"></i>Fast & Easy</span>
+                                        <span class="feature-item"><i data-lucide="target"></i>Accurate</span>
+                                    </div>
+                                </button>
+
+                                <button class="location-choice-card" id="chooseManualEntry">
+                                    <div class="choice-icon-wrapper">
+                                        <div class="choice-icon manual-entry">
+                                            <i data-lucide="pencil-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="choice-content">
+                                        <h4>Enter Manually</h4>
+                                        <p>Type your address and select your service zone</p>
+                                    </div>
+                                    <div class="choice-features">
+                                        <span class="feature-item"><i data-lucide="map"></i>Choose Zone</span>
+                                        <span class="feature-item"><i data-lucide="edit-3"></i>Custom Address</span>
+                                    </div>
+                                </button>
                             </div>
-                        </button></div>
+                        </div>
+                    </div>
                     <div class="location-detect-area" id="locationDetectArea">
                         <div class="detect-status" id="detectStatus">
                             <div class="detect-animation">
@@ -3411,17 +3881,46 @@
                                 and fills coordinates from link</small>
                         </div>
 
+                        <!-- Zone Selection (First Priority) -->
                         <div class="form-group"><label class="form-label"><i data-lucide="map"></i>Select Service
-                                Zone </label>
-                            <div class="select-wrapper"><select id="zoneSelect" class="form-select">
-                                    <option value="">Loading zones...
+                                Zone <span style="color: var(--error-500);">*</span></label>
+                            <div class="select-wrapper"><select id="zoneSelect" class="form-select" required>
+                                    <option value="">Select your service zone
                                     </option>
                                 </select><i data-lucide="chevron-down" class="select-icon"></i></div>
+                            <small style="display:block;margin-top:0.5rem;color:var(--neutral-500);">Choose the area
+                                where you need service</small>
                         </div>
-                        <div class="form-group"><label class="form-label"><i data-lucide="home"></i>Full Address
-                            </label><textarea id="manualAddress" class="form-textarea"
-                                placeholder="Enter your complete address..." rows="3"></textarea></div><button
-                            class="btn-confirm-address" id="confirmAddressBtn"><i data-lucide="check"></i>Confirm
+
+                        <!-- House/Flat Number -->
+                        <div class="form-group"><label class="form-label"><i data-lucide="home"></i>House/Flat Number
+                                <span style="color: var(--error-500);">*</span></label>
+                            <input type="text" id="houseNumber" class="form-input"
+                                placeholder="e.g., Flat 301, Building A" required>
+                        </div>
+
+                        <!-- Street/Road Name -->
+                        <div class="form-group"><label class="form-label"><i data-lucide="signpost"></i>Street/Road Name
+                                <span style="color: var(--error-500);">*</span></label>
+                            <input type="text" id="streetName" class="form-input" placeholder="e.g., MG Road, Sector 15"
+                                required>
+                        </div>
+
+                        <!-- Landmark (Optional) -->
+                        <div class="form-group"><label class="form-label"><i data-lucide="map-pin"></i>Nearby Landmark
+                                <span style="color: var(--neutral-400);">(Optional)</span></label>
+                            <input type="text" id="landmark" class="form-input"
+                                placeholder="e.g., Near City Mall, Opposite Park">
+                        </div>
+
+                        <!-- Area/Locality -->
+                        <div class="form-group"><label class="form-label"><i data-lucide="map-pinned"></i>Area/Locality
+                                <span style="color: var(--error-500);">*</span></label>
+                            <input type="text" id="areaLocality" class="form-input"
+                                placeholder="e.g., Indiranagar, Koramangala" required>
+                        </div>
+
+                        <button class="btn-confirm-address" id="confirmAddressBtn"><i data-lucide="check"></i>Confirm
                             Address
                         </button>
                     </div>

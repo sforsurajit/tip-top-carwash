@@ -1,0 +1,242 @@
+/* ============================================
+   LOCATION MODAL CHOICE CARDS
+   ============================================ */
+
+.location-choices-dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.location-choice-card-dashboard {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.location-choice-card-dashboard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--primary) 0%, #ff8c42 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.location-choice-card-dashboard:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(255, 107, 53, 0.2);
+}
+
+.location-choice-card-dashboard:hover::before {
+    opacity: 0.05;
+}
+
+.location-choice-card-dashboard:active {
+    transform: translateY(-2px);
+}
+
+.choice-badge-dashboard {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 1;
+}
+
+.choice-badge-dashboard.recommended {
+    background: #10b981;
+    color: white;
+}
+
+.choice-icon-wrapper-dashboard {
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.choice-icon-dashboard {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.choice-icon-dashboard.auto-detect {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.choice-icon-dashboard.manual-entry {
+    background: linear-gradient(135deg, var(--primary) 0%, #ff8c42 100%);
+    color: white;
+}
+
+.location-choice-card-dashboard:hover .choice-icon-dashboard {
+    transform: scale(1.1);
+}
+
+.choice-pulse-dashboard {
+    position: absolute;
+    inset: -8px;
+    border: 3px solid #10b981;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: choicePulseDashboard 2s ease-in-out infinite;
+}
+
+@keyframes choicePulseDashboard {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 0;
+    }
+}
+
+.choice-content-dashboard {
+    position: relative;
+    z-index: 1;
+}
+
+.choice-content-dashboard h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.choice-content-dashboard p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.choice-features-dashboard {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.feature-item-dashboard {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    background: rgba(100, 116, 139, 0.08);
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.location-choice-card-dashboard:hover .feature-item-dashboard {
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--primary);
+}
+
+/* Auto-Detect Animation */
+.detect-animation-dashboard {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+.pulse-ring-dashboard {
+    position: absolute;
+    inset: 0;
+    border: 3px solid var(--primary);
+    border-radius: 50%;
+    animation: pulseDashboard 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.pulse-ring-dashboard:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.pulse-ring-dashboard:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes pulseDashboard {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}
+
+.spin-dashboard {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--primary);
+    animation: spinDashboard 1s linear infinite;
+}
+
+@keyframes spinDashboard {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .location-choices-dashboard {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .choice-icon-dashboard {
+        width: 64px;
+        height: 64px;
+    }
+
+    .choice-content-dashboard h4 {
+        font-size: 1rem;
+    }
+
+    .choice-content-dashboard p {
+        font-size: 0.8rem;
+    }
+}

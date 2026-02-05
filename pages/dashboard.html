@@ -18,6 +18,7 @@
 
     <!-- Premium Dashboard CSS -->
     <link rel="stylesheet" href="../assets/css/dashboard-premium-v2.css">
+    <link rel="stylesheet" href="../assets/css/dashboard-location-modal.css">
 </head>
 
 <body>
@@ -169,6 +170,10 @@
                     <div class="content-subtitle">Manage your vehicles</div>
                 </div>
 
+                <button class="add-location-btn" id="btn-add-vehicle">
+                    <span>+</span> Add New Vehicle
+                </button>
+
                 <div class="vehicles-grid" id="vehicles-container">
                     <!-- Vehicles will be rendered here -->
                     <div class="skeleton skeleton-card"></div>
@@ -225,61 +230,213 @@
                 <h3 class="dashboard-modal-title">Add New Location</h3>
                 <button class="dashboard-modal-close" onclick="DashboardCore.closeAddLocationModal()">×</button>
             </div>
-            <form id="add-location-form">
+
+            <!-- Location Choice Selection -->
+            <div id="location-choice-container">
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                    Choose how you'd like to add your location
+                </p>
+
+                <div class="location-choices-dashboard">
+                    <button type="button" class="location-choice-card-dashboard" id="dashboard-choose-auto-detect">
+                        <div class="choice-badge-dashboard recommended">Recommended</div>
+                        <div class="choice-icon-wrapper-dashboard">
+                            <div class="choice-icon-dashboard auto-detect">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div class="choice-pulse-dashboard"></div>
+                        </div>
+                        <div class="choice-content-dashboard">
+                            <h4>Auto-Detect Location</h4>
+                            <p>We'll automatically detect your current location using GPS</p>
+                        </div>
+                        <div class="choice-features-dashboard">
+                            <span class="feature-item-dashboard">⚡ Fast & Easy</span>
+                            <span class="feature-item-dashboard">🎯 Accurate</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="location-choice-card-dashboard" id="dashboard-choose-manual-entry">
+                        <div class="choice-icon-wrapper-dashboard">
+                            <div class="choice-icon-dashboard manual-entry">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+                                    <path d="m15 5 4 4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="choice-content-dashboard">
+                            <h4>Enter Manually</h4>
+                            <p>Type your address and select your service zone</p>
+                        </div>
+                        <div class="choice-features-dashboard">
+                            <span class="feature-item-dashboard">🗺️ Choose Zone</span>
+                            <span class="feature-item-dashboard">✏️ Custom Address</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Auto-Detect Form (Hidden by default) -->
+            <form id="add-location-form-auto" style="display: none;">
+                <div id="auto-detect-status" style="text-align: center; padding: 2rem;">
+                    <div class="detect-animation-dashboard">
+                        <div class="pulse-ring-dashboard"></div>
+                        <div class="pulse-ring-dashboard"></div>
+                        <div class="pulse-ring-dashboard"></div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="spin-dashboard">
+                            <line x1="12" y1="2" x2="12" y2="6"></line>
+                            <line x1="12" y1="18" x2="12" y2="22"></line>
+                            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                            <line x1="2" y1="12" x2="6" y2="12"></line>
+                            <line x1="18" y1="12" x2="22" y2="12"></line>
+                            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                            <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                        </svg>
+                    </div>
+                    <p style="margin-top: 1rem; color: var(--text-secondary);">Detecting your location...</p>
+                </div>
+
+                <div id="auto-detect-success" style="display: none;">
+                    <div style="margin-bottom: 1rem;">
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                            Location Name
+                        </label>
+                        <input type="text" id="location-name-auto" placeholder="e.g., Home, Office" required
+                            style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                            Detected Address
+                        </label>
+                        <textarea id="location-address-auto" rows="3" readonly
+                            style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; background: var(--lighter-bg);"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                            Service Zone
+                        </label>
+                        <input type="text" id="location-zone-auto" readonly
+                            style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; background: var(--lighter-bg);">
+                        <input type="hidden" id="location-zone-id-auto">
+                    </div>
+
+                    <input type="hidden" id="location-latitude-auto">
+                    <input type="hidden" id="location-longitude-auto">
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="location-default-auto" style="width: 18px; height: 18px;">
+                            <span style="font-weight: 500; color: var(--text-secondary);">Set as default location</span>
+                        </label>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="button" class="modal-btn modal-btn-secondary"
+                            onclick="DashboardCore.resetLocationChoice()" style="flex: 1;">
+                            ← Back
+                        </button>
+                        <button type="submit" class="modal-btn modal-btn-primary" style="flex: 1;">
+                            Add Location
+                        </button>
+                    </div>
+                </div>
+
+                <div id="auto-detect-error" style="display: none; text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📍</div>
+                    <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">Location Detection Failed</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        We couldn't detect your location or you're outside our service area.
+                    </p>
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="button" class="modal-btn modal-btn-secondary"
+                            onclick="DashboardCore.resetLocationChoice()" style="flex: 1;">
+                            ← Back
+                        </button>
+                        <button type="button" class="modal-btn modal-btn-primary"
+                            onclick="DashboardCore.switchToManualEntry()" style="flex: 1;">
+                            Enter Manually
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Manual Entry Form (Hidden by default) -->
+            <form id="add-location-form-manual" style="display: none;">
                 <div style="margin-bottom: 1rem;">
                     <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
-                        Location Name
+                        Location Name <span style="color: #dc2626;">*</span>
                     </label>
                     <input type="text" id="location-name" placeholder="e.g., Home, Office" required
                         style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
                 </div>
+
+                <!-- Zone Selection (First Priority) -->
                 <div style="margin-bottom: 1rem;">
                     <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
-                        Address
-                    </label>
-                    <textarea id="location-address" rows="3" placeholder="Enter full address" required
-                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
-                </div>
-
-                <!-- GPS Coordinates Section -->
-                <div style="margin-bottom: 1rem;">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <label style="font-weight: 600; color: var(--text-primary);">
-                            GPS Coordinates
-                        </label>
-                        <button type="button" id="btn-detect-location" class="modal-btn modal-btn-secondary"
-                            style="padding: 0.5rem 1rem; font-size: 0.85rem;">
-                            📍 Detect Location
-                        </button>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                        <div>
-                            <input type="text" id="location-latitude" placeholder="Latitude" required
-                                style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
-                        </div>
-                        <div>
-                            <input type="text" id="location-longitude" placeholder="Longitude" required
-                                style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
-                        </div>
-                    </div>
-                    <small
-                        style="display: block; margin-top: 0.25rem; color: var(--text-secondary); font-size: 0.85rem;">
-                        Click "Detect Location" to auto-fill coordinates
-                    </small>
-                </div>
-
-                <!-- Zone Selection Section -->
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
-                        Service Zone
+                        Service Zone <span style="color: #dc2626;">*</span>
                     </label>
                     <select id="location-zone" required
                         style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; background: white; cursor: pointer;">
-                        <option value="">Select Zone</option>
+                        <option value="">Select your service zone</option>
                         <!-- Populated dynamically -->
                     </select>
+                    <small
+                        style="display: block; margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">
+                        Choose the area where you need service
+                    </small>
                     <div id="zone-validation-message" style="margin-top: 0.5rem;"></div>
+                </div>
+
+                <!-- House/Flat Number -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        House/Flat Number <span style="color: #dc2626;">*</span>
+                    </label>
+                    <input type="text" id="location-house-number" placeholder="e.g., Flat 301, Building A" required
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                </div>
+
+                <!-- Street/Road Name -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        Street/Road Name <span style="color: #dc2626;">*</span>
+                    </label>
+                    <input type="text" id="location-street" placeholder="e.g., MG Road, Sector 15" required
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                </div>
+
+                <!-- Landmark (Optional) -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        Nearby Landmark <span style="color: var(--text-secondary);">(Optional)</span>
+                    </label>
+                    <input type="text" id="location-landmark" placeholder="e.g., Near City Mall, Opposite Park"
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                </div>
+
+                <!-- Area/Locality -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        Area/Locality <span style="color: #dc2626;">*</span>
+                    </label>
+                    <input type="text" id="location-area" placeholder="e.g., Indiranagar, Koramangala" required
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
                 </div>
 
                 <div style="margin-bottom: 1.5rem;">
@@ -290,14 +447,102 @@
                 </div>
                 <div style="display: flex; gap: 1rem;">
                     <button type="button" class="modal-btn modal-btn-secondary"
-                        onclick="DashboardCore.closeAddLocationModal()" style="flex: 1;">
-                        Cancel
+                        onclick="DashboardCore.resetLocationChoice()" style="flex: 1;">
+                        ← Back
                     </button>
                     <button type="submit" class="modal-btn modal-btn-primary" style="flex: 1;">
                         Add Location
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Add Vehicle Modal -->
+    <div class="dashboard-modal" id="add-vehicle-modal">
+        <div class="dashboard-modal-content" style="max-width: 600px;">
+            <div class="dashboard-modal-header">
+                <h3 class="dashboard-modal-title">Add New Vehicle</h3>
+                <button class="dashboard-modal-close" onclick="DashboardCore.closeAddVehicleModal()">×</button>
+            </div>
+
+            <!-- Brand Selection View -->
+            <div id="brand-selection-view">
+                <div style="margin-bottom: 1.5rem;">
+                    <input type="text" id="brand-search" placeholder="🔍 Search brands..."
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                </div>
+                <div id="brand-grid" class="brand-grid">
+                    <!-- Brands will be rendered here -->
+                    <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        Loading brands...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Selection View -->
+            <div id="model-selection-view" style="display: none;">
+                <button type="button" class="modal-btn modal-btn-secondary" onclick="DashboardCore.showBrandSelection()"
+                    style="margin-bottom: 1rem;">
+                    ← Back to Brands
+                </button>
+
+                <div class="selected-brand-display"
+                    style="margin-bottom: 1rem; padding: 0.75rem; background: var(--lighter-bg); border-radius: 8px;">
+                    <span style="color: var(--text-secondary); font-size: 0.875rem;">Selected Brand:</span>
+                    <span id="selected-brand-name"
+                        style="font-weight: 600; color: var(--text-primary); margin-left: 0.5rem;"></span>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <input type="text" id="model-search" placeholder="🔍 Search models..."
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                </div>
+                <div id="model-grid" class="model-grid">
+                    <!-- Models will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Vehicle Type Selection View -->
+            <div id="vehicle-type-view" style="display: none;">
+                <button type="button" class="modal-btn modal-btn-secondary" onclick="DashboardCore.showModelSelection()"
+                    style="margin-bottom: 1rem;">
+                    ← Back to Models
+                </button>
+
+                <div style="margin-bottom: 1rem; padding: 0.75rem; background: var(--lighter-bg); border-radius: 8px;">
+                    <div style="margin-bottom: 0.5rem;">
+                        <span style="color: var(--text-secondary); font-size: 0.875rem;">Selected Vehicle:</span>
+                        <span id="selected-vehicle-display"
+                            style="font-weight: 600; color: var(--text-primary); margin-left: 0.5rem;"></span>
+                    </div>
+                </div>
+
+                <form id="add-vehicle-form">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                            Vehicle Type <span style="color: #dc2626;">*</span>
+                        </label>
+                        <select id="vehicle-category" required
+                            style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; background: white; cursor: pointer;">
+                            <option value="">Select vehicle type</option>
+                            <option value="1">Hatchback</option>
+                            <option value="2">Sedan</option>
+                            <option value="3">SUV</option>
+                            <option value="4">Bike</option>
+                        </select>
+                        <small
+                            style="display: block; margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">
+                            Required for pricing calculation
+                        </small>
+                    </div>
+
+                    <button type="submit" class="modal-btn modal-btn-primary" style="width: 100%;">
+                        Add Vehicle
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
